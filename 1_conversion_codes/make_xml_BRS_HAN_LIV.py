@@ -109,7 +109,7 @@ cha_han_DHZ_EX = Channel(
     dip=???,
     sample_rate=512)
 
-# Location ES
+# Location EY
 cha_han_DHX_EY = Channel(
     # This is the channel code according to the SEED standard.
     code="DHX",
@@ -295,7 +295,7 @@ cha_liv_DHZ_IX = Channel(
     dip=???,
     sample_rate=???)
 
-# Location IS
+# Location IY
 cha_liv_DHX_IY = Channel(
     # This is the channel code according to the SEED standard.
     code="DHX",
@@ -336,7 +336,7 @@ cha_liv_DHZ_IY = Channel(
     dip=???,
     sample_rate=???)
 
-# Location EW
+# Location EX
 cha_liv_DHX_EX = Channel(
     # This is the channel code according to the SEED standard.
     code="DHX",
@@ -377,7 +377,7 @@ cha_liv_DHZ_EX = Channel(
     dip=???,
     sample_rate=???)
 
-# Location ES
+# Location EY
 cha_liv_DHX_EY = Channel(
     # This is the channel code according to the SEED standard.
     code="DHX",
@@ -472,7 +472,7 @@ nrl = NRL()
 # Here we assume that the end point of data logger and sensor are already
 # known:
 response_BRS = nrl.get_response( # doctest: +SKIP
-    sensor_keys=['Streckeisen', 'STS-1', '360 seconds'],
+    sensor_keys=['UW', 'BRS', '360 seconds'],
     datalogger_keys=['REF TEK', 'RT 130 & 130-SMA', '1', '200'])
 
 
