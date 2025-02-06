@@ -4,6 +4,8 @@ from obspy.clients.nrl import NRL
 
 root_data = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data'
 
+# link to station xml documentation
+# http://docs.fdsn.org/projects/stationxml/en/latest/reference.html#
 
 # We'll first create all the various objects. These strongly follow the
 # hierarchy of StationXML files.
