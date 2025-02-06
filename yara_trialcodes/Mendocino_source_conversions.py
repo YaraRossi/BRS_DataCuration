@@ -1,4 +1,4 @@
-from Yara_trialcodes.source_conversion_functions import param2M0
+from yara_trialcodes.source_conversion_functions import param2M0
 from pyrocko import moment_tensor as pmt
 
 # Usage example
