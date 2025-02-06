@@ -35,13 +35,13 @@ sta_han = Station(
     site=Site(name="Hanford LIGO Site"))
 
 ##############################################################
-#### BRS data channels DJ1 and DJ2
+#### BRS data channels DJX and DJY
 
-cha_han_DJ1_ES = Channel(
+cha_han_DJX_EY = Channel(
     # This is the channel code according to the SEED standard.
-    code="DJ1",
+    code="DJX",
     # This is the location code according to the SEED standard.
-    location_code="ES",
+    location_code="EY",
     # Note that these coordinates can differ from the station coordinates.
     latitude=46.433908,
     longitude=-119.44963,
@@ -51,11 +51,11 @@ cha_han_DJ1_ES = Channel(
     dip=0.0,
     sample_rate=256)
 
-cha_han_DJ2_EN = Channel(
+cha_han_DJY_EX = Channel(
     # This is the channel code according to the SEED standard.
-    code="DJ2",
+    code="DJY",
     # This is the location code according to the SEED standard.
-    location_code="EN",
+    location_code="EX",
     # Note that these coordinates can differ from the station coordinates.
     latitude=46.484156,
     longitude=-119.438288,
@@ -66,14 +66,14 @@ cha_han_DJ2_EN = Channel(
     sample_rate=256)
 
 ##############################################################
-#### Seis LIGO data channels DH1, DH2 and DH3 for locations ES and EN
+#### Seis LIGO data channels DH1, DHY and DHZ for locations ES and EX
 
-# Location EN
-cha_han_DH1_EN = Channel(
+# Location EX
+cha_han_DHX_EX = Channel(
     # This is the channel code according to the SEED standard.
-    code="DH1",
+    code="DHX",
     # This is the location code according to the SEED standard.
-    location_code="EN",
+    location_code="EX",
     # Note that these coordinates can differ from the station coordinates.
     latitude=46.484156,
     longitude=-119.438288,
@@ -82,11 +82,11 @@ cha_han_DH1_EN = Channel(
     azimuth=???,
     dip=???,
     sample_rate=512)
-cha_han_DH2_EN = Channel(
+cha_han_DHY_EX = Channel(
     # This is the channel code according to the SEED standard.
-    code="DH2",
+    code="DHY",
     # This is the location code according to the SEED standard.
-    location_code="EN",
+    location_code="EX",
     # Note that these coordinates can differ from the station coordinates.
     latitude=46.484156,
     longitude=-119.438288,
@@ -95,11 +95,11 @@ cha_han_DH2_EN = Channel(
     azimuth=???,
     dip=???,
     sample_rate=512)
-cha_han_DH3_EN = Channel(
+cha_han_DHZ_EX = Channel(
     # This is the channel code according to the SEED standard.
-    code="DH3",
+    code="DHZ",
     # This is the location code according to the SEED standard.
-    location_code="EN",
+    location_code="EX",
     # Note that these coordinates can differ from the station coordinates.
     latitude=46.484156,
     longitude=-119.438288,
@@ -110,11 +110,11 @@ cha_han_DH3_EN = Channel(
     sample_rate=512)
 
 # Location ES
-cha_han_DH1_ES = Channel(
+cha_han_DHX_EY = Channel(
     # This is the channel code according to the SEED standard.
-    code="DH1",
+    code="DHX",
     # This is the location code according to the SEED standard.
-    location_code="ES",
+    location_code="EY",
     # Note that these coordinates can differ from the station coordinates.
     latitude=46.433908,
     longitude=-119.44963,
@@ -123,11 +123,11 @@ cha_han_DH1_ES = Channel(
     azimuth=???,
     dip=???,
     sample_rate=512)
-cha_han_DH2_ES = Channel(
+cha_han_DHY_EY = Channel(
     # This is the channel code according to the SEED standard.
-    code="DH2",
+    code="DHY",
     # This is the location code according to the SEED standard.
-    location_code="ES",
+    location_code="EY",
     # Note that these coordinates can differ from the station coordinates.
     latitude=46.433908,
     longitude=-119.44963,
@@ -136,11 +136,11 @@ cha_han_DH2_ES = Channel(
     azimuth=???,
     dip=???,
     sample_rate=512)
-cha_han_DH3_ES = Channel(
+cha_han_DHZ_EY = Channel(
     # This is the channel code according to the SEED standard.
-    code="DH3",
+    code="DHZ",
     # This is the location code according to the SEED standard.
-    location_code="ES",
+    location_code="EY",
     # Note that these coordinates can differ from the station coordinates.
     latitude=46.433908,
     longitude=-119.44963,
@@ -151,11 +151,11 @@ cha_han_DH3_ES = Channel(
     sample_rate=512)
 
 ##############################################################
-#### Seis HAN Vault data channels DH1 and DH2
+#### Seis HAN Vault data channels DHX and DHY
 # Location VA
-cha_han_DH1_VA = Channel(
+cha_han_DHX_VA = Channel(
     # This is the channel code according to the SEED standard.
-    code="DH1",
+    code="DHX",
     # This is the location code according to the SEED standard.
     location_code="VA",
     # Note that these coordinates can differ from the station coordinates.
@@ -166,9 +166,9 @@ cha_han_DH1_VA = Channel(
     azimuth=???,
     dip=0,
     sample_rate=256)
-cha_han_DH2_VA = Channel(
+cha_han_DHY_VA = Channel(
     # This is the channel code according to the SEED standard.
-    code="DH2",
+    code="DHY",
     # This is the location code according to the SEED standard.
     location_code="VA",
     # Note that these coordinates can differ from the station coordinates.
@@ -193,13 +193,13 @@ sta_liv = Station(
     site=Site(name="Livingston LIGO Site"))
 
 ##############################################################
-#### BRS data channels DJ1 and DJ2
+#### BRS data channels DJX and DJY
 
-cha_liv_DJ1_IS = Channel(
+cha_liv_DJX_IY = Channel(
     # This is the channel code according to the SEED standard.
-    code="DJ1",
+    code="DJX",
     # This is the location code according to the SEED standard.
-    location_code="IS",
+    location_code="IY",
     # Note that these coordinates can differ from the station coordinates.
     latitude=???,
     longitude=???,
@@ -209,11 +209,11 @@ cha_liv_DJ1_IS = Channel(
     dip=0.0,
     sample_rate=256)
 
-cha_liv_DJ2_IW = Channel(
+cha_liv_DJY_IX = Channel(
     # This is the channel code according to the SEED standard.
-    code="DJ2",
+    code="DJY",
     # This is the location code according to the SEED standard.
-    location_code="IW",
+    location_code="IX",
     # Note that these coordinates can differ from the station coordinates.
     latitude=???,
     longitude=???,
@@ -223,11 +223,11 @@ cha_liv_DJ2_IW = Channel(
     dip=0.0,
     sample_rate=256)
 
-cha_liv_DJ1_ES = Channel(
+cha_liv_DJX_EY = Channel(
     # This is the channel code according to the SEED standard.
-    code="DJ1",
+    code="DJX",
     # This is the location code according to the SEED standard.
-    location_code="ES",
+    location_code="EY",
     # Note that these coordinates can differ from the station coordinates.
     latitude=???,
     longitude=???,
@@ -237,11 +237,11 @@ cha_liv_DJ1_ES = Channel(
     dip=0.0,
     sample_rate=256)
 
-cha_liv_DJ2_EW = Channel(
+cha_liv_DJY_EX = Channel(
     # This is the channel code according to the SEED standard.
-    code="DJ2",
+    code="DJY",
     # This is the location code according to the SEED standard.
-    location_code="EW",
+    location_code="EX",
     # Note that these coordinates can differ from the station coordinates.
     latitude=???,
     longitude=???,
@@ -252,14 +252,14 @@ cha_liv_DJ2_EW = Channel(
     sample_rate=256)
 
 ##############################################################
-#### Seis LIGO data channels DH1, DH2 and DH3 for locations IW, IS, EW and ES
+#### Seis LIGO data channels DHX, DHY and DHZ for locations IW, IS, EW and ES
 
 # Location IW
-cha_liv_DH1_IW = Channel(
+cha_liv_DHX_IX = Channel(
     # This is the channel code according to the SEED standard.
-    code="DH1",
+    code="DHX",
     # This is the location code according to the SEED standard.
-    location_code="IW",
+    location_code="IX",
     # Note that these coordinates can differ from the station coordinates.
     latitude=???,
     longitude=???,
@@ -268,11 +268,11 @@ cha_liv_DH1_IW = Channel(
     azimuth=???,
     dip=???,
     sample_rate=???)
-cha_liv_DH2_IW = Channel(
+cha_liv_DHY_IX = Channel(
     # This is the channel code according to the SEED standard.
-    code="DH2",
+    code="DHY",
     # This is the location code according to the SEED standard.
-    location_code="IW",
+    location_code="IX",
     # Note that these coordinates can differ from the station coordinates.
     latitude=???,
     longitude=???,
@@ -281,11 +281,11 @@ cha_liv_DH2_IW = Channel(
     azimuth=???,
     dip=???,
     sample_rate=???)
-cha_liv_DH3_IW = Channel(
+cha_liv_DHZ_IX = Channel(
     # This is the channel code according to the SEED standard.
-    code="DH3",
+    code="DHZ",
     # This is the location code according to the SEED standard.
-    location_code="IW",
+    location_code="IX",
     # Note that these coordinates can differ from the station coordinates.
     latitude=???,
     longitude=???,
@@ -296,11 +296,11 @@ cha_liv_DH3_IW = Channel(
     sample_rate=???)
 
 # Location IS
-cha_liv_DH1_IS = Channel(
+cha_liv_DHX_IY = Channel(
     # This is the channel code according to the SEED standard.
-    code="DH1",
+    code="DHX",
     # This is the location code according to the SEED standard.
-    location_code="IS",
+    location_code="IY",
     # Note that these coordinates can differ from the station coordinates.
     latitude=???,
     longitude=???,
@@ -309,11 +309,11 @@ cha_liv_DH1_IS = Channel(
     azimuth=???,
     dip=???,
     sample_rate=???)
-cha_liv_DH2_IS = Channel(
+cha_liv_DHY_IY = Channel(
     # This is the channel code according to the SEED standard.
-    code="DH2",
+    code="DHY",
     # This is the location code according to the SEED standard.
-    location_code="IS",
+    location_code="IY",
     # Note that these coordinates can differ from the station coordinates.
     latitude=???,
     longitude=???,
@@ -322,11 +322,11 @@ cha_liv_DH2_IS = Channel(
     azimuth=???,
     dip=???,
     sample_rate=???)
-cha_liv_DH3_IS = Channel(
+cha_liv_DHZ_IY = Channel(
     # This is the channel code according to the SEED standard.
-    code="DH3",
+    code="DHZ",
     # This is the location code according to the SEED standard.
-    location_code="IS",
+    location_code="IY",
     # Note that these coordinates can differ from the station coordinates.
     latitude=???,
     longitude=???,
@@ -337,11 +337,11 @@ cha_liv_DH3_IS = Channel(
     sample_rate=???)
 
 # Location EW
-cha_liv_DH1_EW = Channel(
+cha_liv_DHX_EX = Channel(
     # This is the channel code according to the SEED standard.
-    code="DH1",
+    code="DHX",
     # This is the location code according to the SEED standard.
-    location_code="EW",
+    location_code="EX",
     # Note that these coordinates can differ from the station coordinates.
     latitude=???,
     longitude=???,
@@ -350,11 +350,11 @@ cha_liv_DH1_EW = Channel(
     azimuth=???,
     dip=???,
     sample_rate=???)
-cha_liv_DH2_EW = Channel(
+cha_liv_DHY_EX = Channel(
     # This is the channel code according to the SEED standard.
-    code="DH2",
+    code="DHY",
     # This is the location code according to the SEED standard.
-    location_code="EW",
+    location_code="EX",
     # Note that these coordinates can differ from the station coordinates.
     latitude=???,
     longitude=???,
@@ -363,11 +363,11 @@ cha_liv_DH2_EW = Channel(
     azimuth=???,
     dip=???,
     sample_rate=???)
-cha_liv_DH3_EW = Channel(
+cha_liv_DHZ_EX = Channel(
     # This is the channel code according to the SEED standard.
-    code="DH3",
+    code="DHZ",
     # This is the location code according to the SEED standard.
-    location_code="EW",
+    location_code="EX",
     # Note that these coordinates can differ from the station coordinates.
     latitude=???,
     longitude=???,
@@ -378,11 +378,11 @@ cha_liv_DH3_EW = Channel(
     sample_rate=???)
 
 # Location ES
-cha_liv_DH1_ES = Channel(
+cha_liv_DHX_EY = Channel(
     # This is the channel code according to the SEED standard.
-    code="DH1",
+    code="DHX",
     # This is the location code according to the SEED standard.
-    location_code="ES",
+    location_code="EY",
     # Note that these coordinates can differ from the station coordinates.
     latitude=???,
     longitude=???,
@@ -391,11 +391,11 @@ cha_liv_DH1_ES = Channel(
     azimuth=???,
     dip=???,
     sample_rate=???)
-cha_liv_DH2_ES = Channel(
+cha_liv_DHY_EY = Channel(
     # This is the channel code according to the SEED standard.
-    code="DH2",
+    code="DHY",
     # This is the location code according to the SEED standard.
-    location_code="ES",
+    location_code="EY",
     # Note that these coordinates can differ from the station coordinates.
     latitude=???,
     longitude=???,
@@ -404,11 +404,11 @@ cha_liv_DH2_ES = Channel(
     azimuth=???,
     dip=???,
     sample_rate=???)
-cha_liv_DH3_ES = Channel(
+cha_liv_DHZ_EY = Channel(
     # This is the channel code according to the SEED standard.
-    code="DH3",
+    code="DHZ",
     # This is the location code according to the SEED standard.
-    location_code="ES",
+    location_code="EY",
     # Note that these coordinates can differ from the station coordinates.
     latitude=???,
     longitude=???,
@@ -421,11 +421,11 @@ cha_liv_DH3_ES = Channel(
 '''
 Does this station even exist?
 ##############################################################
-#### Seis LIV Vault data channels DH1 and DH2
+#### Seis LIV Vault data channels DHX and DHY
 # Location VA
-cha_liv_DH1_VA = Channel(
+cha_liv_DHX_VA = Channel(
     # This is the channel code according to the SEED standard.
-    code="DH1",
+    code="DHX",
     # This is the location code according to the SEED standard.
     location_code="VA",
     # Note that these coordinates can differ from the station coordinates.
@@ -436,9 +436,9 @@ cha_liv_DH1_VA = Channel(
     azimuth=???,
     dip=???,
     sample_rate=???)
-cha_liv_DH2_VA = Channel(
+cha_liv_DHY_VA = Channel(
     # This is the channel code according to the SEED standard.
-    code="DH2",
+    code="DHY",
     # This is the location code according to the SEED standard.
     location_code="VA",
     # Note that these coordinates can differ from the station coordinates.
@@ -449,9 +449,9 @@ cha_liv_DH2_VA = Channel(
     azimuth=???,
     dip=???,
     sample_rate=???)
-cha_liv_DH2_VA = Channel(
+cha_liv_DHY_VA = Channel(
     # This is the channel code according to the SEED standard.
-    code="DH2",
+    code="DHY",
     # This is the location code according to the SEED standard.
     location_code="VA",
     # Note that these coordinates can differ from the station coordinates.
@@ -487,72 +487,72 @@ response_seisligo = nrl.get_response( # doctest: +SKIP
 
 # Now tie it all together.
 # add response to channels HAN
-cha_han_DJ1_ES.response = response_BRS
-cha_han_DJ2_EN.response = response_BRS
-cha_han_DH1_EN.response = response_seisligo
-cha_han_DH2_EN.response = response_seisligo
-cha_han_DH3_EN.response = response_seisligo
-cha_han_DH1_ES.response = response_seisligo
-cha_han_DH2_ES.response = response_seisligo
-cha_han_DH3_ES.response = response_seisligo
-cha_han_DH1_VA.response = response_seisvault
-cha_han_DH2_VA.response = response_seisvault
+cha_han_DJX_EY.response = response_BRS
+cha_han_DJY_EX.response = response_BRS
+cha_han_DHX_EX.response = response_seisligo
+cha_han_DHY_EX.response = response_seisligo
+cha_han_DHZ_EX.response = response_seisligo
+cha_han_DHX_EY.response = response_seisligo
+cha_han_DHY_EY.response = response_seisligo
+cha_han_DHZ_EY.response = response_seisligo
+cha_han_DHX_VA.response = response_seisvault
+cha_han_DHY_VA.response = response_seisvault
 
 # add channels to station Hanford
-sta_han.channels.append(cha_han_DJ1_ES)
-sta_han.channels.append(cha_han_DJ2_EN)
-sta_han.channels.append(cha_han_DH1_EN)
-sta_han.channels.append(cha_han_DH2_EN)
-sta_han.channels.append(cha_han_DH3_EN)
-sta_han.channels.append(cha_han_DH1_ES)
-sta_han.channels.append(cha_han_DH2_ES)
-sta_han.channels.append(cha_han_DH3_ES)
-sta_han.channels.append(cha_han_DH1_VA)
-sta_han.channels.append(cha_han_DH2_VA)
+sta_han.channels.append(cha_han_DJX_EY)
+sta_han.channels.append(cha_han_DJY_EX)
+sta_han.channels.append(cha_han_DHX_EX)
+sta_han.channels.append(cha_han_DHY_EX)
+sta_han.channels.append(cha_han_DHZ_EX)
+sta_han.channels.append(cha_han_DHX_EY)
+sta_han.channels.append(cha_han_DHY_EY)
+sta_han.channels.append(cha_han_DHZ_EY)
+sta_han.channels.append(cha_han_DHX_VA)
+sta_han.channels.append(cha_han_DHY_VA)
 
 # add response to channels LIV
-cha_liv_DJ1_IS.response = response_BRS
-cha_liv_DJ2_IW.response = response_BRS
-cha_liv_DJ1_ES.response = response_BRS
-cha_liv_DJ2_EW.response = response_BRS
-cha_liv_DH1_IS.response = response_seisligo
-cha_liv_DH2_IS.response = response_seisligo
-cha_liv_DH3_IS.response = response_seisligo
-cha_liv_DH1_IW.response = response_seisligo
-cha_liv_DH2_IW.response = response_seisligo
-cha_liv_DH3_IW.response = response_seisligo
-cha_liv_DH1_ES.response = response_seisligo
-cha_liv_DH2_ES.response = response_seisligo
-cha_liv_DH3_ES.response = response_seisligo
-cha_liv_DH1_EW.response = response_seisligo
-cha_liv_DH2_EW.response = response_seisligo
-cha_liv_DH3_EW.response = response_seisligo
+cha_liv_DJX_IY.response = response_BRS
+cha_liv_DJY_IX.response = response_BRS
+cha_liv_DJX_EY.response = response_BRS
+cha_liv_DJY_EX.response = response_BRS
+cha_liv_DHX_IY.response = response_seisligo
+cha_liv_DHY_IY.response = response_seisligo
+cha_liv_DHZ_IY.response = response_seisligo
+cha_liv_DHX_IX.response = response_seisligo
+cha_liv_DHY_IX.response = response_seisligo
+cha_liv_DHZ_IX.response = response_seisligo
+cha_liv_DHX_EY.response = response_seisligo
+cha_liv_DHY_EY.response = response_seisligo
+cha_liv_DHZ_EY.response = response_seisligo
+cha_liv_DHX_EX.response = response_seisligo
+cha_liv_DHY_EX.response = response_seisligo
+cha_liv_DHZ_EX.response = response_seisligo
 '''does this instrument exist?
-cha_liv_DH1_VA.response = response_seisvault_liv
-cha_liv_DH2_VA.response = response_seisvault_liv
-cha_liv_DH3_VA.response = response_seisvault_liv'''
+cha_liv_DHX_VA.response = response_seisvault_liv
+cha_liv_DHY_VA.response = response_seisvault_liv
+cha_liv_DHZ_VA.response = response_seisvault_liv'''
 
 # add channels to station Hanford
-sta_liv.channels.append(cha_liv_DJ1_IS)
-sta_liv.channels.append(cha_liv_DJ2_IW)
-sta_liv.channels.append(cha_liv_DJ1_ES)
-sta_liv.channels.append(cha_liv_DJ2_EW)
-sta_liv.channels.append(cha_liv_DH1_IS)
-sta_liv.channels.append(cha_liv_DH2_IS)
-sta_liv.channels.append(cha_liv_DH3_IS)
-sta_liv.channels.append(cha_liv_DH1_IW)
-sta_liv.channels.append(cha_liv_DH2_IW)
-sta_liv.channels.append(cha_liv_DH3_IW)
-sta_liv.channels.append(cha_liv_DH1_ES)
-sta_liv.channels.append(cha_liv_DH2_ES)
-sta_liv.channels.append(cha_liv_DH3_ES)
-sta_liv.channels.append(cha_liv_DH1_EW)
-sta_liv.channels.append(cha_liv_DH2_EW)
-sta_liv.channels.append(cha_liv_DH3_EW)
+sta_liv.channels.append(cha_liv_DJX_IY)
+sta_liv.channels.append(cha_liv_DJY_IX)
+sta_liv.channels.append(cha_liv_DJX_EY)
+sta_liv.channels.append(cha_liv_DJY_EX)
+sta_liv.channels.append(cha_liv_DHX_IY)
+sta_liv.channels.append(cha_liv_DHY_IY)
+sta_liv.channels.append(cha_liv_DHZ_IY)
+sta_liv.channels.append(cha_liv_DHX_IX)
+sta_liv.channels.append(cha_liv_DHY_IX)
+sta_liv.channels.append(cha_liv_DHZ_IX)
+sta_liv.channels.append(cha_liv_DHX_EY)
+sta_liv.channels.append(cha_liv_DHY_EY)
+sta_liv.channels.append(cha_liv_DHZ_EY)
+sta_liv.channels.append(cha_liv_DHX_EX)
+sta_liv.channels.append(cha_liv_DHY_EX)
+sta_liv.channels.append(cha_liv_DHZ_EX)
 '''does this instrument exist?
-sta_liv.channels.append(cha_liv_DH1_VA)
-sta_liv.channels.append(cha_liv_DH2_VA)
-sta_liv.channels.append(cha_liv_DH3_VA)'''
+sta_liv.channels.append(cha_liv_DHX_VA)
+sta_liv.channels.append(cha_liv_DHY_VA)
+sta_liv.channels.append(cha_liv_DHZ_VA)'''
 
 # add station Hanford to Network LI
 net.stations.append(sta_han)
