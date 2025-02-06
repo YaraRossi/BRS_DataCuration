@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
-import obspy
 from obspy import read, UTCDateTime
-from correlation_function import yaracorrelate2, yaracorrelate
+from analysis_codes.correlation_function import correlate2
 
 root_data_HAN = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/HAN_APR_02'
 root_data_LIV = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/LIV_APR_02'
@@ -57,7 +56,7 @@ for data1, data2, ax, label in zip([LIV_ES_DJ1, LIV_EW_DJ2,
 
     ax.axvline(0, color='grey')
 
-    lag, corr, lag_part, corr_part = yaracorrelate2(data1_proc[0].data, data2_proc[0].data, method='same', sps=data2_proc[0].stats.sampling_rate, onlypos=False)
+    lag, corr, lag_part, corr_part = correlate2(data1_proc[0].data, data2_proc[0].data, method='same', sps=data2_proc[0].stats.sampling_rate, onlypos=False)
     ax.plot(lag, corr, color=color, label=label)
     ax.legend(loc='upper right')
     ax.margins(0)

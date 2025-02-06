@@ -1,4 +1,4 @@
-from conversion_functions import param2rupt, mudpy2srf, param2M0
+from Yara_trialcodes.source_conversion_functions import param2M0
 from pyrocko import moment_tensor as pmt
 
 # Usage example

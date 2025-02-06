@@ -1,12 +1,12 @@
 import numpy
 
-def yaracorrelate(a, b, method='full'):
+def correlate(a, b, method='full'):
     a = (a - numpy.mean(a)) / (numpy.std(a) * len(a))
     b = (b - numpy.mean(b)) / (numpy.std(b))
     return numpy.correlate(a, b, method)
 
 
-def yaracorrelate2(a, b, method='full', sps=1, onlypos=False):
+def correlate2(a, b, method='full', sps=1, onlypos=False):
     a = (a - numpy.mean(a)) / (numpy.std(a) * len(a))
     b = (b - numpy.mean(b)) / (numpy.std(b))
     corr = numpy.correlate(a, b, method)
