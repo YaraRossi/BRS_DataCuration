@@ -479,11 +479,11 @@ response_BRS = nrl.get_response( # doctest: +SKIP
 
 
 response_seisvault = nrl.get_response( # doctest: +SKIP
-    sensor_keys=['Streckeisen', 'STS-1', '360 seconds'],
+    sensor_keys=['Streckeisen', 'STS-2', '360 seconds'],
     datalogger_keys=['REF TEK', 'RT 130 & 130-SMA', '1', '200'])
 
 response_seisligo = nrl.get_response( # doctest: +SKIP
-    sensor_keys=['Streckeisen', 'STS-1', '360 seconds'],
+    sensor_keys=['Streckeisen', 'STS-2', '360 seconds'],
     datalogger_keys=['REF TEK', 'RT 130 & 130-SMA', '1', '200'])
 
 
