@@ -10,7 +10,7 @@ root_savefig = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Project
 for folder in os.listdir(root_data):
     if folder in ['.DS_Store', 'Aug20.2023', 'Feb15.2025']:
         continue
-    '''if 'May28.2024' not in folder:
+    '''if 'Apr02.2024' not in folder:
        continue'''
 
     # make a folder to save all the figures
@@ -18,9 +18,9 @@ for folder in os.listdir(root_data):
     if not os.path.exists(newpath):
         os.makedirs(newpath)
 
-    LIV, HAN = True, True
+    LIV, HAN = True, False
 
-    if folder in ['July31.2024','Sept23.2024','May28.2024','July02.2024','Jan20.2025']:
+    if folder in ['July31.2024','Sept23.2024','May28.2024','July02.2024','Jan20.2025','Jan15.2022','Aug20.2023']:
         LIV = False
     if folder in ['May13.2024']:
         HAN = False
@@ -74,7 +74,7 @@ for folder in os.listdir(root_data):
         axs[0].set_title('LIV_%s_all_stations: highpass, freq=0.008' %folder)
         axs[-1].set_xlabel('Time since %s UTC [s]' %start)
         plt.savefig('%s/%s/LI_LIV_%s_all_stations.png' %(root_savefig,folder,folder), dpi=300, bbox_inches='tight')
-        #plt.show()
+        plt.show()
         #exit()
 
     if HAN:
@@ -128,5 +128,5 @@ for folder in os.listdir(root_data):
         axs[0].set_title('HAN_%s_all_stations, highpass, freq=0.008' % folder)
         axs[-1].set_xlabel('Time since %s UTC [s]' % start)
         plt.savefig('%s/%s/LI_HAN_%s_all_stations.png' % (root_savefig, folder, folder), dpi=300, bbox_inches='tight')
-        #plt.show()
+        plt.show()
 
