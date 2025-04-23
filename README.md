@@ -13,6 +13,7 @@ file only corrects for the phase error in the STS2 and converts the STS2 from nm
 changed, to also include the instrument response from the BRS.
 2. the miniseed is saved as floats and therefore the filesize is large. We need to change that to only having integers 
 which will then include an additional instrument response correction.
+3. Include correct coordinates and elevation.
 
 
 
