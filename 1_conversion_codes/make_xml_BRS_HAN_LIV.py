@@ -462,10 +462,6 @@ cha_liv_DHZ_EY.response = response_seisligo
 cha_liv_DHX_EX.response = response_seisligo
 cha_liv_DHY_EX.response = response_seisligo
 cha_liv_DHZ_EX.response = response_seisligo
-'''does this instrument exist?
-cha_liv_DHX_VA.response = response_seisvault_liv
-cha_liv_DHY_VA.response = response_seisvault_liv
-cha_liv_DHZ_VA.response = response_seisvault_liv'''
 
 # add channels to station Hanford
 sta_liv.channels.append(cha_liv_DJX_IY)
@@ -484,10 +480,6 @@ sta_liv.channels.append(cha_liv_DHZ_EY)
 sta_liv.channels.append(cha_liv_DHX_EX)
 sta_liv.channels.append(cha_liv_DHY_EX)
 sta_liv.channels.append(cha_liv_DHZ_EX)
-'''does this instrument exist?
-sta_liv.channels.append(cha_liv_DHX_VA)
-sta_liv.channels.append(cha_liv_DHY_VA)
-sta_liv.channels.append(cha_liv_DHZ_VA)'''
 
 # add station Hanford to Network LI
 net.stations.append(sta_han)
