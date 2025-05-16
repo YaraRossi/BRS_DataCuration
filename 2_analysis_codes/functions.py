@@ -33,3 +33,30 @@ def plot_traces_offset(traces, label, offset=None):
     ax.legend()
     ax.xaxis_date()
     plt.show()
+
+import numpy
+from numpy import cos, sin
+def rot_vec(phi, theta, psi, data):
+    """
+        Applies a rotation matrix to a given vector based on Euler angles.
+
+        Parameters:
+        phi (float): The roll angle (rotation about the x-axis) in radians.
+        theta (float): The pitch angle (rotation about the y-axis) in radians.
+        psi (float): The yaw angle (rotation about the z-axis) in radians.
+        data (numpy.ndarray): The input vector to be rotated. Shape: (3,).
+
+        Returns:
+        numpy.ndarray: The rotated vector after applying the rotation matrix. Shape: (3,).
+
+        Notes:
+        - The rotation matrix R is computed based on the given Euler angles (phi, theta, psi).
+        - The function returns the result of applying the rotation matrix R to the input vector data.
+        """
+    R = numpy.array([[cos(theta) * cos(psi), cos(theta) * sin(psi), -sin(theta)],
+                     [sin(phi) * sin(theta) * cos(psi) - cos(phi) * sin(psi),
+                      sin(phi) * sin(theta) * sin(psi) + cos(phi) * cos(psi), cos(theta) * sin(phi)],
+                     [cos(phi) * sin(theta) * cos(psi) + sin(phi) * sin(psi),
+                      cos(phi) * sin(theta) * sin(psi) - sin(phi) * cos(psi), cos(theta) * cos(phi)]])
+
+    return R.dot(data)
