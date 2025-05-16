@@ -15,9 +15,9 @@ HAN_EX_DHY = read('%s/%s/LI_HAN_EX_DHY.ms' % (root_data, folder))
 HAN_EX_DHZ = read('%s/%s/LI_HAN_EX_DHZ.ms' % (root_data, folder))
 
 
-HAN_EX_DHX = HAN_EX_DHX.filter('bandpass', freqmin=0.008, freqmax = 100, zerophase=True).taper(0.02)
-HAN_EX_DHY = HAN_EX_DHY.filter('bandpass', freqmin=0.008, freqmax = 100, zerophase=True).taper(0.02)
-HAN_EX_DHZ = HAN_EX_DHZ.filter('bandpass', freqmin=0.008, freqmax = 100, zerophase=True).taper(0.02)
+HAN_EX_DHX = HAN_EX_DHX.filter('bandpass', freqmin=0.08, freqmax = 100, zerophase=True).taper(0.02)
+HAN_EX_DHY = HAN_EX_DHY.filter('bandpass', freqmin=0.08, freqmax = 100, zerophase=True).taper(0.02)
+HAN_EX_DHZ = HAN_EX_DHZ.filter('bandpass', freqmin=0.08, freqmax = 100, zerophase=True).taper(0.02)
 
 response = read_inventory('%s/LIGO_HAN_LIV.xml' %root_xml)
 
@@ -72,11 +72,11 @@ axs[2,1].loglog(f_t_jz_rem, abs(P_t_jz_rem-P_t_jz), linestyle='-.', color='pink'
 
 
 axs[0,0].xaxis_date()
-axs[0,0].set_ylabel('Jx [nm/s]')
+axs[0,0].set_ylabel('Hx [nm/s]')
 axs[1,0].xaxis_date()
-axs[1,0].set_ylabel('Jy [nm/s]')
+axs[1,0].set_ylabel('Hy [nm/s]')
 axs[2,0].xaxis_date()
-axs[2,0].set_ylabel('Jz [nm/s]')
+axs[2,0].set_ylabel('Hz [nm/s]')
 axs[2,0].set_xlabel('Time [s]')
 axs[0,0].legend(loc = 'lower right')
 
@@ -85,5 +85,5 @@ axs[1,1].set_ylabel('PSD [(nm/s)^2/Hz]')
 axs[2,1].set_ylabel('PSD [(nm/s)^2/Hz]')
 axs[2,1].set_xlabel('Freq [Hz]')
 
-axs
+
 plt.show()
