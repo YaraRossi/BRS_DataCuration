@@ -60,3 +60,61 @@ def rot_vec(phi, theta, psi, data):
                       cos(phi) * sin(theta) * sin(psi) - sin(phi) * cos(psi), cos(theta) * cos(phi)]])
 
     return R.dot(data)
+
+def circular_positive_midpoint(corr_values):
+    corr_values = numpy.asarray(corr_values)
+    n = len(corr_values)
+
+    # Step 1: Double the array to handle wrap-around
+    doubled = numpy.concatenate([corr_values, corr_values])
+
+    # Step 2: Identify where values are positive
+    positive_mask = doubled > 0
+
+    # Step 3: Find contiguous positive segments
+    starts_ends = []
+    in_segment = False
+    for i, val in enumerate(positive_mask):
+        if val and not in_segment:
+            start = i
+            in_segment = True
+        elif not val and in_segment:
+            end = i
+            starts_ends.append((start, end))
+            in_segment = False
+    # Close final segment if it ends at the array end
+    if in_segment:
+        starts_ends.append((start, len(positive_mask)))
+
+    # Step 4: Find longest segment that starts within the first 360 values
+    max_len = 0
+    best_mid = None
+    for start, end in starts_ends:
+        if start < n:  # only consider segments starting in the original range
+            length = end - start
+            if length > max_len:
+                max_len = length
+                best_mid = start + length // 2
+
+    if best_mid is None:
+        return None  # or numpy.nan if no positive segments
+
+    # Step 5: Wrap back to original azimuth range
+    return best_mid % n
+
+
+def supylabel2(fig, s, **kwargs):
+    defaults = {
+        "x": 0.98,
+        "y": 0.5,
+        "horizontalalignment": "center",
+        "verticalalignment": "center",
+        "rotation": "vertical",
+        "rotation_mode": "anchor",
+        "size": plt.rcParams["figure.labelsize"],  # matplotlib >= 3.6
+        "weight": plt.rcParams["figure.labelweight"],  # matplotlib >= 3.6
+    }
+    kwargs["s"] = s
+    # kwargs = defaults | kwargs  # python >= 3.9
+    kwargs = {**defaults, **kwargs}
+    fig.text(**kwargs)
