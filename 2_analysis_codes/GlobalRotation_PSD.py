@@ -53,6 +53,12 @@ romy_N = romy.copy().select(channel='BJU')
 for trace in romy_N:
     trace.data = trace.data*1e9
 
+# RLNM
+root_RLNM = '/Users/yararossi/Documents/Work/Random_Workstuff/RLNM/'
+rlnm_df = pd.read_csv("%s/ModelForFelix_freq.csv" % root_RLNM)
+rlnm_freq = rlnm_df['frequency'].values
+rlnm_amp = numpy.sqrt(rlnm_df['rlnm_median (rad2/Hz)'].values*rlnm_freq)
+rlnm_amp_psd = rlnm_df['rlnm_median (rad2/Hz)'].values
 
 # filter data
 freqmin, freqmax = 0.008, 100
@@ -105,7 +111,11 @@ for data, label, line, color, dist in zip(data_all, label_all, line_all, color_a
         continue
 
     f_t, P_t = signal.welch(data[0].data, 1 / data[0].stats.delta, nperseg=nperseg)
-    ax.loglog(f_t, P_t, color=color, label='%s @ %s km' %(label,int(round(dist/1000,0))), linestyle=line)
+    if noise:
+        ax.loglog(f_t, P_t, color=color, label='%s' %(label), linestyle=line)
+
+    if event:
+        ax.loglog(f_t, P_t, color=color, label='%s @ %s km' %(label,int(round(dist/1000,0))), linestyle=line)
 
 ax.set_xlim(left=0.008, right=300)
 ax.set_ylim(top=1e6, bottom=1e-9)
