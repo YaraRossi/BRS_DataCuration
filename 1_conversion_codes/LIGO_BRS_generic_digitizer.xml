@@ -23,8 +23,8 @@
             <Value>1</Value>
             <Frequency>0.02</Frequency>
             <InputUnits>
-              <Name>NRAD/S</Name>
-              <Description>Nanoradians per Second</Description>
+              <Name>NRAD</Name>
+              <Description>Nanoradians</Description>
             </InputUnits>
             <OutputUnits>
               <Name>COUNTS</Name>
@@ -34,8 +34,8 @@
           <Stage number="1">
             <PolesZeros>
               <InputUnits>
-                <Name>NRAD/S</Name>
-                <Description>Nanoradians per Second</Description>
+                <Name>NRAD</Name>
+                <Description>Nanoradians</Description>
               </InputUnits>
               <OutputUnits>
                 <Name>V</Name>
