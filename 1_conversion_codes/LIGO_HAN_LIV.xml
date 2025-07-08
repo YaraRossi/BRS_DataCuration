@@ -3,7 +3,7 @@
   <Source>ObsPy-Tutorial</Source>
   <Module>ObsPy 1.4.1</Module>
   <ModuleURI>https://www.obspy.org</ModuleURI>
-  <Created>2025-07-08T10:07:54.924160Z</Created>
+  <Created>2025-07-08T14:14:43.841514Z</Created>
   <Network code="LI" startDate="2016-01-02T00:00:00.000000Z">
     <Description>All stations from the LIGO sites in the USA, i.e. Hanford and Livingston. Hanford houses two BRSsensors collocated with STS2 at the external ends of the lIGO arms, plus a single STS2 at the internal corner. Livingston houses 4 BRS sensors with collocated STS-2, at both ends (external &amp;internal) of each LIGO arm.[elevation, HAN, LIV] Althouse, W.E., Hand, S.D., Jones, L.K., Lazzarini, A., Weiss, R.. 2001, Precision alignment of the LIGO 4km arms using the dual-frequency differential global positioning. Reviewof scientific instruments.[lat, lon of HAN] estimated using Shoshana's Phone in 2025[azimuth, HAN, LIV] from Shoshana, where exactly???</Description>
     <Station code="HAN">
@@ -27,8 +27,8 @@
             <Value>1.0</Value>
             <Frequency>0.02</Frequency>
             <InputUnits>
-              <Name>NRAD/S</Name>
-              <Description>Nanoradians per Second</Description>
+              <Name>NRAD</Name>
+              <Description>Nanoradians</Description>
             </InputUnits>
             <OutputUnits>
               <Name>COUNTS</Name>
@@ -38,8 +38,8 @@
           <Stage number="1">
             <PolesZeros>
               <InputUnits>
-                <Name>NRAD/S</Name>
-                <Description>Nanoradians per Second</Description>
+                <Name>NRAD</Name>
+                <Description>Nanoradians</Description>
               </InputUnits>
               <OutputUnits>
                 <Name>V</Name>
@@ -101,8 +101,8 @@
             <Value>1.0</Value>
             <Frequency>0.02</Frequency>
             <InputUnits>
-              <Name>NRAD/S</Name>
-              <Description>Nanoradians per Second</Description>
+              <Name>NRAD</Name>
+              <Description>Nanoradians</Description>
             </InputUnits>
             <OutputUnits>
               <Name>COUNTS</Name>
@@ -112,8 +112,8 @@
           <Stage number="1">
             <PolesZeros>
               <InputUnits>
-                <Name>NRAD/S</Name>
-                <Description>Nanoradians per Second</Description>
+                <Name>NRAD</Name>
+                <Description>Nanoradians</Description>
               </InputUnits>
               <OutputUnits>
                 <Name>V</Name>
@@ -1312,8 +1312,8 @@
             <Value>1.0</Value>
             <Frequency>0.02</Frequency>
             <InputUnits>
-              <Name>NRAD/S</Name>
-              <Description>Nanoradians per Second</Description>
+              <Name>NRAD</Name>
+              <Description>Nanoradians</Description>
             </InputUnits>
             <OutputUnits>
               <Name>COUNTS</Name>
@@ -1323,8 +1323,8 @@
           <Stage number="1">
             <PolesZeros>
               <InputUnits>
-                <Name>NRAD/S</Name>
-                <Description>Nanoradians per Second</Description>
+                <Name>NRAD</Name>
+                <Description>Nanoradians</Description>
               </InputUnits>
               <OutputUnits>
                 <Name>V</Name>
@@ -1386,8 +1386,8 @@
             <Value>1.0</Value>
             <Frequency>0.02</Frequency>
             <InputUnits>
-              <Name>NRAD/S</Name>
-              <Description>Nanoradians per Second</Description>
+              <Name>NRAD</Name>
+              <Description>Nanoradians</Description>
             </InputUnits>
             <OutputUnits>
               <Name>COUNTS</Name>
@@ -1397,8 +1397,8 @@
           <Stage number="1">
             <PolesZeros>
               <InputUnits>
-                <Name>NRAD/S</Name>
-                <Description>Nanoradians per Second</Description>
+                <Name>NRAD</Name>
+                <Description>Nanoradians</Description>
               </InputUnits>
               <OutputUnits>
                 <Name>V</Name>
@@ -1460,8 +1460,8 @@
             <Value>1.0</Value>
             <Frequency>0.02</Frequency>
             <InputUnits>
-              <Name>NRAD/S</Name>
-              <Description>Nanoradians per Second</Description>
+              <Name>NRAD</Name>
+              <Description>Nanoradians</Description>
             </InputUnits>
             <OutputUnits>
               <Name>COUNTS</Name>
@@ -1471,8 +1471,8 @@
           <Stage number="1">
             <PolesZeros>
               <InputUnits>
-                <Name>NRAD/S</Name>
-                <Description>Nanoradians per Second</Description>
+                <Name>NRAD</Name>
+                <Description>Nanoradians</Description>
               </InputUnits>
               <OutputUnits>
                 <Name>V</Name>
@@ -1534,8 +1534,8 @@
             <Value>1.0</Value>
             <Frequency>0.02</Frequency>
             <InputUnits>
-              <Name>NRAD/S</Name>
-              <Description>Nanoradians per Second</Description>
+              <Name>NRAD</Name>
+              <Description>Nanoradians</Description>
             </InputUnits>
             <OutputUnits>
               <Name>COUNTS</Name>
@@ -1545,8 +1545,8 @@
           <Stage number="1">
             <PolesZeros>
               <InputUnits>
-                <Name>NRAD/S</Name>
-                <Description>Nanoradians per Second</Description>
+                <Name>NRAD</Name>
+                <Description>Nanoradians</Description>
               </InputUnits>
               <OutputUnits>
                 <Name>V</Name>
