@@ -26,9 +26,11 @@ net = Network(
                 "sensors collocated with STS2 at the external ends of the lIGO arms, plus a single STS2 at the "+
                 "internal corner. Livingston houses 4 BRS sensors with collocated STS-2, at both ends (external &" +
                 "internal) of each LIGO arm."+
-                "[elevation] Althouse, W.E., Hand, S.D., Jones, L.K., Lazzarini, A., Weiss, R.. 2001, Precision " +
+                "[elevation, HAN, LIV] Althouse, W.E., Hand, S.D., Jones, L.K., Lazzarini, A., Weiss, R.. 2001, Precision " +
                 "alignment of the LIGO 4km arms using the dual-frequency differential global positioning. Review" +
-                "of scientific instruments.",
+                "of scientific instruments." +
+                "[lat, lon of HAN] estimated using Shoshana's Phone in 2025" +
+                "[azimuth, HAN, LIV] from Shoshana, where exactly???",
     # Start-and end dates are optional.
     start_date=obspy.UTCDateTime(2016, 1, 2))
 
@@ -53,8 +55,8 @@ cha_han_DJX_EY = Channel(
     # This is the location code according to the SEED standard.
     location_code="EY",
     # Note that these coordinates can differ from the station coordinates.
-    latitude=46.433908,
-    longitude=-119.44963,
+    latitude=46.43388683, # Shoshana Phone, error 6.1m
+    longitude=-119.449623, # Shoshana Phone, error= 6.1m
     elevation=142.555, # done
     depth=0.0, # done
     azimuth=324.0007, # done
@@ -63,8 +65,8 @@ cha_han_DJX_EY = Channel(
 cha_han_DJY_EX = Channel(
     code="DJY",
     location_code="EX",
-    latitude=46.484156,
-    longitude=-119.438288,
+    latitude=46.48433894, # Shoshana Phone, error= 2.97m
+    longitude=-119.438079, # Shoshana Phone, error= 2.97m
     elevation=142.555, # done
     depth=0.0, # done
     azimuth=234.0007, # done
@@ -78,8 +80,8 @@ cha_han_DJY_EX = Channel(
 cha_han_DHX_EX = Channel(
     code="DHX",
     location_code="EX",
-    latitude=46.484156,
-    longitude=-119.438288,
+    latitude=46.48433894, # Shoshana Phone, error= 2.97m
+    longitude=-119.438079, # Shoshana Phone, error= 2.97m
     elevation=142.555, # done
     depth=0.0, # done
     azimuth=324.0007, # done
@@ -88,8 +90,8 @@ cha_han_DHX_EX = Channel(
 cha_han_DHY_EX = Channel(
     code="DHY",
     location_code="EX",
-    latitude=46.484156,
-    longitude=-119.438288,
+    latitude=46.48433894, # Shoshana Phone, error= 2.97m
+    longitude=-119.438079, # Shoshana Phone, error= 2.97m
     elevation=142.555, # done
     depth=0.0, # done
     azimuth=234.0007, # done
@@ -98,8 +100,8 @@ cha_han_DHY_EX = Channel(
 cha_han_DHZ_EX = Channel(
     code="DHZ",
     location_code="EX",
-    latitude=46.484156,
-    longitude=-119.438288,
+    latitude=46.48433894, # Shoshana Phone, error= 2.97m
+    longitude=-119.438079, # Shoshana Phone, error= 2.97m
     elevation=142.555, # done
     depth=0.0, # done
     azimuth=0, # done
@@ -110,8 +112,8 @@ cha_han_DHZ_EX = Channel(
 cha_han_DHX_EY = Channel(
     code="DHX",
     location_code="EY",
-    latitude=46.433908,
-    longitude=-119.44963,
+    latitude=46.43388683, # Shoshana Phone, error 6.1m
+    longitude=-119.449623, # Shoshana Phone, error= 6.1m
     elevation=142.555, # done
     depth=0.0, # done
     azimuth=324.0007, # done
@@ -120,8 +122,8 @@ cha_han_DHX_EY = Channel(
 cha_han_DHY_EY = Channel(
     code="DHY",
     location_code="EY",
-    latitude=46.433908,
-    longitude=-119.44963,
+    latitude=46.43388683, # Shoshana Phone, error 6.1m
+    longitude=-119.449623, # Shoshana Phone, error= 6.1m
     elevation=142.555, # done
     depth=0.0, # done
     azimuth=234.0007, # done
@@ -130,8 +132,8 @@ cha_han_DHY_EY = Channel(
 cha_han_DHZ_EY = Channel(
     code="DHZ",
     location_code="EY",
-    latitude=46.433908,
-    longitude=-119.44963,
+    latitude=46.43388683, # Shoshana Phone, error 6.1m
+    longitude=-119.449623, # Shoshana Phone, error= 6.1m
     elevation=142.555, # done
     depth=0.0, # done
     azimuth=0, # done
@@ -148,8 +150,8 @@ cha_han_DHX_VA = Channel(
     longitude=-119.417683,
     elevation=142.555, # done
     depth=0,
-    azimuth=323.7681,
-    dip=0,
+    azimuth=324.0007,  # done
+    dip=0,  # done
     sample_rate=256)
 cha_han_DHY_VA = Channel(
     code="DHY",
@@ -158,8 +160,8 @@ cha_han_DHY_VA = Channel(
     longitude=-119.417683,
     elevation=142.555, # done
     depth=0,
-    azimuth=233.6271,
-    dip=0,
+    azimuth=234.0007,  # done
+    dip=0,  # done
     sample_rate=256)
 
 ########################################################################################################################

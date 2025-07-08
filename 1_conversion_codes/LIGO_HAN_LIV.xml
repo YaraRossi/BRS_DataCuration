@@ -3,9 +3,9 @@
   <Source>ObsPy-Tutorial</Source>
   <Module>ObsPy 1.4.1</Module>
   <ModuleURI>https://www.obspy.org</ModuleURI>
-  <Created>2025-07-08T09:36:26.608240Z</Created>
+  <Created>2025-07-08T10:07:54.924160Z</Created>
   <Network code="LI" startDate="2016-01-02T00:00:00.000000Z">
-    <Description>All stations from the LIGO sites in the USA, i.e. Hanford and Livingston. Hanford houses two BRSsensors collocated with STS2 at the external ends of the lIGO arms, plus a single STS2 at the internal corner. Livingston houses 4 BRS sensors with collocated STS-2, at both ends (external &amp;internal) of each LIGO arm.[elevation] Althouse, W.E., Hand, S.D., Jones, L.K., Lazzarini, A., Weiss, R.. 2001, Precision alignment of the LIGO 4km arms using the dual-frequency differential global positioning. Reviewof scientific instruments.</Description>
+    <Description>All stations from the LIGO sites in the USA, i.e. Hanford and Livingston. Hanford houses two BRSsensors collocated with STS2 at the external ends of the lIGO arms, plus a single STS2 at the internal corner. Livingston houses 4 BRS sensors with collocated STS-2, at both ends (external &amp;internal) of each LIGO arm.[elevation, HAN, LIV] Althouse, W.E., Hand, S.D., Jones, L.K., Lazzarini, A., Weiss, R.. 2001, Precision alignment of the LIGO 4km arms using the dual-frequency differential global positioning. Reviewof scientific instruments.[lat, lon of HAN] estimated using Shoshana's Phone in 2025[azimuth, HAN, LIV] from Shoshana, where exactly???</Description>
     <Station code="HAN">
       <Latitude unit="DEGREES">46.4551</Latitude>
       <Longitude unit="DEGREES">-119.40758</Longitude>
@@ -15,8 +15,8 @@
       </Site>
       <CreationDate>2016-01-02T00:00:00.000000Z</CreationDate>
       <Channel code="DJX" locationCode="EY">
-        <Latitude unit="DEGREES">46.433908</Latitude>
-        <Longitude unit="DEGREES">-119.44963</Longitude>
+        <Latitude unit="DEGREES">46.43388683</Latitude>
+        <Longitude unit="DEGREES">-119.449623</Longitude>
         <Elevation unit="METERS">142.555</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">324.0007</Azimuth>
@@ -89,8 +89,8 @@
         </Response>
       </Channel>
       <Channel code="DJY" locationCode="EX">
-        <Latitude unit="DEGREES">46.484156</Latitude>
-        <Longitude unit="DEGREES">-119.438288</Longitude>
+        <Latitude unit="DEGREES">46.48433894</Latitude>
+        <Longitude unit="DEGREES">-119.438079</Longitude>
         <Elevation unit="METERS">142.555</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">234.0007</Azimuth>
@@ -163,8 +163,8 @@
         </Response>
       </Channel>
       <Channel code="DHX" locationCode="EX">
-        <Latitude unit="DEGREES">46.484156</Latitude>
-        <Longitude unit="DEGREES">-119.438288</Longitude>
+        <Latitude unit="DEGREES">46.48433894</Latitude>
+        <Longitude unit="DEGREES">-119.438079</Longitude>
         <Elevation unit="METERS">142.555</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">324.0007</Azimuth>
@@ -304,8 +304,8 @@
         </Response>
       </Channel>
       <Channel code="DHY" locationCode="EX">
-        <Latitude unit="DEGREES">46.484156</Latitude>
-        <Longitude unit="DEGREES">-119.438288</Longitude>
+        <Latitude unit="DEGREES">46.48433894</Latitude>
+        <Longitude unit="DEGREES">-119.438079</Longitude>
         <Elevation unit="METERS">142.555</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">234.0007</Azimuth>
@@ -445,8 +445,8 @@
         </Response>
       </Channel>
       <Channel code="DHZ" locationCode="EX">
-        <Latitude unit="DEGREES">46.484156</Latitude>
-        <Longitude unit="DEGREES">-119.438288</Longitude>
+        <Latitude unit="DEGREES">46.48433894</Latitude>
+        <Longitude unit="DEGREES">-119.438079</Longitude>
         <Elevation unit="METERS">142.555</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
@@ -586,8 +586,8 @@
         </Response>
       </Channel>
       <Channel code="DHX" locationCode="EY">
-        <Latitude unit="DEGREES">46.433908</Latitude>
-        <Longitude unit="DEGREES">-119.44963</Longitude>
+        <Latitude unit="DEGREES">46.43388683</Latitude>
+        <Longitude unit="DEGREES">-119.449623</Longitude>
         <Elevation unit="METERS">142.555</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">324.0007</Azimuth>
@@ -727,8 +727,8 @@
         </Response>
       </Channel>
       <Channel code="DHY" locationCode="EY">
-        <Latitude unit="DEGREES">46.433908</Latitude>
-        <Longitude unit="DEGREES">-119.44963</Longitude>
+        <Latitude unit="DEGREES">46.43388683</Latitude>
+        <Longitude unit="DEGREES">-119.449623</Longitude>
         <Elevation unit="METERS">142.555</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">234.0007</Azimuth>
@@ -868,8 +868,8 @@
         </Response>
       </Channel>
       <Channel code="DHZ" locationCode="EY">
-        <Latitude unit="DEGREES">46.433908</Latitude>
-        <Longitude unit="DEGREES">-119.44963</Longitude>
+        <Latitude unit="DEGREES">46.43388683</Latitude>
+        <Longitude unit="DEGREES">-119.449623</Longitude>
         <Elevation unit="METERS">142.555</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
@@ -1013,7 +1013,7 @@
         <Longitude unit="DEGREES">-119.417683</Longitude>
         <Elevation unit="METERS">142.555</Elevation>
         <Depth unit="METERS">0.0</Depth>
-        <Azimuth unit="DEGREES">323.7681</Azimuth>
+        <Azimuth unit="DEGREES">324.0007</Azimuth>
         <Dip unit="DEGREES">0.0</Dip>
         <SampleRate>256.0</SampleRate>
         <Response>
@@ -1154,7 +1154,7 @@
         <Longitude unit="DEGREES">-119.417683</Longitude>
         <Elevation unit="METERS">142.555</Elevation>
         <Depth unit="METERS">0.0</Depth>
-        <Azimuth unit="DEGREES">233.6271</Azimuth>
+        <Azimuth unit="DEGREES">234.0007</Azimuth>
         <Dip unit="DEGREES">0.0</Dip>
         <SampleRate>256.0</SampleRate>
         <Response>
