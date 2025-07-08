@@ -502,3 +502,4 @@ inv.networks.append(net)
 # Note that it is also possible to serialize to any of the other inventory
 # output formats ObsPy supports.
 inv.write("%s/LIGO_HAN_LIV.xml" %root_xml, format="stationxml", validate=True)
+inv.write("LIGO_HAN_LIV.xml", format="stationxml", validate=True)
