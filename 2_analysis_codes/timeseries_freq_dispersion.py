@@ -19,7 +19,7 @@ path = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Co
 for folder in os.listdir(root_data):
     if folder in ['.DS_Store', 'Aug20.2023', 'Feb15.2025']:
         continue
-    '''if 'Apr02.2024' not in folder:
+    '''if 'May28.2024' not in folder:
        continue'''
 
 
@@ -47,10 +47,10 @@ for folder in os.listdir(root_data):
         starttime = UTCDateTime(str(data_event['eventstart'].iloc[0]))
         endtime = UTCDateTime(str(data_event['eventend'].iloc[0]))
         magnitude = data_event[' mag'].values.astype(float)
-        print(magnitude)
-
         station_latitude = 30.562775410180993
         station_longitude = -90.77469251757329
+        dist_liv = gps2dist_azimuth(source_latitude, source_longitude, station_latitude, station_longitude)[0] / 1000
+        print(magnitude)
 
         # theoretical backazimuth and distance
         baz = gps2dist_azimuth(source_latitude, source_longitude, station_latitude, station_longitude)
@@ -95,21 +95,21 @@ for folder in os.listdir(root_data):
         LIV_IX_DHZ = read('%s/%s/LI_LIV_IX_DHZ.ms' %(root_data,folder))
 
         if magnitude > 5:
-            #freqmin = [0.008,0.02, 0.04, 0.06, 0.08, 0.008]
-            #freqmax = [0.02, 0.04, 0.06, 0.08, 0.1,  49]
-            freqmin = [0.008,0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.008]
-            freqmax = [0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1,  49]
+            freqmin = [0.008,0.02, 0.04, 0.06, 0.08, 0.008]
+            freqmax = [0.02, 0.04, 0.06, 0.08, 0.1,  49]
+            #freqmin = [0.008,0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.008]
+            #freqmax = [0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1,  49]
         elif magnitude < 5:
             freqmin = [0.1, 0.3, 0.5, 0.7, 0.9, 1.1, 2,  5, 15, 25,35,0.008]
             freqmax = [0.3, 0.5, 0.7, 0.9, 1.1,   2, 5, 10, 20, 30,40,49]
 
-        fig_Ey, axs_Ey = plt.subplots(len(freqmin), 1, figsize=(11,8), sharex=True)
+        fig_Ey, axs_Ey = plt.subplots(len(freqmin), 1, figsize=(8.5,len(freqmin)*0.7), sharex=True)
         plt.subplots_adjust(hspace=0, top=0.95, bottom=0.05)
-        fig_Ex, axs_Ex = plt.subplots(len(freqmin), 1, figsize=(11,8), sharex=True)
+        fig_Ex, axs_Ex = plt.subplots(len(freqmin), 1, figsize=(8.5,len(freqmin)*0.7), sharex=True)
         plt.subplots_adjust(hspace=0, top=0.95, bottom=0.05)
-        fig_Iy, axs_Iy = plt.subplots(len(freqmin), 1, figsize=(11,8), sharex=True)
+        fig_Iy, axs_Iy = plt.subplots(len(freqmin), 1, figsize=(8.5,len(freqmin)*0.7), sharex=True)
         plt.subplots_adjust(hspace=0, top=0.95, bottom=0.05)
-        fig_Ix, axs_Ix = plt.subplots(len(freqmin), 1, figsize=(11,8), sharex=True)
+        fig_Ix, axs_Ix = plt.subplots(len(freqmin), 1, figsize=(8.5,len(freqmin)*0.7), sharex=True)
         plt.subplots_adjust(hspace=0, top=0.95, bottom=0.05)
 
         '''for axs in [axs_Ey, axs_Ex, axs_Iy, axs_Ix]:
@@ -151,15 +151,15 @@ for folder in os.listdir(root_data):
         for ax, title, scale in zip([axs_Ix.flat, axs_Iy.flat, axs_Ex.flat, axs_Ey.flat],
                                     ['IT', 'IR', 'ET', 'ER'],
                                     [scale_R,scale_R,scale_R,scale_R]):
-            #ax[0].set_title(f'LIV_{folder}_{title}, M{round(float(magnitude[0]),1)}, baz = {round(baz[2],2)}°, acc_Z vs rot_H*{scale}')
-            ax[0].set_title(f'LIV @ {title} | {formatted_time_new} | M{round(float(magnitude[0]),1)} | BAz = {round(baz[2],2)}° | acc_Z vs rot_H*{scale}')
+            #ax[0].set_title(f'LIV_{folder}_{title}, M{round(float(magnitude[0]),1)}, baz = {round(baz[2],2)}°, $vel_Z$ vs $rot_H$*{scale}')
+            ax[0].set_title(f'LIV @ {title} | {formatted_time_new} | M{round(float(magnitude[0]),1)} | dist = {int(dist_liv)} km | BAz = {round(baz[2],2)}° | $vel_Z$ vs $rot_H$*{scale}')
 
             ax[-1].set_xlabel(f'Time [s]')
         for fig, name in zip([fig_Ey, fig_Ex, fig_Iy, fig_Ix],['ER', 'ET', 'IR', 'IT']):
             #fig.savefig(f'{root_savefig}/{folder}/LI_LIV_{folder}_{name}_dispersion_all_stations.png', dpi=150, bbox_inches='tight')
-            fig.supylabel(f'Velocity [$\mu$m]')
-            supylabel2(fig, f'Angle [nrad]', color='red')
-            fig.savefig('%s/LI_LIV_%s_%s_dispersion_all_stations.png' %(root_savefig,folder,name))#, dpi=10,bbox_inches='tight')
+            fig.supylabel(f'velocity [$\mu$m/s]', ha='right', x=0.07)
+            supylabel2(fig, f'angle [nrad]', color='red')
+            fig.savefig('%s/LI_LIV_%s_%s_dispersion_all_stations.png' %(root_savefig,folder,name), dpi=300,bbox_inches='tight')
         #plt.show()
         #plt.close()
         #exit()
@@ -169,7 +169,7 @@ for folder in os.listdir(root_data):
         data = pd.read_csv(events)
         # get Backazimuth to rotate data:
         # azimuth of station:
-        channel = response.select(network='LI', station='LIV', location='EX', channel='DJY')[0][0][0]
+        channel = response.select(network='LI', station='HAN', location='EX', channel='DJY')[0][0][0]
         azimuth = channel.azimuth
         # event location from event info
         data_event =  data[data['location'] == folder]
@@ -179,14 +179,16 @@ for folder in os.listdir(root_data):
         endtime = UTCDateTime(str(data_event['eventend'].iloc[0]))
         magnitude = data_event[' mag'].values.astype(float)
 
-        station_latitude = 47.5
-        station_longitude = -120.7
 
         # theoretical backazimuth and distance
         # here I don't rotate, as they are too far away for the events.
+        station_latitude = 46.455 #47.5
+        station_longitude = -119.407 #-120.7
+        dist_han = gps2dist_azimuth(source_latitude, source_longitude, station_latitude, station_longitude)[0] / 1000
         baz = gps2dist_azimuth(source_latitude, source_longitude, station_latitude, station_longitude)
         baz_rot = 0 #(azimuth - baz[2]) / 180 * numpy.pi
         scale_R = -1
+        scale_T = 1e6
 
         # BRS
         HAN_EY_DJX = read('%s/%s/LI_HAN_EY_DJX.ms' % (root_data, folder))
@@ -208,22 +210,27 @@ for folder in os.listdir(root_data):
         HAN_EX_DHZ = read('%s/%s/LI_HAN_EX_DHZ.ms' % (root_data, folder))
 
 
-        fig_Ey, axs_Ey = plt.subplots(12, 1, figsize=(11, 8), sharex=True)
+        if magnitude > 5:
+            freqmin = [0.008,0.02, 0.04, 0.06, 0.08, 0.008]
+            freqmax = [0.02, 0.04, 0.06, 0.08, 0.1,  49]
+            #freqmin = [0.008, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.008]
+            #freqmax = [0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1, 49]
+        elif magnitude < 2:
+            freqmin = [0.3, 0.8]
+            freqmax = [0.8, 30]
+        elif magnitude < 5:
+            freqmin = [0.1, 0.8, 1.5, 2.0, 2.5, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10, 20, 30, 0.008]
+            freqmax = [0.8, 1.5, 2.0, 2.5, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10, 20, 30, 49, 49]
+
+        fig_Ey, axs_Ey = plt.subplots(len(freqmin), 1, figsize=(8.5, len(freqmin)*0.7), sharex=True)
         plt.subplots_adjust(hspace=0, top=0.95, bottom=0.05)
-        fig_Ex, axs_Ex = plt.subplots(12, 1, figsize=(11, 8), sharex=True)
+        fig_Ex, axs_Ex = plt.subplots(len(freqmin), 1, figsize=(8.5, len(freqmin)*0.7), sharex=True)
         plt.subplots_adjust(hspace=0, top=0.95, bottom=0.05)
 
-        for axs in [axs_Ey, axs_Ex]:
+        '''for axs in [axs_Ey, axs_Ex]:
             for ax in axs:
                 ax.tick_params(labelleft=False, labelright=False)
-                ax.tick_params(left=False, right=False)
-
-        if magnitude > 5:
-            freqmin = [0.008, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.008]
-            freqmax = [0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1, 49]
-        elif magnitude < 5:
-            freqmin = [0.1, 0.3, 0.5, 0.7, 0.9, 1.1, 2, 5, 15, 25, 35, 0.008]
-            freqmax = [0.3, 0.5, 0.7, 0.9, 1.1, 2, 5, 10, 20, 30, 40, 49]
+                ax.tick_params(left=False, right=False)'''
 
         for freqmin, freqmax, ax_ex, ax_ey in zip(freqmin, freqmax, axs_Ex.flat, axs_Ey.flat):
 
@@ -234,7 +241,7 @@ for folder in os.listdir(root_data):
                 data_t = data_t.slice(starttime, endtime)
                 data_t = data_t.remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60,plot=False)
                 data_proc = data_t.copy().detrend('simple').taper(0.1).filter('bandpass', freqmin=freqmin,freqmax=freqmax, zerophase=True)
-                ax.plot(data_proc[0].times(), data_proc[0].data, color='k', label=label_t)
+                ax.plot(data_proc[0].times(), data_proc[0].data*scale_T, color='k', label=label_t)
 
             for data_r, label_r, ax in zip([HAN_EX_DJY, HAN_EY_DJX],
                                            ['HAN_EX_DJY', 'HAN_EY_DJX'],
@@ -244,7 +251,9 @@ for folder in os.listdir(root_data):
                 data_r = data_r.slice(starttime, endtime)
                 data_r = data_r.remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60,plot=False)
                 data_proc = data_r.copy().detrend('simple').taper(0.1).filter('bandpass', freqmin=freqmin,freqmax=freqmax, zerophase=True)
-                ax_twin.plot(data_proc[0].times(), data_proc[0].data, color='red', label=label_r)
+                ax_twin.plot(data_proc[0].times(), data_proc[0].data*scale_R, color='red', label=label_r)
+                ax_twin.yaxis.label.set_color('red')
+                ax_twin.tick_params(axis='y', colors='red')
 
                 # ax.legend(loc='upper right')
                 ax.margins(0)
@@ -253,15 +262,15 @@ for folder in os.listdir(root_data):
             start = data_proc[0].stats.starttime
         formatted_time_new = start.strftime('%Y-%m-%dT%H:%M:%S')
         for ax, title, scale in zip([axs_Ex.flat, axs_Ey.flat],
-                                     ['Ex', 'Ey'],
+                                     ['EX', 'EY'],
                                      [scale_R,scale_R,scale_R,scale_R]):
-            #ax[0].set_title(f'HAN_{folder}_{title}, M{round(float(magnitude[0]),1)}, baz = {round(baz[2],2)}°, acc_Z vs rot_H*{scale}')
-            ax[0].set_title(f'HAN @ {title} | {formatted_time_new} | M{round(float(magnitude[0]),1)} | BAz = {round(baz[2],2)}° | acc_Z vs rot_H*{scale}')
+            #ax[0].set_title(f'HAN_{folder}_{title}, M{round(float(magnitude[0]),1)}, baz = {round(baz[2],2)}°, $vel_Z$ vs $rot_H$*{scale}')
+            ax[0].set_title(f'HAN @ {title} | {formatted_time_new} | M{round(float(magnitude[0]),1)} | dist={int(dist_han)} km | BAz = {round(baz[2],2)}° | $vel_Z$ vs $rot_H \cdot${scale}')
             ax[-1].set_xlabel(f'Time [s]')
-        for fig, name in zip([fig_Ey, fig_Ex], ['Ey', 'Ex']):
+        for fig, name in zip([fig_Ey, fig_Ex], ['EY', 'EX']):
             # fig.savefig(f'{root_savefig}/{folder}/LI_HAN_{folder}_{name}_dispersion_all_stations.png', dpi=150, bbox_inches='tight')
-            fig.supylabel(f'Velocity [$\mu$m]')
-            supylabel2(fig, f'Angle [nrad]', color='red')
-            fig.savefig('%s/LI_HAN_%s_%s_dispersion_all_stations.png' % (root_savefig, folder, name))  # , dpi=10,bbox_inches='tight')
+            fig.supylabel(f'velocity [$\mu$m/s]', ha='right', x=0.07)
+            supylabel2(fig, f'angle [nrad]', color='red')
+            fig.savefig('%s/LI_HAN_%s_%s_dispersion_all_stations.png' % (root_savefig, folder, name), dpi=300,bbox_inches='tight')
         #plt.show()
         # exit()
