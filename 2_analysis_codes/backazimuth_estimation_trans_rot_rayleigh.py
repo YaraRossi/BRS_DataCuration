@@ -6,7 +6,7 @@ from obspy import read, UTCDateTime, read_inventory
 from obspy.signal.cross_correlation import correlate
 from obspy.signal.rotate import rotate_ne_rt
 from obspy.geodetics.base import gps2dist_azimuth
-from functions import rot_vec
+from functions import rot_vec, circular_positive_midpoint
 import pandas as pd
 
 
@@ -20,10 +20,11 @@ events = pd.read_csv(f'{path}/event_times_LIV.txt')
 
 # import data:
 # BRS
-folder = 'Apr02.2024' #'Sept15.2024'
+folder = 'Jun28.2024' #'Sept15.2024'
 data_event = events[events['location'] == folder]
 starttime = UTCDateTime(str(data_event['eventstart'].iloc[0]))
 endtime = UTCDateTime(str(data_event['eventend'].iloc[0]))
+magnitude = data_event[' mag'].values.astype(float)
 
 # theoretical baz
 source_latitude = data_event[' latitude'].values.astype(float)
@@ -31,6 +32,7 @@ source_longitude = data_event[' longitude'].values.astype(float)
 station_latitude = 30.562775410180993
 station_longitude = -90.77469251757329
 baz = gps2dist_azimuth(source_latitude, source_longitude, station_latitude, station_longitude)
+dist_liv = baz[0]/1000
 scale_R = -1 # because it's rayleigh waves
 
 # download data
@@ -49,12 +51,12 @@ LIV_I_E_orig[0].data = LIV_I_DJ_baz[0, :]
 LIV_I_N_orig[0].data = LIV_I_DJ_baz[1, :]
 
 # remove response, slice, detrend, filter
-for freqmin, freqmax in zip([0.008, 0.009, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08,0.09,0.008, 0.02],
-                            [0.009,  0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1, 49, 0.2]):
+for freqmin, freqmax in zip([0.008, 0.04, 0.06,0.08,0.1, 0.3, 0.5, 0.7, 0.9, 0.008],
+                            [0.06, 0.06, 0.08, 0.1, 0.3, 0.5, 0.7, 0.9, 1.0, 10]):
     #freqmin, freqmax = 0.04, 0.06
-    LIV_I_E = LIV_I_E_orig.copy().remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False).slice(starttime, endtime).resample(20).detrend('simple').taper(0.02).filter('bandpass', freqmin=freqmin, freqmax=freqmax,zerophase=True)
-    LIV_I_N = LIV_I_N_orig.copy().remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False).slice(starttime, endtime).resample(20).detrend('simple').taper(0.02).filter('bandpass', freqmin=freqmin, freqmax=freqmax,zerophase=True)
-    LIV_IY_DHZ = LIV_IY_DHZ_orig.copy().remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False).slice(starttime, endtime).resample(20).detrend('simple').taper(0.02).filter('bandpass', freqmin=freqmin, freqmax=freqmax,zerophase=True)
+    LIV_I_E = LIV_I_E_orig.copy().remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False).slice(starttime, endtime).resample(20).detrend('simple').taper(0.02).filter('bandpass', freqmin=freqmin, freqmax=freqmax,zerophase=True).taper(0.05)
+    LIV_I_N = LIV_I_N_orig.copy().remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False).slice(starttime, endtime).resample(20).detrend('simple').taper(0.02).filter('bandpass', freqmin=freqmin, freqmax=freqmax,zerophase=True).taper(0.05)
+    LIV_IY_DHZ = LIV_IY_DHZ_orig.copy().remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False).slice(starttime, endtime).resample(20).detrend('simple').taper(0.02).filter('bandpass', freqmin=freqmin, freqmax=freqmax,zerophase=True).taper(0.05)
 
 
 
@@ -84,16 +86,28 @@ for freqmin, freqmax in zip([0.008, 0.009, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0
         maxcor_r = backas[corrbaz[:, l1].argmax()]
         maxcorr.append(maxcor_r)
     maxcorr = numpy.asarray(maxcorr)
+
+    # getting middle of positive values
+    midpoints = []
+    corrbaz_numpy = numpy.array(corrbaz)
+    for v in corrbaz_numpy.T:
+        mid_azimuth = circular_positive_midpoint(v)
+        azimuth_midpoint = backas[mid_azimuth]
+        midpoints.append(azimuth_midpoint)
+
     X, Y = numpy.meshgrid(numpy.arange(0, sec * num_windows, sec), backas)
 
     # plotting data:
     time = numpy.linspace(0, len(LIV_I_N[0].data)/sampling_rate,len(LIV_I_N[0].data)) ## Time-array
     # vertical velocity
-    fig = plt.figure(figsize=(12, 8))
+    fig = plt.figure(figsize=(8.5, 6))
+    plt.subplots_adjust(hspace=0)
     plt.subplot2grid((3, 30), (0, 0), colspan=29)
-    plt.plot(time, LIV_IY_DHZ[0].data, 'k', label='vertical velocity')
+    formatted_time_new = starttime.strftime('%Y-%m-%dT%H:%M:%S')
+    plt.title(f'LIV @ IX,IY | {formatted_time_new} | M{round(float(magnitude[0]), 1)} | dist = {int(dist_liv)} km | f={freqmin}-{freqmax} Hz | CC len={sec}s')
+    plt.plot(time, LIV_IY_DHZ[0].data*1e6, 'k', label='vertical velocity')
     plt.xlim(0, time[-1])
-    plt.ylabel('transv. acc. \n[$nm/s$]')
+    plt.ylabel(f'[$\mu m/s$]')
     plt.legend()
 
     '''# add P- and S-wave arrivals
@@ -103,10 +117,10 @@ for freqmin, freqmax in zip([0.008, 0.009, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0
     # transverse rotation
     r,t = rotate_ne_rt(LIV_I_N[0].data, LIV_I_E[0].data, baz[2])
     plt.subplot2grid((3, 30), (1, 0), colspan=29)
-    plt.plot(time, r, linestyle='--', color='lightpink',label='radial angle')
     plt.plot(time, t, 'red',label='transversal angle')
+    plt.plot(time, r, linestyle='--', color='lightpink',label='radial angle')
     plt.xlim(0, time[-1])
-    plt.ylabel('vert. rot. rate \n[nrad]')
+    plt.ylabel('[nrad]')
     plt.ticklabel_format(axis='y', style='sci', scilimits=(-2,2))
     plt.legend(loc='lower left')
     '''plt.axvline(arriv_p)
@@ -115,26 +129,28 @@ for freqmin, freqmax in zip([0.008, 0.009, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0
 
     # backazimuth estimation plot
     plt.subplot2grid((3, 30), (2, 0), colspan=29)
-    im = plt.pcolor(X, Y, corrbaz, cmap=plt.cm.RdYlGn_r, vmin=-1,vmax=1)
-    plt.plot(numpy.arange(sec/2., sec * num_windows, sec), maxcorr, '.k')
+    im = plt.pcolor(X, Y, corrbaz, cmap=plt.cm.RdYlBu_r, vmin=-1,vmax=1)
+    plt.plot(numpy.arange(sec/2., sec * num_windows, sec), maxcorr, '.k', label='max correlation')
+    plt.plot(numpy.arange(sec/2., sec * num_windows, sec), midpoints, '*b', label='mid point')
     plt.xlim(0, time[-1])
     plt.ylim(0, 360)
-    plt.ylabel(u'estimated \nbackazimuth [°]')
+    plt.ylabel('backazimuth [°]')
     plt.xlabel('time [s]')
+    plt.legend(loc='upper right')
 
     # plot theoretical Backazimuth for comparison
     xx = numpy.arange(0, sec * num_windows + 1, sec)
     tba = numpy.ones(len(xx)) * baz[2]
     plt.plot(xx, tba, c='.5', lw=1.5)
-    plt.text(2600, 106, u'Theor. BAz = '+str(round(baz[2],2))+'°', color='k',fontsize=12,backgroundcolor='.9')
+    plt.text(2300, 106, u'Theor. BAz = '+str(round(baz[2],2))+'°', color='k',fontsize=12,backgroundcolor='.9')
 
 
     # add colorbar
     cax = plt.subplot2grid((3, 30), (2, 29))
     norm = mpl.colors.Normalize(vmin=-1, vmax=1)
-    cb1 = mpl.colorbar.ColorbarBase(cax, cmap=plt.cm.RdYlGn_r, norm=norm, orientation='vertical')
+    cb1 = mpl.colorbar.ColorbarBase(cax, cmap=plt.cm.RdYlBu_r, norm=norm, orientation='vertical')
+    cb1.set_label('CC')
 
-    plt.suptitle(f'f={freqmin}-{freqmax}')
 
     fig.savefig(f'{root_savefig}/BAZ_{folder}_{freqmin}_{freqmax}.png', dpi=300, bbox_inches='tight')
 

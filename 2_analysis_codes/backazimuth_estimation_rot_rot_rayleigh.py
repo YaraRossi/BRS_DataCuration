@@ -4,10 +4,12 @@ from numpy import pi, arctan, mean
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 from obspy import read, UTCDateTime, read_inventory
-from obspy.signal.cross_correlation import correlate
+from obspy.signal.cross_correlation import correlate,xcorr_max
 from obspy.signal.rotate import rotate_ne_rt
 from obspy.geodetics.base import gps2dist_azimuth
 from functions import rot_vec
+from numpy import arctan, pi, linspace, cov, argsort, corrcoef, zeros
+from numpy.linalg import eigh
 import pandas as pd
 
 
@@ -41,7 +43,6 @@ for folder in os.listdir(root_data):
     station_latitude = 30.562775410180993
     station_longitude = -90.77469251757329
     baz = gps2dist_azimuth(source_latitude, source_longitude, station_latitude, station_longitude)
-    scale_R = -1 # because it's rayleigh waves
 
     # download data
     LIV_IY_DJX = read('%s/%s/LI_LIV_IY_DJX.ms' % (root_data, folder))
@@ -67,11 +68,10 @@ for folder in os.listdir(root_data):
         LIV_IY_DHZ = LIV_IY_DHZ_orig.copy().remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False).slice(starttime, endtime).resample(20).detrend('simple').taper(0.02).filter('bandpass', freqmin=freqmin, freqmax=freqmax,zerophase=True)
 
 
-
         ########################################################################################################################
 
         sampling_rate = int(LIV_I_N[0].stats.sampling_rate)
-        sec = int(1/freqmin*5)  # window length for correlation
+        sec = 100  # window length for correlation
         num_windows = len(LIV_I_N[0]) // (int(sampling_rate * sec))
 
         # estimate the Backazimuth for each time window
@@ -79,13 +79,53 @@ for folder in os.listdir(root_data):
         backas = numpy.linspace(0, 360 - step, int(360 / step))
         baz_rr = []
         ind=None
-        righthandrule = -1
         for i_win in range(0, num_windows):
-            '''corrbazz = correlate(LIV_IY_DHZ[0][sampling_rate * sec * i_win : sampling_rate * sec * (i_win + 1)],
-                                 rotate_ne_rt(LIV_I_N[0].data, LIV_I_E[0].data, backas[i_deg])
-                                 [1][sampling_rate * sec * i_win : sampling_rate * sec * (i_win + 1)]*scale_R*righthandrule,0)'''
-            tanbaz = -arctan(LIV_I_N[0].data[sampling_rate * sec * i_win : sampling_rate * sec * (i_win + 1)]/LIV_I_E[0].data[sampling_rate * sec * i_win : sampling_rate * sec * (i_win + 1)])
-            baz_rr.append(mean(tanbaz)/pi*180+180)
+            dat = (numpy.zeros((sampling_rate * sec, 2)))
+            dat[:, 0] = LIV_I_E[0].data[sampling_rate * sec * i_win : sampling_rate * sec * (i_win + 1)]
+            dat[:, 1] = LIV_I_N[0].data[sampling_rate * sec * i_win : sampling_rate * sec * (i_win + 1)]
+
+            # compute covariance
+            covar = cov(dat, rowvar=False)
+
+            # get dominant eigenvector
+            Cprime, Q = eigh(covar, UPLO='U')
+
+            # sorting
+            loc = argsort(abs(Cprime))[::-1]
+
+            # formating
+            Q = Q[:, loc]
+
+            # get backazimuth using tangent of eigenvectors
+            baz0 = -arctan((Q[1, 0] / Q[0, 0])) * 180 / pi
+
+            # if negative due to tangent, then add 180 degrees
+            if baz0 <= 0:
+                baz0 += 180
+
+            R, T = rotate_ne_rt(LIV_I_N[0].data[sampling_rate * sec * i_win : sampling_rate * sec * (i_win + 1)],
+                                LIV_I_E[0].data[sampling_rate * sec * i_win : sampling_rate * sec * (i_win + 1)],
+                                baz0
+                                )
+
+            # correlatet with acceleration
+            ccorr = correlate(LIV_IY_DHZ[0].data[sampling_rate * sec * i_win : sampling_rate * sec * (i_win + 1)],
+                              T,0, demean=True, normalize='naive', method='fft')
+
+            # get maximum correlation
+            xshift, cc_max = xcorr_max(ccorr)
+
+            # if correlation positive add 180 degrees
+            if (cc_max > 0):
+                baz0 += 180
+
+            cc_max = abs(cc_max)
+
+
+            baz_rr.append(baz0)
+
+            #tanbaz = -arctan(LIV_I_N[0].data[sampling_rate * sec * i_win : sampling_rate * sec * (i_win + 1)]/LIV_I_E[0].data[sampling_rate * sec * i_win : sampling_rate * sec * (i_win + 1)])
+            #baz_rr.append(mean(tanbaz)/pi*180+180)
 
         # plotting data:
         time = numpy.linspace(0, len(LIV_I_N[0].data)/sampling_rate,len(LIV_I_N[0].data)) ## Time-array
@@ -94,7 +134,7 @@ for folder in os.listdir(root_data):
         plt.subplot2grid((3, 30), (0, 0), colspan=29)
         plt.plot(time, LIV_IY_DHZ[0].data, 'k', label='vertical velocity')
         plt.xlim(0, time[-1])
-        plt.ylabel('transv. acc. \n[$nm/s$]')
+        plt.ylabel('transv. vel. \n[$nm/s$]')
         plt.legend()
 
         '''# add P- and S-wave arrivals
@@ -104,10 +144,10 @@ for folder in os.listdir(root_data):
         # transverse rotation
         r,t = rotate_ne_rt(LIV_I_N[0].data, LIV_I_E[0].data, baz[2])
         plt.subplot2grid((3, 30), (1, 0), colspan=29)
-        plt.plot(time, r, linestyle='--', color='lightpink',label='radial angle')
         plt.plot(time, t, 'red',label='transversal angle')
+        plt.plot(time, r, linestyle='--', color='lightpink',label='radial angle')
         plt.xlim(0, time[-1])
-        plt.ylabel('vert. rot. rate \n[nrad]')
+        plt.ylabel('vert. rot. angle \n[nrad]')
         plt.ticklabel_format(axis='y', style='sci', scilimits=(-2,2))
         plt.legend(loc='lower left')
         '''plt.axvline(arriv_p)
