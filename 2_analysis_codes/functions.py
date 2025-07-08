@@ -105,7 +105,7 @@ def circular_positive_midpoint(corr_values):
 
 def supylabel2(fig, s, **kwargs):
     defaults = {
-        "x": 0.98,
+        "x": 0.96,
         "y": 0.5,
         "horizontalalignment": "center",
         "verticalalignment": "center",
