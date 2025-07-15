@@ -2341,7 +2341,7 @@ def plot_backazimuth_map(results, event_info=None, map_projection='orthographic'
     # Overall title
     title = f"Analysis"
     try:
-        title += f" | T = {results['parameters']['baz_win_sec']}s ({results['parameters']['baz_win_sec_overlap']*100:.0f}%)"
+        title += f" | T = {results['parameters']['baz_win_sec']}s ({results['parameters']['baz_win_overlap']*100:.0f}%)"
         title += f" | CC > {results['parameters']['cc_threshold']}"
     except:
         pass
@@ -2372,7 +2372,7 @@ def print_dict_tree(d, indent=0, prefix=""):
 def compute_frequency_backazimuth_adaptive(sd_object, wave_type='love', fmin=0.01, fmax=0.5, 
                                           octave_fraction=3, baz_step=1, 
                                           window_factor=1.0, overlap_fraction=0.5,
-                                          baz_win_sec_overlap=0.5, verbose=True,
+                                          baz_win_overlap=0.5, verbose=True,
                                           cc_threshold=None):
     """
     Compute backazimuth for octave frequency bands with adaptive time windows (1/fc)
@@ -2450,14 +2450,14 @@ def compute_frequency_backazimuth_adaptive(sd_object, wave_type='love', fmin=0.0
                 wave_type=wave_type,
                 baz_step=baz_step,
                 baz_win_sec=time_window_sec,
-                baz_win_sec_overlap=overlap_fraction,
+                baz_win_overlap=overlap_fraction,
                 verbose=False,
                 out=True
             )
  
             if results_baz and 'cc_max_y' in results_baz:
                 # Store time windows for this frequency
-                results['time_windows'].append(results_baz['cc_max_t'])
+                results['time_windows'].append(results_baz['twin_center'])
                 
                 # Store backazimuth and correlation data
                 results['backazimuth_data'].append(results_baz['cc_max_y'])
@@ -3090,216 +3090,3 @@ def animate_waveforms(sd, time_step: float = 0.5, duration: float = None,
         plt.show()
     
     return anim 
-
-def plot_frequency_dependent(results_freq, data='vel', figsize=(12, 5), minors=True, fmin=None, fmax=None) -> plt.Figure:
-    """
-    Plot frequency-dependent velocity results with scatter points and connecting lines.
-    
-    Parameters
-    ----------
-    results_freq : Dict
-        Results dictionary from compute_frequency_dependent_parameters
-    data : str, optional
-        Data to plot vel or baz, by default 'vel'
-    figsize : Tuple[int, int], optional
-        Figure size (width, height), by default (10, 6)
-    minors : bool, optional
-        Add minor ticks to axes if Tr   ue, by default True
-    fmin : float, optional
-        Minimum frequency to plot, by default None
-    fmax : float, optional
-        Maximum frequency to plot, by default None
-        
-    Returns
-    -------
-    matplotlib.figure.Figure
-        The generated figure
-    """
-    import numpy as np
-    import matplotlib.pyplot as plt
-    
-    # Create figure
-    fig, ax = plt.subplots(figsize=figsize)
-    
-    # Get data
-    frequencies = np.array(results_freq['frequency'])
-    velocities = np.array(results_freq['velocity'])
-    cc_values = np.array(results_freq['cc_values'])
-    backazimuths = np.array(results_freq['backazimuth'])
-
-    # Sort by frequency to ensure line plot connects points in order
-    sort_idx = np.argsort(frequencies)
-    frequencies = frequencies[sort_idx]
-    velocities = velocities[sort_idx]
-    cc_values = cc_values[sort_idx]
-    backazimuths = backazimuths[sort_idx]
-
-    # Create scatter plot with colorbar for CC values
-    if data == 'vel':
-        scatter = ax.scatter(frequencies, velocities, c=cc_values, 
-                            cmap='viridis', s=100, alpha=1,
-                            edgecolor='black', linewidth=1, zorder=5,
-                            vmax=1)
-        # Add connecting line
-        ax.plot(frequencies, velocities, 'k-', alpha=0.3, zorder=2)
-
-    elif data == 'baz':
-        scatter = ax.scatter(frequencies, backazimuths, c=cc_values, 
-                            cmap='viridis', s=100, alpha=1,
-                            edgecolor='black', linewidth=1, zorder=5,
-                            vmax=1)
-        # Add connecting line
-        ax.plot(frequencies, backazimuths, 'k-', alpha=0.3, zorder=2)
-
-    # add error bars for mad
-    if data == 'vel':
-        try:
-            mad = results_freq['vel_mad']
-            ax.errorbar(frequencies, velocities, yerr=mad, fmt='none', ecolor='black', alpha=0.3, zorder=4)
-        except:
-            pass
-    elif data == 'baz':
-        try:
-            mad = results_freq['baz_mad']
-            ax.errorbar(frequencies, backazimuths, yerr=mad, fmt='none', ecolor='black', alpha=0.3, zorder=4)
-        except:
-            pass
-
-    # Configure axes
-    ax.set_xscale('log')
-    ax.set_xlabel('Frequency (Hz)', fontsize=12)
-
-    if data == 'vel':
-        ax.set_ylabel('Apparent Phase Velocity (m/s)', fontsize=12)
-    elif data == 'baz':
-        ax.set_ylabel('Backazimuth (°)', fontsize=12)
-    
-    # Add grid
-    ax.grid(True, which='major', alpha=0.3, zorder=1)
-    if minors:
-        ax.grid(True, which='minor', alpha=0.1, zorder=1)
-        ax.minorticks_on()
-    
-    # Add colorbar
-    cbar = plt.colorbar(scatter, pad=0.01)
-    cbar.set_label('Cross-correlation coefficient', fontsize=12)
-
-    # Set x-axis limits
-    if fmin is not None:
-        ax.set_xlim(left=fmin)
-    if fmax is not None:
-        ax.set_xlim(right=fmax)
-
-    # Set y-axis limits based on data type
-    if data == 'vel':
-        ax.set_ylim(bottom=0)
-    if data == 'baz':
-        ax.set_ylim(bottom=0, top=360)
-
-    # Add title
-    if data == 'vel':
-        title = f"{results_freq['parameters']['wave_type'].title()} Wave Velocity vs Frequency "
-    elif data == 'baz':
-        title = f"{results_freq['parameters']['wave_type'].title()} Wave Backazimuth vs Frequency "
-    title += f"(win={results_freq['parameters']['t_win_factor']}/f, "
-    title += f"overlap={results_freq['parameters']['overlap']*100:.0f}%, "
-    title += f"method={results_freq['parameters']['method']})"
-    ax.set_title(title, fontsize=14)
-    
-    plt.tight_layout()
-    return fig
-
-def plot_velocity_comparison(results_vel1, results_vel2, labels=None, title="Velocity Comparison"):
-    """
-    Create a comparison plot of two velocity results.
-    
-    Parameters:
-    -----------
-    results_vel1 : dict
-        First velocity results dictionary containing:
-        - time: array of time points
-        - velocity: array of velocities
-        - ccoef: array of cross-correlation coefficients
-        - parameters: dict of parameters
-    results_vel2 : dict
-        Second velocity results dictionary (same structure as results_vel1)
-    labels : tuple, optional
-        Labels for the two velocity datasets (default: derived from parameters)
-    title : str, optional
-        Title for the plot (default: 'Velocity Comparison')
-    
-    Returns:
-    --------
-    fig, ax : tuple
-        Matplotlib figure and axes objects
-    """
-    import matplotlib.pyplot as plt
-
-    fontsize = 14
-
-    # Extract data from results dictionaries
-    times1 = results_vel1['time']
-    vel1 = results_vel1['velocity']
-    cc1 = results_vel1['ccoef']
-    
-    times2 = results_vel2['time']
-    vel2 = results_vel2['velocity']
-    cc2 = results_vel2['ccoef']
-    
-    # Set default labels if not provided
-    if labels is None:
-        labels = [
-            f"{results_vel1['parameters']['wave_type'].capitalize()} Wave",
-            f"{results_vel2['parameters']['wave_type'].capitalize()} Wave"
-        ]
-    
-    # Create figure and axes
-    fig = plt.figure(figsize=(15, 8))
-    
-    # Create main velocity plot
-    ax1 = plt.subplot2grid((3, 1), (0, 0), rowspan=2)
-    
-    # Plot velocities with cross-correlation coefficient as color
-    scatter2 = ax1.scatter(times2, vel2, c='red', s=100, zorder=3,
-                          label=labels[1], alpha=0.7, edgecolors='k', marker='s')
-    
-    scatter1 = ax1.scatter(times1, vel1, c='black', s=100, zorder=3,
-                          label=labels[0], alpha=0.7, edgecolors='k')
-
-    # Customize the velocity plot
-    ax1.set_xlabel('Time (s)', fontsize=fontsize)
-    ax1.set_ylabel('Velocity (m/s)', fontsize=fontsize)
-    ax1.grid(True, linestyle='--', alpha=0.7)
-    ax1.legend(fontsize=fontsize-1)
-    ax1.set_ylim(bottom=0)
-    ax1.set_xlim(left=times1[0], right=times1[-1])
-
-    # increase font site of ticks
-    ax1.tick_params(axis='both', which='major', labelsize=fontsize-2)
-    ax1.tick_params(axis='both', which='minor', labelsize=fontsize-2)
-
-    # add subplot with bars of differeences
-    ax2 = plt.subplot2grid((3, 1), (2, 0))
-
-    ax2.bar(times1, (vel1 - vel2)/vel1*100, 
-            color='black', width=20, alpha=1, zorder=3)
-    ax2.set_xlabel('Time (s)', fontsize=fontsize)
-    ax2.set_ylabel('Difference (%)', fontsize=fontsize)
-    ax2.grid(True, linestyle='--', alpha=0.7, zorder=0)
-    ax2.set_ylim(bottom=-50, top=50)
-    ax2.set_xlim(left=times1[0], right=times1[-1])
-
-    ax1.minorticks_on()
-    ax2.minorticks_on()
-    # increase font site of ticks
-    ax2.tick_params(axis='both', which='major', labelsize=fontsize-2)
-    ax2.tick_params(axis='both', which='minor', labelsize=fontsize-2)
-
-    # Add overall title with parameters
-    title += (f" (Window: {results_vel1['parameters']['win_time_s']:.1f}s | "
-             f"Overlap: {results_vel1['parameters']['overlap']*100:.0f}%")
-    plt.suptitle(title, fontsize=fontsize)
-    
-    plt.tight_layout()
-    return fig
-
