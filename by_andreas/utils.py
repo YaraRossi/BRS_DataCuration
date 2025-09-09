@@ -2341,7 +2341,7 @@ def plot_backazimuth_map(results, event_info=None, map_projection='orthographic'
     # Overall title
     title = f"Analysis"
     try:
-        title += f" | T = {results['parameters']['baz_win_sec']}s ({results['parameters']['baz_win_sec_overlap']*100:.0f}%)"
+        title += f" | T = {results['parameters']['baz_win_sec']}s ({results['parameters']['baz_win_overlap']*100:.0f}%)"
         title += f" | CC > {results['parameters']['cc_threshold']}"
     except:
         pass
@@ -2372,7 +2372,7 @@ def print_dict_tree(d, indent=0, prefix=""):
 def compute_frequency_backazimuth_adaptive(sd_object, wave_type='love', fmin=0.01, fmax=0.5, 
                                           octave_fraction=3, baz_step=1, 
                                           window_factor=1.0, overlap_fraction=0.5,
-                                          baz_win_sec_overlap=0.5, verbose=True,
+                                          baz_win_overlap=0.5, verbose=True,
                                           cc_threshold=None):
     """
     Compute backazimuth for octave frequency bands with adaptive time windows (1/fc)
@@ -2450,14 +2450,14 @@ def compute_frequency_backazimuth_adaptive(sd_object, wave_type='love', fmin=0.0
                 wave_type=wave_type,
                 baz_step=baz_step,
                 baz_win_sec=time_window_sec,
-                baz_win_sec_overlap=overlap_fraction,
+                baz_win_overlap=overlap_fraction,
                 verbose=False,
                 out=True
             )
  
             if results_baz and 'cc_max_y' in results_baz:
                 # Store time windows for this frequency
-                results['time_windows'].append(results_baz['cc_max_t'])
+                results['time_windows'].append(results_baz['twin_center'])
                 
                 # Store backazimuth and correlation data
                 results['backazimuth_data'].append(results_baz['cc_max_y'])
@@ -3089,9 +3089,111 @@ def animate_waveforms(sd, time_step: float = 0.5, duration: float = None,
     else:
         plt.show()
     
-    return anim 
+    return anim
 
-def plot_frequency_dependent(results_freq, data='vel', figsize=(12, 5), minors=True, fmin=None, fmax=None) -> plt.Figure:
+def plot_velocity_comparison(results_vel1, results_vel2, labels=None, title=None):
+    """
+    Create a comparison plot of two velocity results with a difference subplot.
+    
+    Parameters:
+    -----------
+    results_vel1 : dict
+        First velocity results dictionary containing:
+        - time: array of time points
+        - velocity: array of velocities
+        - parameters: dict with 'win_time_s' and 'overlap'
+    results_vel2 : dict
+        Second velocity results dictionary (same structure as results_vel1)
+    labels : tuple, optional
+        Tuple of (label1, label2) for the two datasets
+        Default: ('With Expected Backazimuth', 'Adaptive Backazimuth per Window')
+    title : str, optional
+        Base title for the plot (default: "Velocity Estimates Comparison")
+    
+    Returns:
+    --------
+    fig : matplotlib.figure.Figure
+        The created figure
+    """
+    import matplotlib.pyplot as plt
+    import numpy as np
+
+    # Set default labels if not provided
+    if labels is None:
+        labels = ('With Expected Backazimuth', 'Adaptive Backazimuth per Window')
+    
+    # Create figure with specific size ratio and two subplots
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 7), 
+                                  gridspec_kw={'height_ratios': [3, 1]},
+                                  sharex=True)
+    
+    # Extract data
+    times1 = results_vel1['time']
+    vel1 = results_vel1['velocity']
+    times2 = results_vel2['time']
+    vel2 = results_vel2['velocity']
+    
+    # Get window and overlap from parameters
+    window_time = results_vel1['parameters']['win_time_s']
+    overlap = results_vel1['parameters']['overlap'] * 100  # Convert to percentage
+    
+    # Plot velocities - note the order of plotting matches the label order
+    ax1.plot(times1, vel1, 'ko', label=labels[0], alpha=0.7,
+             markersize=6, markerfacecolor='gray', markeredgecolor='black')
+    
+    ax1.plot(times2, vel2, 'rs', label=labels[1], alpha=0.7,
+             markersize=6, markerfacecolor='red', markeredgecolor='black')
+    
+    # Calculate velocity difference in percentage
+    # Interpolate to common time points if necessary
+    if not np.array_equal(times1, times2):
+
+        # Use the intersection of time ranges
+        t_min = max(times1.min(), times2.min())
+        t_max = min(times1.max(), times2.max())
+        mask1 = (times1 >= t_min) & (times1 <= t_max)
+        mask2 = (times2 >= t_min) & (times2 <= t_max)
+        
+        # Calculate percentage difference where both velocities exist
+        common_times = times1[mask1]
+        vel1_masked = vel1[mask1]
+        vel2_masked = np.interp(common_times, times2[mask2], vel2[mask2])
+    else:
+        common_times = times1
+        vel1_masked = vel1
+        vel2_masked = vel2
+    
+    # Calculate percentage difference
+    diff_percent = ((vel2_masked - vel1_masked) / vel1_masked) * 100
+    
+    # Plot difference as bars
+    ax2.bar(common_times, diff_percent, color='black', width=window_time/5)
+    
+    # Customize velocity plot
+    ax1.set_ylabel('Velocity (m/s)')
+    ax1.grid(True, linestyle=':', alpha=0.5)
+    ax1.legend(loc='upper right')
+    ax1.set_ylim(0, 3000)
+    
+    # Customize difference plot
+    ax2.set_xlabel('Time (s)')
+    ax2.set_ylabel('Difference (%)')
+    ax2.grid(True, linestyle=':', alpha=0.5)
+    ax2.set_ylim(-50, 50)
+    
+    # Set title with parameters
+    if title is None:
+        title = "Velocity Estimates Comparison"
+    full_title = f"{title} (Window: {window_time:.1f}s | Overlap: {overlap:.0f}%)"
+    fig.suptitle(full_title, y=0.95)
+    
+    # Adjust layout
+    plt.tight_layout()
+    plt.subplots_adjust(top=0.92)  # Make room for the title
+    
+    return fig
+
+def plot_frequency_dependent(results_freq, data='vel', figsize=(12, 5), minors=True, fmin=None, fmax=None):
     """
     Plot frequency-dependent velocity results with scatter points and connecting lines.
     
@@ -3208,98 +3310,3 @@ def plot_frequency_dependent(results_freq, data='vel', figsize=(12, 5), minors=T
     
     plt.tight_layout()
     return fig
-
-def plot_velocity_comparison(results_vel1, results_vel2, labels=None, title="Velocity Comparison"):
-    """
-    Create a comparison plot of two velocity results.
-    
-    Parameters:
-    -----------
-    results_vel1 : dict
-        First velocity results dictionary containing:
-        - time: array of time points
-        - velocity: array of velocities
-        - ccoef: array of cross-correlation coefficients
-        - parameters: dict of parameters
-    results_vel2 : dict
-        Second velocity results dictionary (same structure as results_vel1)
-    labels : tuple, optional
-        Labels for the two velocity datasets (default: derived from parameters)
-    title : str, optional
-        Title for the plot (default: 'Velocity Comparison')
-    
-    Returns:
-    --------
-    fig, ax : tuple
-        Matplotlib figure and axes objects
-    """
-    import matplotlib.pyplot as plt
-
-    fontsize = 14
-
-    # Extract data from results dictionaries
-    times1 = results_vel1['time']
-    vel1 = results_vel1['velocity']
-    cc1 = results_vel1['ccoef']
-    
-    times2 = results_vel2['time']
-    vel2 = results_vel2['velocity']
-    cc2 = results_vel2['ccoef']
-    
-    # Set default labels if not provided
-    if labels is None:
-        labels = [
-            f"{results_vel1['parameters']['wave_type'].capitalize()} Wave",
-            f"{results_vel2['parameters']['wave_type'].capitalize()} Wave"
-        ]
-    
-    # Create figure and axes
-    fig = plt.figure(figsize=(15, 8))
-    
-    # Create main velocity plot
-    ax1 = plt.subplot2grid((3, 1), (0, 0), rowspan=2)
-    
-    # Plot velocities with cross-correlation coefficient as color
-    scatter2 = ax1.scatter(times2, vel2, c='red', s=100, zorder=3,
-                          label=labels[1], alpha=0.7, edgecolors='k', marker='s')
-    
-    scatter1 = ax1.scatter(times1, vel1, c='black', s=100, zorder=3,
-                          label=labels[0], alpha=0.7, edgecolors='k')
-
-    # Customize the velocity plot
-    ax1.set_xlabel('Time (s)', fontsize=fontsize)
-    ax1.set_ylabel('Velocity (m/s)', fontsize=fontsize)
-    ax1.grid(True, linestyle='--', alpha=0.7)
-    ax1.legend(fontsize=fontsize-1)
-    ax1.set_ylim(bottom=0)
-    ax1.set_xlim(left=times1[0], right=times1[-1])
-
-    # increase font site of ticks
-    ax1.tick_params(axis='both', which='major', labelsize=fontsize-2)
-    ax1.tick_params(axis='both', which='minor', labelsize=fontsize-2)
-
-    # add subplot with bars of differeences
-    ax2 = plt.subplot2grid((3, 1), (2, 0))
-
-    ax2.bar(times1, (vel1 - vel2)/vel1*100, 
-            color='black', width=20, alpha=1, zorder=3)
-    ax2.set_xlabel('Time (s)', fontsize=fontsize)
-    ax2.set_ylabel('Difference (%)', fontsize=fontsize)
-    ax2.grid(True, linestyle='--', alpha=0.7, zorder=0)
-    ax2.set_ylim(bottom=-50, top=50)
-    ax2.set_xlim(left=times1[0], right=times1[-1])
-
-    ax1.minorticks_on()
-    ax2.minorticks_on()
-    # increase font site of ticks
-    ax2.tick_params(axis='both', which='major', labelsize=fontsize-2)
-    ax2.tick_params(axis='both', which='minor', labelsize=fontsize-2)
-
-    # Add overall title with parameters
-    title += (f" (Window: {results_vel1['parameters']['win_time_s']:.1f}s | "
-             f"Overlap: {results_vel1['parameters']['overlap']*100:.0f}%")
-    plt.suptitle(title, fontsize=fontsize)
-    
-    plt.tight_layout()
-    return fig
-
