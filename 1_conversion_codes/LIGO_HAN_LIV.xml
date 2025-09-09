@@ -3,7 +3,7 @@
   <Source>ObsPy-Tutorial</Source>
   <Module>ObsPy 1.4.1</Module>
   <ModuleURI>https://www.obspy.org</ModuleURI>
-  <Created>2025-07-08T14:14:43.841514Z</Created>
+  <Created>2025-09-09T16:57:00.380400Z</Created>
   <Network code="LI" startDate="2016-01-02T00:00:00.000000Z">
     <Description>All stations from the LIGO sites in the USA, i.e. Hanford and Livingston. Hanford houses two BRSsensors collocated with STS2 at the external ends of the lIGO arms, plus a single STS2 at the internal corner. Livingston houses 4 BRS sensors with collocated STS-2, at both ends (external &amp;internal) of each LIGO arm.[elevation, HAN, LIV] Althouse, W.E., Hand, S.D., Jones, L.K., Lazzarini, A., Weiss, R.. 2001, Precision alignment of the LIGO 4km arms using the dual-frequency differential global positioning. Reviewof scientific instruments.[lat, lon of HAN] estimated using Shoshana's Phone in 2025[azimuth, HAN, LIV] from Shoshana, where exactly???</Description>
     <Station code="HAN">
@@ -1300,8 +1300,8 @@
       </Site>
       <CreationDate>2018-01-02T00:00:00.000000Z</CreationDate>
       <Channel code="DJX" locationCode="IY">
-        <Latitude unit="DEGREES">0.0</Latitude>
-        <Longitude unit="DEGREES">0.0</Longitude>
+        <Latitude unit="DEGREES">30.5630716</Latitude>
+        <Longitude unit="DEGREES">-90.7743621</Longitude>
         <Elevation unit="METERS">-6.574</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">252.2835</Azimuth>
@@ -1374,8 +1374,8 @@
         </Response>
       </Channel>
       <Channel code="DJY" locationCode="IX">
-        <Latitude unit="DEGREES">0.0</Latitude>
-        <Longitude unit="DEGREES">0.0</Longitude>
+        <Latitude unit="DEGREES">30.5630722</Latitude>
+        <Longitude unit="DEGREES">-90.7743672</Longitude>
         <Elevation unit="METERS">-6.574</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">162.2835</Azimuth>
@@ -1448,8 +1448,8 @@
         </Response>
       </Channel>
       <Channel code="DJX" locationCode="EY">
-        <Latitude unit="DEGREES">0.0</Latitude>
-        <Longitude unit="DEGREES">0.0</Longitude>
+        <Latitude unit="DEGREES">30.5286229</Latitude>
+        <Longitude unit="DEGREES">-90.7613708</Longitude>
         <Elevation unit="METERS">-6.574</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">252.2835</Azimuth>
@@ -1522,8 +1522,8 @@
         </Response>
       </Channel>
       <Channel code="DJY" locationCode="EX">
-        <Latitude unit="DEGREES">0.0</Latitude>
-        <Longitude unit="DEGREES">0.0</Longitude>
+        <Latitude unit="DEGREES">30.5521257</Latitude>
+        <Longitude unit="DEGREES">-90.8140179</Longitude>
         <Elevation unit="METERS">-6.574</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">162.2835</Azimuth>
@@ -1596,13 +1596,13 @@
         </Response>
       </Channel>
       <Channel code="DHX" locationCode="IY">
-        <Latitude unit="DEGREES">0.0</Latitude>
-        <Longitude unit="DEGREES">0.0</Longitude>
+        <Latitude unit="DEGREES">30.5630716</Latitude>
+        <Longitude unit="DEGREES">-90.7743621</Longitude>
         <Elevation unit="METERS">-6.574</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">252.2835</Azimuth>
         <Dip unit="DEGREES">0.0</Dip>
-        <SampleRate>0.0</SampleRate>
+        <SampleRate>512.0</SampleRate>
         <Response>
           <InstrumentSensitivity>
             <Value>1.0</Value>
@@ -1737,13 +1737,13 @@
         </Response>
       </Channel>
       <Channel code="DHY" locationCode="IY">
-        <Latitude unit="DEGREES">0.0</Latitude>
-        <Longitude unit="DEGREES">0.0</Longitude>
+        <Latitude unit="DEGREES">30.5630716</Latitude>
+        <Longitude unit="DEGREES">-90.7743621</Longitude>
         <Elevation unit="METERS">-6.574</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">162.2835</Azimuth>
         <Dip unit="DEGREES">0.0</Dip>
-        <SampleRate>0.0</SampleRate>
+        <SampleRate>512.0</SampleRate>
         <Response>
           <InstrumentSensitivity>
             <Value>1.0</Value>
@@ -1878,13 +1878,13 @@
         </Response>
       </Channel>
       <Channel code="DHZ" locationCode="IY">
-        <Latitude unit="DEGREES">0.0</Latitude>
-        <Longitude unit="DEGREES">0.0</Longitude>
+        <Latitude unit="DEGREES">30.5630716</Latitude>
+        <Longitude unit="DEGREES">-90.7743621</Longitude>
         <Elevation unit="METERS">-6.574</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
         <Dip unit="DEGREES">-90.0</Dip>
-        <SampleRate>0.0</SampleRate>
+        <SampleRate>512.0</SampleRate>
         <Response>
           <InstrumentSensitivity>
             <Value>1.0</Value>
@@ -2019,13 +2019,13 @@
         </Response>
       </Channel>
       <Channel code="DHX" locationCode="IX">
-        <Latitude unit="DEGREES">0.0</Latitude>
-        <Longitude unit="DEGREES">0.0</Longitude>
+        <Latitude unit="DEGREES">30.5630722</Latitude>
+        <Longitude unit="DEGREES">-90.7743672</Longitude>
         <Elevation unit="METERS">-6.574</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">252.2835</Azimuth>
         <Dip unit="DEGREES">0.0</Dip>
-        <SampleRate>0.0</SampleRate>
+        <SampleRate>512.0</SampleRate>
         <Response>
           <InstrumentSensitivity>
             <Value>1.0</Value>
@@ -2160,13 +2160,13 @@
         </Response>
       </Channel>
       <Channel code="DHY" locationCode="IX">
-        <Latitude unit="DEGREES">0.0</Latitude>
-        <Longitude unit="DEGREES">0.0</Longitude>
+        <Latitude unit="DEGREES">30.5630722</Latitude>
+        <Longitude unit="DEGREES">-90.7743672</Longitude>
         <Elevation unit="METERS">-6.574</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">162.2835</Azimuth>
         <Dip unit="DEGREES">0.0</Dip>
-        <SampleRate>0.0</SampleRate>
+        <SampleRate>512.0</SampleRate>
         <Response>
           <InstrumentSensitivity>
             <Value>1.0</Value>
@@ -2301,13 +2301,13 @@
         </Response>
       </Channel>
       <Channel code="DHZ" locationCode="IX">
-        <Latitude unit="DEGREES">0.0</Latitude>
-        <Longitude unit="DEGREES">0.0</Longitude>
+        <Latitude unit="DEGREES">30.5630722</Latitude>
+        <Longitude unit="DEGREES">-90.7743672</Longitude>
         <Elevation unit="METERS">-6.574</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
         <Dip unit="DEGREES">-90.0</Dip>
-        <SampleRate>0.0</SampleRate>
+        <SampleRate>512.0</SampleRate>
         <Response>
           <InstrumentSensitivity>
             <Value>1.0</Value>
@@ -2442,13 +2442,13 @@
         </Response>
       </Channel>
       <Channel code="DHX" locationCode="EY">
-        <Latitude unit="DEGREES">0.0</Latitude>
-        <Longitude unit="DEGREES">0.0</Longitude>
+        <Latitude unit="DEGREES">30.5286229</Latitude>
+        <Longitude unit="DEGREES">-90.7613708</Longitude>
         <Elevation unit="METERS">-6.574</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">252.2835</Azimuth>
         <Dip unit="DEGREES">0.0</Dip>
-        <SampleRate>0.0</SampleRate>
+        <SampleRate>512.0</SampleRate>
         <Response>
           <InstrumentSensitivity>
             <Value>1.0</Value>
@@ -2583,13 +2583,13 @@
         </Response>
       </Channel>
       <Channel code="DHY" locationCode="EY">
-        <Latitude unit="DEGREES">0.0</Latitude>
-        <Longitude unit="DEGREES">0.0</Longitude>
+        <Latitude unit="DEGREES">30.5286229</Latitude>
+        <Longitude unit="DEGREES">-90.7613708</Longitude>
         <Elevation unit="METERS">-6.574</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">162.2835</Azimuth>
         <Dip unit="DEGREES">0.0</Dip>
-        <SampleRate>0.0</SampleRate>
+        <SampleRate>512.0</SampleRate>
         <Response>
           <InstrumentSensitivity>
             <Value>1.0</Value>
@@ -2724,13 +2724,13 @@
         </Response>
       </Channel>
       <Channel code="DHZ" locationCode="EY">
-        <Latitude unit="DEGREES">0.0</Latitude>
-        <Longitude unit="DEGREES">0.0</Longitude>
+        <Latitude unit="DEGREES">30.5286229</Latitude>
+        <Longitude unit="DEGREES">-90.7613708</Longitude>
         <Elevation unit="METERS">-6.574</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
         <Dip unit="DEGREES">-90.0</Dip>
-        <SampleRate>0.0</SampleRate>
+        <SampleRate>512.0</SampleRate>
         <Response>
           <InstrumentSensitivity>
             <Value>1.0</Value>
@@ -2865,13 +2865,13 @@
         </Response>
       </Channel>
       <Channel code="DHX" locationCode="EX">
-        <Latitude unit="DEGREES">0.0</Latitude>
-        <Longitude unit="DEGREES">0.0</Longitude>
+        <Latitude unit="DEGREES">30.5521257</Latitude>
+        <Longitude unit="DEGREES">-90.8140179</Longitude>
         <Elevation unit="METERS">-6.574</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">252.2835</Azimuth>
         <Dip unit="DEGREES">0.0</Dip>
-        <SampleRate>0.0</SampleRate>
+        <SampleRate>512.0</SampleRate>
         <Response>
           <InstrumentSensitivity>
             <Value>1.0</Value>
@@ -3006,13 +3006,13 @@
         </Response>
       </Channel>
       <Channel code="DHY" locationCode="EX">
-        <Latitude unit="DEGREES">0.0</Latitude>
-        <Longitude unit="DEGREES">0.0</Longitude>
+        <Latitude unit="DEGREES">30.5521257</Latitude>
+        <Longitude unit="DEGREES">-90.8140179</Longitude>
         <Elevation unit="METERS">-6.574</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">162.2835</Azimuth>
         <Dip unit="DEGREES">0.0</Dip>
-        <SampleRate>0.0</SampleRate>
+        <SampleRate>512.0</SampleRate>
         <Response>
           <InstrumentSensitivity>
             <Value>1.0</Value>
@@ -3147,13 +3147,13 @@
         </Response>
       </Channel>
       <Channel code="DHZ" locationCode="EX">
-        <Latitude unit="DEGREES">0.0</Latitude>
-        <Longitude unit="DEGREES">0.0</Longitude>
+        <Latitude unit="DEGREES">30.5521257</Latitude>
+        <Longitude unit="DEGREES">-90.8140179</Longitude>
         <Elevation unit="METERS">-6.574</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
         <Dip unit="DEGREES">-90.0</Dip>
-        <SampleRate>0.0</SampleRate>
+        <SampleRate>512.0</SampleRate>
         <Response>
           <InstrumentSensitivity>
             <Value>1.0</Value>
