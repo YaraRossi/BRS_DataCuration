@@ -108,8 +108,8 @@ for disp, angle, chh, cha, station in zip([LIV_EX_DH_disp,LIV_EY_DH_disp,LIV_IX_
                                            ['DJX','DJY','DJX','DJY'],
                                            ['EY','EX','IY','IX']):
 
-    color = ['black', 'red', 'pink', 'lightpink']
-    label = [chh, cha, 'T coupling max', 'T coupling min']
+    color = ['black', 'red', 'deeppink', 'lightpink']
+    label = [f'translation {chh}', f'rotation {cha}', 'translation coupling\n1e-5 rad/m', 'translation coupling\n1e-6 rad/m']
     # Create the figure
     fig = plt.figure(figsize=(10, 8))
     ax_top = fig.add_subplot(2, 1, 1)
@@ -119,7 +119,7 @@ for disp, angle, chh, cha, station in zip([LIV_EX_DH_disp,LIV_EY_DH_disp,LIV_IX_
     ax_top.plot(disp.select(channel=chh)[0].times(), disp.select(channel=chh)[0].data, label=chh, color='black')
     ax_twin = ax_top.twinx()
     ax_twin.plot(angle[0].times(), angle[0].data, label=cha, color='red')
-    ax_twin.plot(disp.select(channel=chh)[0].times(), disp.select(channel=chh)[0].data*1e-5, label=label[2], color='pink')
+    ax_twin.plot(disp.select(channel=chh)[0].times(), disp.select(channel=chh)[0].data*1e-5, label=label[2], color='deeppink')
     ax_twin.plot(disp.select(channel=chh)[0].times(), disp.select(channel=chh)[0].data*1e-6, label=label[3], color='lightpink')
 
     # fft's

@@ -23,7 +23,7 @@ for folder in os.listdir(root_data):
        continue'''
 
 
-    LIV, HAN = True, True
+    LIV, HAN = False, True
 
     if folder in ['July31.2024','Sept23.2024','May28.2024','July02.2024','Jan20.2025','Aug20.2023','Jan15.2022']:
         LIV = False
@@ -181,12 +181,11 @@ for folder in os.listdir(root_data):
 
 
         # theoretical backazimuth and distance
-        # here I don't rotate, as they are too far away for the events.
         station_latitude = 46.455 #47.5
         station_longitude = -119.407 #-120.7
         dist_han = gps2dist_azimuth(source_latitude, source_longitude, station_latitude, station_longitude)[0] / 1000
         baz = gps2dist_azimuth(source_latitude, source_longitude, station_latitude, station_longitude)
-        baz_rot = 0 #(azimuth - baz[2]) / 180 * numpy.pi
+        baz_rot = (azimuth - baz[2]) / 180 * numpy.pi
         scale_R = -1
         scale_T = 1e6
 
