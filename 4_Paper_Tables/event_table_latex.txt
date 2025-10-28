@@ -1,0 +1,11 @@
+7.6 &  Cayman Trough,  & 17.651 & -82.395 & 2025-02-08T23:15:00 & 4661 & 1663 &  earthquake \\
+7.4 &  Hualien, Taiwan & 23.836 & 121.598 & 2024-04-02T23:58:12 & 10106 & 13070 &  earthquake \\
+7.3 &  Port-Vila, Vanuatu & -17.691 & 168.084 & 2024-12-17T01:30:00 & 10141 & 12037 &  earthquake \\
+7.2 &  Atiquipa, Peru & -15.828 & -74.454 & 2024-06-28T05:36:36 & 8236 & 5422 &  earthquake \\
+7.0 &  Cape Mendocino, USA & 40.374 & -125.022 & 2024-12-05T18:44:21 & 813 & 3269 &  earthquake \\
+6.5 &  Port McNeill, Canada & 51.609 & -130.612 & 2024-09-15T22:22:48 & 998 & 4006 &  earthquake \\
+3.5 &  Bend OR, USA & 47.6 & -121.754 & 2025-01-20T21:35:00 & 219 & 3245 &  earthquake \\
+2.9 &  Hanford WA, USA & 46.6087 & -119.7968 & 2024-09-23T03:17:00 & 34 & 3064 &  earthquake \\
+2.4 &  Hanford WA, USA & 46.62 & -119.843 & 2024-07-31T23:13:00 & 38 & 3068 &  earthquake \\
+1.8 &  Richland WA, USA & 46.269 & -119.383 & 2024-05-28T20:55:25 & 20 & 3019 &  explosion \\
+1.1 &  Livingston LA,USA & 46.412 & -119.573 & 2024-07-02T18:58:45 & 13 & 3039 &  earthquake \\
