@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from obspy import read, read_inventory
 
 
 def plot_traces_offset(traces, label, offset=None):
@@ -118,3 +119,82 @@ def supylabel2(fig, s, **kwargs):
     # kwargs = defaults | kwargs  # python >= 3.9
     kwargs = {**defaults, **kwargs}
     fig.text(**kwargs)
+
+def get_ligo_data(folder, location):
+    root_data = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/miniseed_LIGO'
+    root_xml = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/metadata'
+
+    if location == 'LIV':
+        ## 1. READ DATA
+        # BRS
+        LIV_EY_DJX = read('%s/%s/LI_LIV_EY_DJX.ms' %(root_data,folder))
+        LIV_EX_DJY = read('%s/%s/LI_LIV_EX_DJY.ms' %(root_data,folder))
+        LIV_IY_DJX = read('%s/%s/LI_LIV_IY_DJX.ms' %(root_data,folder))
+        LIV_IX_DJY = read('%s/%s/LI_LIV_IX_DJY.ms' %(root_data,folder))
+
+        # seis
+        LIV_EY_DH = read('%s/%s/LI_LIV_EY_DHX.ms' %(root_data,folder))
+        LIV_EY_DH += read('%s/%s/LI_LIV_EY_DHY.ms' %(root_data,folder))
+        LIV_EY_DH += read('%s/%s/LI_LIV_EY_DHZ.ms' %(root_data,folder))
+        LIV_EX_DH = read('%s/%s/LI_LIV_EX_DHX.ms' %(root_data,folder))
+        LIV_EX_DH += read('%s/%s/LI_LIV_EX_DHY.ms' %(root_data,folder))
+        LIV_EX_DH += read('%s/%s/LI_LIV_EX_DHZ.ms' %(root_data,folder))
+
+        LIV_IY_DH = read('%s/%s/LI_LIV_IY_DHX.ms' %(root_data,folder))
+        LIV_IY_DH += read('%s/%s/LI_LIV_IY_DHY.ms' %(root_data,folder))
+        LIV_IY_DH += read('%s/%s/LI_LIV_IY_DHZ.ms' %(root_data,folder))
+        LIV_IX_DH = read('%s/%s/LI_LIV_IX_DHX.ms' %(root_data,folder))
+        LIV_IX_DH += read('%s/%s/LI_LIV_IX_DHY.ms' %(root_data,folder))
+        LIV_IX_DH += read('%s/%s/LI_LIV_IX_DHZ.ms' %(root_data,folder))
+
+        response = read_inventory('%s/LIGO_HAN_LIV.xml' % root_xml)
+
+        ## 3. REMOVE RESPONSE
+        # BRS
+        LIV_EY_DJX.remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False)
+        LIV_EX_DJY.remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False)
+        LIV_IY_DJX.remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False)
+        LIV_IX_DJY.remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False)
+
+        # SEIS
+        LIV_EY_DH.remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False)
+        LIV_EX_DH.remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False)
+        LIV_IY_DH.remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False)
+        LIV_IX_DH.remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False)
+
+        return LIV_EY_DJX, LIV_EX_DJY, LIV_IY_DJX, LIV_IX_DJY, LIV_IX_DH, LIV_IY_DH, LIV_EX_DH, LIV_EY_DH
+
+    if location == 'HAN':
+        # BRS
+        HAN_EY_DJX = read('%s/%s/LI_HAN_EY_DJX.ms' % (root_data, folder))
+        HAN_EX_DJY = read('%s/%s/LI_HAN_EX_DJY.ms' % (root_data, folder))
+
+        # seis
+        HAN_EY_DH = read('%s/%s/LI_HAN_EY_DHX.ms' % (root_data, folder))
+        HAN_EY_DH += read('%s/%s/LI_HAN_EY_DHY.ms' % (root_data, folder))
+        HAN_EY_DH += read('%s/%s/LI_HAN_EY_DHZ.ms' % (root_data, folder))
+        HAN_EX_DH = read('%s/%s/LI_HAN_EX_DHX.ms' % (root_data, folder))
+        HAN_EX_DH += read('%s/%s/LI_HAN_EX_DHY.ms' % (root_data, folder))
+        HAN_EX_DH += read('%s/%s/LI_HAN_EX_DHZ.ms' % (root_data, folder))
+
+        '''HAN_IY_DH = read('%s/%s/LI_HAN_IY_DHX.ms' % (root_data, folder))
+        HAN_IY_DH += read('%s/%s/LI_HAN_IY_DHY.ms' % (root_data, folder))
+        HAN_IY_DH += read('%s/%s/LI_HAN_IY_DHZ.ms' % (root_data, folder))'''
+        HAN_VA_DH = read('%s/%s/LI_HAN_VA_DHX.ms' % (root_data, folder))
+        HAN_VA_DH += read('%s/%s/LI_HAN_VA_DHY.ms' % (root_data, folder))
+
+        response = read_inventory('%s/LIGO_HAN_LIV.xml' % root_xml)
+
+        ## 3. REMOVE RESPONSE
+        # BRS
+        HAN_EY_DJX.remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False)
+        HAN_EX_DJY.remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False)
+
+        # SEIS
+        HAN_EY_DH.remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False)
+        HAN_EX_DH.remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False)
+        #HAN_IY_DH.remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False)
+        HAN_VA_DH.remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False)
+
+        return HAN_EY_DJX, HAN_EX_DJY, HAN_EY_DH, HAN_EX_DH, HAN_VA_DH # HAN_IY_DH,
+
