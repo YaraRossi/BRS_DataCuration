@@ -74,7 +74,7 @@ cha_han_DJY_EX = Channel(
     sample_rate=256) # done
 
 ##############################################################
-#### Seis LIGO data channels DH1, DHY and DHZ for locations ES and EX
+#### Seis LIGO data channels DHX, DHY and DHZ for locations EX and EY, IY
 
 # Location EX
 cha_han_DHX_EX = Channel(
@@ -140,6 +140,38 @@ cha_han_DHZ_EY = Channel(
     dip=-90, # done
     sample_rate=512) # done
 
+'''# Location IY
+cha_han_DHX_IY = Channel(
+    code="DHX",
+    location_code="IY",
+    latitude=???, # Shoshana Phone, error 6.1m
+    longitude=???, # Shoshana Phone, error= 6.1m
+    elevation=142.555, # done
+    depth=0.0, # done
+    azimuth=324.0007, # done
+    dip=0, # done
+    sample_rate=512) # done
+cha_han_DHY_IY = Channel(
+    code="DHY",
+    location_code="IY",
+    latitude=???, # Shoshana Phone, error 6.1m
+    longitude=???, # Shoshana Phone, error= 6.1m
+    elevation=142.555, # done
+    depth=0.0, # done
+    azimuth=234.0007, # done
+    dip=0, # done
+    sample_rate=512) # done
+cha_han_DHZ_IY = Channel(
+    code="DHZ",
+    location_code="EY",
+    latitude=???, #
+    longitude=???, # 
+    elevation=142.555, # done
+    depth=0.0, # done
+    azimuth=0, # done
+    dip=-90, # done
+    sample_rate=512) # done'''
+
 ##############################################################
 #### Seis HAN Vault data channels DHX and DHY
 # Location VA
@@ -148,7 +180,7 @@ cha_han_DHX_VA = Channel(
     location_code="VA",
     latitude=46.461704,
     longitude=-119.417683,
-    elevation=142.555, # done
+    elevation=157, # done
     depth=0,
     azimuth=324.0007,  # done
     dip=0,  # done
@@ -158,7 +190,7 @@ cha_han_DHY_VA = Channel(
     location_code="VA",
     latitude=46.461704,
     longitude=-119.417683,
-    elevation=142.555, # done
+    elevation=157, # done
     depth=0,
     azimuth=234.0007,  # done
     dip=0,  # done
