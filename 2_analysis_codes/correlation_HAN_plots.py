@@ -2,12 +2,13 @@ import os
 import numpy
 from scipy import signal
 import matplotlib.pyplot as plt
+from functions import get_ligo_data
 from obspy import read, UTCDateTime
 from correlation_function import correlate2
 
 root_data = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/miniseed_LIGO'
 root_savefig = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/2_Figures/LIGO_analysis'
-
+freqmin, freqmax = 0.01,3
 for folder in os.listdir(root_data):
     if folder == '.DS_Store':
         continue
@@ -22,13 +23,17 @@ for folder in os.listdir(root_data):
 
     LIV, HAN = False, True
 
-    if folder in ['July31.2024','Sept23.2024','May28.2024','July02.2024','Jan20.2025']:
+    if folder in ['July31.2024','Sept23.2024','May28.2024','July02.2024','Jan20.2025','Aug20.2023','Jan15.2022']:
         LIV = False
-    if folder in ['May13.2024']:
+    if folder in ['May13.2024', 'Feb15.2025']:
         HAN = False
 
     if HAN:
-        # BRS
+        location = 'HAN'
+        HAN_EY_DJX, HAN_EX_DJY, HAN_EY_DH, HAN_EX_DH, HAN_VA_DH = get_ligo_data(folder, location)
+        HAN_EY_DHX, HAN_EY_DHY, HAN_EY_DHZ = HAN_EY_DH.select(channel='DHX'), HAN_EY_DH.select(channel='DHY'),HAN_EY_DH.select(channel='DHZ')
+        HAN_EX_DHX, HAN_EX_DHY, HAN_EX_DHZ = HAN_EX_DH.select(channel='DHX'), HAN_EX_DH.select(channel='DHY'),HAN_EX_DH.select(channel='DHZ')
+        '''# BRS
         HAN_EY_DJX = read('%s/%s/LI_HAN_EY_DJX.ms' % (root_data, folder))
         HAN_EX_DJY = read('%s/%s/LI_HAN_EX_DJY.ms' % (root_data, folder))
 
@@ -40,18 +45,15 @@ for folder in os.listdir(root_data):
         HAN_EX_DHY = read('%s/%s/LI_HAN_EX_DHY.ms' % (root_data, folder))
         HAN_EX_DHZ = read('%s/%s/LI_HAN_EX_DHZ.ms' % (root_data, folder))
 
-        HAN_IY_DHX = read('%s/%s/LI_HAN_IY_DHX.ms' % (root_data, folder))
-        HAN_IY_DHY = read('%s/%s/LI_HAN_IY_DHY.ms' % (root_data, folder))
-        HAN_IY_DHZ = read('%s/%s/LI_HAN_IY_DHZ.ms' % (root_data, folder))
+        #HAN_IY_DHX = read('%s/%s/LI_HAN_IY_DHX.ms' % (root_data, folder))
+        #HAN_IY_DHY = read('%s/%s/LI_HAN_IY_DHY.ms' % (root_data, folder))
+        #HAN_IY_DHZ = read('%s/%s/LI_HAN_IY_DHZ.ms' % (root_data, folder))
         HAN_VA_DHX = read('%s/%s/LI_HAN_VA_DHX.ms' % (root_data, folder))
-        HAN_VA_DHY = read('%s/%s/LI_HAN_VA_DHY.ms' % (root_data, folder))
+        HAN_VA_DHY = read('%s/%s/LI_HAN_VA_DHY.ms' % (root_data, folder))'''
 
         for trace in [HAN_EY_DJX, HAN_EY_DHX, HAN_EY_DHY, HAN_EY_DHZ,
                       HAN_EX_DJY, HAN_EX_DHX, HAN_EX_DHY, HAN_EX_DHZ]:
-            trace = trace.filter('lowpass', freq=10, zerophase=True).resample(20).detrend('simple').filter('bandpass', freqmin=0.01, freqmax = 1, zerophase=True)
-            #if trace[0].stats.channel == 'DH*':
-            #    #trace = trace.integrate().filter('bandpass', freqmin=0.008, freqmax = 120, zerophase=True)
-            #    trace = trace.filter('bandpass', freqmin=0.008, freqmax=120, zerophase=True)
+            trace = trace.detrend('demean').filter('lowpass', freq=10, zerophase=True).resample(20).filter('bandpass', freqmin=freqmin, freqmax=freqmax, zerophase=True)
 
         data5 = [HAN_EY_DJX, HAN_EX_DJY]
         data6 = [HAN_EY_DHZ, HAN_EX_DHZ]
@@ -106,11 +108,11 @@ for folder in os.listdir(root_data):
 
 
         start = dataa[0].stats.starttime
-        plt.suptitle('HAN_%s_all_stations, f: 0.01 - 1Hz' %folder)
+        plt.suptitle(f'{location}_%s_all_stations, f: {freqmin} - {freqmax}Hz' %folder)
         axs[0].set_title('rotation vs translation')
         axs[1].set_xlabel('Lag [s]')
 
-        plt.savefig('%s/%s/LI_HAN_%s_correlation.png' %(root_savefig,folder,folder), dpi=300, bbox_inches='tight')
+        plt.savefig(f'%s/Correlation/LI_{location}_%s_correlation.png' %(root_savefig,folder), dpi=300, bbox_inches='tight')
 
 
         #plt.show()
