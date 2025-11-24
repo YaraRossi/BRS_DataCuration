@@ -2,6 +2,7 @@ import os
 import numpy
 from scipy import signal
 import matplotlib.pyplot as plt
+from functions import get_ligo_data
 from obspy import read, UTCDateTime
 from correlation_function import correlate2
 
@@ -28,7 +29,18 @@ for folder in os.listdir(root_data):
         HAN = False
 
     if LIV:
-        # BRS
+        location ='LIV'
+        LIV_EY_DJX, LIV_EX_DJY, LIV_IY_DJX, LIV_IX_DJY, LIV_IX_DH, LIV_IY_DH, LIV_EX_DH, LIV_EY_DH = get_ligo_data(folder, location)
+        LIV_EY_DHX, LIV_EY_DHY, LIV_EY_DHZ = LIV_EY_DH.select(channel='DHX'), LIV_EY_DH.select(
+            channel='DHY'), LIV_EY_DH.select(channel='DHZ')
+        LIV_EX_DHX, LIV_EX_DHY, LIV_EX_DHZ = LIV_EX_DH.select(channel='DHX'), LIV_EX_DH.select(
+            channel='DHY'), LIV_EX_DH.select(channel='DHZ')
+        LIV_IY_DHX, LIV_IY_DHY, LIV_IY_DHZ = LIV_IY_DH.select(channel='DHX'), LIV_IY_DH.select(
+            channel='DHY'), LIV_IY_DH.select(channel='DHZ')
+        LIV_IX_DHX, LIV_IX_DHY, LIV_IX_DHZ = LIV_IX_DH.select(channel='DHX'), LIV_IX_DH.select(
+            channel='DHY'), LIV_IX_DH.select(channel='DHZ')
+
+        '''# BRS
         LIV_EY_DJX = read('%s/%s/LI_LIV_EY_DJX.ms' %(root_data,folder))
         LIV_EX_DJY = read('%s/%s/LI_LIV_EX_DJY.ms' %(root_data,folder))
         LIV_IY_DJX = read('%s/%s/LI_LIV_IY_DJX.ms' %(root_data,folder))
@@ -47,7 +59,7 @@ for folder in os.listdir(root_data):
         LIV_IY_DHZ = read('%s/%s/LI_LIV_IY_DHZ.ms' %(root_data,folder))
         LIV_IX_DHX = read('%s/%s/LI_LIV_IX_DHX.ms' %(root_data,folder))
         LIV_IX_DHY = read('%s/%s/LI_LIV_IX_DHY.ms' %(root_data,folder))
-        LIV_IX_DHZ = read('%s/%s/LI_LIV_IX_DHZ.ms' %(root_data,folder))
+        LIV_IX_DHZ = read('%s/%s/LI_LIV_IX_DHZ.ms' %(root_data,folder))'''
 
         for trace in [LIV_EX_DJY, LIV_EX_DHX, LIV_EX_DHY, LIV_EX_DHZ,
                       LIV_IX_DJY, LIV_IX_DHX, LIV_IX_DHY, LIV_IX_DHZ,
