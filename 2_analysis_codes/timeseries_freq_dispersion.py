@@ -19,13 +19,13 @@ path = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Co
 for folder in os.listdir(root_data):
     if folder in ['.DS_Store', 'Aug20.2023', 'Feb15.2025']:
         continue
-    '''if 'May28.2024' not in folder:
-       continue'''
+    if 'July29.2025' not in folder:
+       continue
 
 
-    LIV, HAN = False, True
+    LIV, HAN = True, False
 
-    if folder in ['July31.2024','Sept23.2024','May28.2024','July02.2024','Jan20.2025','Aug20.2023','Jan15.2022']:
+    if folder in ['July31.2024','Sept23.2024','May28.2024','July02.2024','Jan20.2025','Aug20.2023','Jan15.2022','May13.2024']:
         LIV = False
     if folder in ['May13.2024']:
         HAN = False
@@ -35,13 +35,21 @@ for folder in os.listdir(root_data):
 
     if LIV:
         events = f'{path}/event_times_LIV.txt'  # Replace with your actual file path
+        events_all = f'{path}/events_2019_2025_updated.txt'  # Replace with your actual file path
         data = pd.read_csv(events)
+        data_all = pd.read_csv(events_all)
         # get Backazimuth to rotate data:
         # azimuth of station:
         channel = response.select(network='LI', station='LIV', location='EX', channel='DJY')[0][0][0]
         azimuth = channel.azimuth
         # event location from event info
+
         data_event =  data[data['location'] == folder]
+        if data_event.empty:
+            data_event = data_all[data_all['location'] == folder]
+            if data_event.empty:
+                print(folder, 'event still missing from eventfile')
+                continue
         source_latitude = data_event[' latitude'].values.astype(float)
         source_longitude = data_event[' longitude'].values.astype(float)
         starttime = UTCDateTime(str(data_event['eventstart'].iloc[0]))
