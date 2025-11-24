@@ -11,6 +11,22 @@ path = '' # path to event_times_LIV.txt file
 events = f'{path}event_times_LIV.txt'
 data = pd.read_csv(events)
 
+# add note for stations that are not good quality:
+list_of_errors = {
+    'Apr02.2024': 'LIV_IX_DJY abnormal resonance at beginning of EQ',
+    'Dec05.2024': 'clipping of HAN&LIV seismometers',
+    'Feb08.2025': 'clipping of HAN&LIV seismometers',
+    'May28.2024': 'HAN_VA_DHX just electric noise',
+    'Sept23.2024': 'HAN_VA_DHX just electric noise',
+    'Jan20.2025': 'HAN_VA_DHX just electric noise',
+    'Jul31.2024': 'HAN_VA_DHX just electric noise',
+    'Aug20.2023': 'HAN_VA_DHX just electric noise',
+    'Dec17.2024': 'HAN_VA_DHX just electric noise',
+}
+
+# list of events for Andreas
+events_of_interest = ['Apr02.2024','Dec05.2024', 'Jun28.2024','Dec17.2024','Feb08.2025','Jul29.2025','Sep15.2024',]
+
 ## get distances for events
 
 dist_han, dist_liv = [],[]
