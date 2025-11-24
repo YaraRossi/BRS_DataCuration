@@ -71,7 +71,7 @@ for folder in os.listdir(root_data):
     # remove response, slice, detrend, filter
     for i in range(1,2):
 
-        freqmin, freqmax = 0.02,0.2#round(mid_freq-step_freq*i,3), round(mid_freq+step_freq*i,3)
+        freqmin, freqmax = 0.008,0.2#round(mid_freq-step_freq*i,3), round(mid_freq+step_freq*i,3)
         print(freqmin, freqmax)
         LIV_I_E = LIV_I_E_orig.copy().slice(starttime, endtime).filter('lowpass',freq=10,zerophase=True).detrend('simple').taper(0.02).resample(20).filter('bandpass', freqmin=freqmin, freqmax=freqmax,zerophase=True)
         LIV_I_N = LIV_I_N_orig.copy().slice(starttime, endtime).filter('lowpass',freq=10,zerophase=True).detrend('simple').taper(0.02).resample(20).filter('bandpass', freqmin=freqmin, freqmax=freqmax,zerophase=True)
@@ -98,15 +98,29 @@ for folder in os.listdir(root_data):
         righthandrule = -1
         backas = numpy.linspace(0, 360 - step, int(360 / step))
         corrbaz = []
-        ind=None
-        for i_deg, az in enumerate(backas):
+        #ind=None
+        for i_deg in range(len(backas)):
+            # compute rotated trace once per azimuth
+            rotated = rotate_ne_rt(LIV_I_N[0].data, LIV_I_E[0].data, backas[i_deg])[1] * scale_R * righthandrule
+
             for i_win in range(0, num_windows):
-                corrbazz = correlate(LIV_IY_DHZ[0][sampling_rate * sec * i_win : sampling_rate * sec * (i_win + 1)],
-                                     rotate_ne_rt(LIV_I_N[0].data, LIV_I_E[0].data, backas[i_deg])
-                                     [1][sampling_rate * sec * i_win : sampling_rate * sec * (i_win + 1)]*scale_R*righthandrule,0)
+                start = i_win * hop_samples
+                end = start + win_samples
+                # grab the windowed slices
+                z_slice = LIV_IY_DHZ[0][start:end]
+                rotated_slice = rotated[start:end]
+
+                corrbazz = correlate(z_slice, rotated_slice, 0)
                 corrbaz.append(corrbazz[0])
+
         corrbaz = numpy.asarray(corrbaz)
         corrbaz = corrbaz.reshape(len(backas), num_windows)
+
+        hop_seconds = hop_samples / sampling_rate
+        time_calc = numpy.array([((i * hop_samples + win_samples / 2) / sampling_rate) for i in range(num_windows)])
+        # calculate the meshgrid ov crosscorrelation for plotting
+        X, Y = numpy.meshgrid(time_calc, backas)
+
 
         baz_maxcorr = [] # backazimuth of max corr value
         max_corr_value = []
@@ -128,8 +142,6 @@ for folder in os.listdir(root_data):
             corr_midpoint = v[mid_azimuth]
             baz_midpoints.append(azimuth_midpoint)
             corr_midpoints.append(corr_midpoint)
-
-        X, Y = numpy.meshgrid(numpy.arange(0, sec * num_windows, sec), backas)
 
 
 
@@ -161,18 +173,20 @@ for folder in os.listdir(root_data):
 
 
         # backazimuth estimation plot
+        time_calc = numpy.array([((i * hop_samples + win_samples / 2) / sampling_rate) for i in range(num_windows)])
+        # old time_calc = numpy.arange(sec/2., sec * num_windows, sec)
         plt.subplot2grid((3, 30), (2, 0), colspan=29)
         im = plt.pcolor(X, Y, corrbaz, cmap=plt.cm.RdYlGn_r, vmin=-1,vmax=1)
-        plt.plot(numpy.arange(sec/2., sec * num_windows, sec), baz_maxcorr, '.k')
-        plt.plot(numpy.arange(sec/2., sec * num_windows, sec), baz_midpoints, '*b')
+        plt.plot(time_calc, baz_maxcorr, '.k')
+        plt.plot(time_calc, baz_midpoints, '*b')
         plt.xlim(0, time[-1])
         plt.ylim(0, 360)
         plt.ylabel(u'estimated \nbackazimuth [°]')
         plt.xlabel('time [s]')
 
         # plot theoretical Backazimuth for comparison
-        xx = numpy.arange(0, sec * num_windows + 1, sec)
-        tba = numpy.ones(len(xx)) * baz[2]
+        xx = [0, time[-1]]
+        tba = [baz[2], baz[2]]
         plt.plot(xx, tba, c='.5', lw=1.5)
         plt.text(2600, 106, u'Theor. BAz = '+str(round(baz[2],2))+'°', color='k',fontsize=12,backgroundcolor='.9')
 
@@ -188,7 +202,7 @@ for folder in os.listdir(root_data):
 
         # Save correlation and BAz data
 
-        time = numpy.arange(sec/2., sec * num_windows, sec)
+        time = time_calc # numpy.array([((i * hop_samples + win_samples / 2) / sampling_rate) for i in range(num_windows)])
         corr_value_max = max_corr_value
         corr_value_midpoint = corr_midpoints
         baz_value_max = baz_maxcorr
