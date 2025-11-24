@@ -19,15 +19,16 @@ data_all_events = {}
 
 for csv in os.listdir(root):
     if csv.endswith(".csv"):
-        df = pd.read_csv(os.path.join(root, csv))
+        if '0.02_0.2' in csv:  # only choose one frequency type
+            df = pd.read_csv(os.path.join(root, csv))
 
-        # Extract key (before first underscore)
-        folder = csv.split('_')[0]
-        freqmin = csv.split('_')[1]
-        freqmax = csv.split('_')[2]
+            # Extract key (before first underscore)
+            folder = csv.split('_')[0]
+            freqmin = csv.split('_')[1]
+            freqmax = csv.split('_')[2]
 
-        # Add to dictionary
-        data_all_events[folder] = df
+            # Add to dictionary
+            data_all_events[folder] = df
 
 # plot data
 number_events = len(data_all_events)+1 # +1 to have one with all events
