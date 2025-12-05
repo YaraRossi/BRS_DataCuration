@@ -140,6 +140,7 @@ cha_han_DHZ_EY = Channel(
     dip=-90, # done
     sample_rate=512) # done
 
+# Paul is estimating these.
 '''# Location IY
 cha_han_DHX_IY = Channel(
     code="DHX",
