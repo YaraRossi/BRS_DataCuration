@@ -14,7 +14,7 @@ def angular_diff_deg(est, true):
     return diff_wrapped
 
 root = "/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/correlation_baz_csv"
-
+root_savefig = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/2_Figures/Backazimuth_estimations/statistics'
 data_all_events = {}
 
 for csv in os.listdir(root):
@@ -81,5 +81,6 @@ for i in range(3):
     axs[-1,i].set_xlabel('Backazimuth error [°]')
     axs[i,0].set_ylabel('# of 90s windows')
 
+plt.savefig(f'{root_savefig}/statistics_BAz_Corr_allevents.png', dpi=300, bbox_inches='tight')
 plt.show()
 
