@@ -121,7 +121,7 @@ def supylabel2(fig, s, **kwargs):
     fig.text(**kwargs)
 
 def get_ligo_data(folder, location):
-    root_data = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/miniseed_LIGO'
+    root_data = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/miniseed_LIGO' #zenodo_upload/miniseed_LIGO'
     root_xml = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/metadata'
 
     if location == 'LIV':
@@ -147,7 +147,10 @@ def get_ligo_data(folder, location):
         LIV_IX_DH += read('%s/%s/LI_LIV_IX_DHY.ms' %(root_data,folder))
         LIV_IX_DH += read('%s/%s/LI_LIV_IX_DHZ.ms' %(root_data,folder))
 
-        response = read_inventory('%s/LIGO_HAN_LIV.xml' % root_xml)
+        if '_L' in folder:
+            response = read_inventory('%s/LIGO_HAN_LIV_lowsps.xml' % root_xml)
+        else:
+            response = read_inventory('%s/LIGO_HAN_LIV.xml' % root_xml)
 
         ## 3. REMOVE RESPONSE
         # BRS
@@ -180,10 +183,16 @@ def get_ligo_data(folder, location):
         '''HAN_IY_DH = read('%s/%s/LI_HAN_IY_DHX.ms' % (root_data, folder))
         HAN_IY_DH += read('%s/%s/LI_HAN_IY_DHY.ms' % (root_data, folder))
         HAN_IY_DH += read('%s/%s/LI_HAN_IY_DHZ.ms' % (root_data, folder))'''
-        HAN_VA_DH = read('%s/%s/LI_HAN_VA_DHX.ms' % (root_data, folder))
-        HAN_VA_DH += read('%s/%s/LI_HAN_VA_DHY.ms' % (root_data, folder))
+        try:
+            HAN_VA_DH = read('%s/%s/LI_HAN_VA_DHX.ms' % (root_data, folder))
+            HAN_VA_DH += read('%s/%s/LI_HAN_VA_DHY.ms' % (root_data, folder))
+        except:
+            HAN_VA_DH = None
 
-        response = read_inventory('%s/LIGO_HAN_LIV.xml' % root_xml)
+        if '_L' in folder:
+            response = read_inventory('%s/LIGO_HAN_LIV_lowsps.xml' % root_xml)
+        else:
+            response = read_inventory('%s/LIGO_HAN_LIV.xml' % root_xml)
 
         ## 3. REMOVE RESPONSE
         # BRS
@@ -194,7 +203,10 @@ def get_ligo_data(folder, location):
         HAN_EY_DH.remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False)
         HAN_EX_DH.remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False)
         #HAN_IY_DH.remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False)
-        HAN_VA_DH.remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False)
+        try:
+            HAN_VA_DH.remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False)
+        except:
+            HAN_VA_DH = None
 
         return HAN_EY_DJX, HAN_EX_DJY, HAN_EY_DH, HAN_EX_DH, HAN_VA_DH # HAN_IY_DH,
 
