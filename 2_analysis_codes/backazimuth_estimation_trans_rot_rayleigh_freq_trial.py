@@ -52,9 +52,6 @@ for folder in os.listdir(root_data):
     location = 'LIV'
     LIV_EY_DJX, LIV_EX_DJY, LIV_IY_DJX, LIV_IX_DJY, LIV_IX_DH, LIV_IY_DH, LIV_EX_DH, LIV_EY_DH = get_ligo_data(folder,location)
     _, _, LIV_IY_DHZ_orig = LIV_IY_DH.select(channel='DHX'), LIV_IY_DH.select(channel='DHY'), LIV_IY_DH.select(channel='DHZ')
-    '''LIV_IY_DJX = read('%s/%s/LI_LIV_IY_DJX.ms' % (root_data, folder))
-    LIV_IX_DJY = read('%s/%s/LI_LIV_IX_DJY.ms' % (root_data, folder))
-    LIV_IY_DHZ_orig = read('%s/%s/LI_LIV_IY_DHZ.ms' % (root_data, folder))'''
 
     # rotate to EN
     channel = response.select(network='LI', station='LIV', location='IX', channel='DJY')[0][0][0]
@@ -71,13 +68,11 @@ for folder in os.listdir(root_data):
     # remove response, slice, detrend, filter
     for i in range(1,2):
 
-        freqmin, freqmax = 0.008,0.2#round(mid_freq-step_freq*i,3), round(mid_freq+step_freq*i,3)
+        freqmin, freqmax = 0.02,0.2#round(mid_freq-step_freq*i,3), round(mid_freq+step_freq*i,3)
         print(freqmin, freqmax)
         LIV_I_E = LIV_I_E_orig.copy().slice(starttime, endtime).filter('lowpass',freq=10,zerophase=True).detrend('simple').taper(0.02).resample(20).filter('bandpass', freqmin=freqmin, freqmax=freqmax,zerophase=True)
         LIV_I_N = LIV_I_N_orig.copy().slice(starttime, endtime).filter('lowpass',freq=10,zerophase=True).detrend('simple').taper(0.02).resample(20).filter('bandpass', freqmin=freqmin, freqmax=freqmax,zerophase=True)
         LIV_IY_DHZ = LIV_IY_DHZ_orig.copy().slice(starttime, endtime).filter('lowpass',freq=10,zerophase=True).detrend('simple').taper(0.02).resample(20).filter('bandpass', freqmin=freqmin, freqmax=freqmax,zerophase=True)
-
-
 
         ########################################################################################################################
 
