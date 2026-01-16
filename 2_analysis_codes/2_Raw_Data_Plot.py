@@ -15,15 +15,22 @@ root_data = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/C
 for folder in os.listdir(root_data):
     if folder in ['.DS_Store']:
         continue
-    if folder not in ['Feb15.2025']:
+    if folder not in ['Mar04.2025_han']:
         continue
 
     LIV, HAN = True, True
 
-    if folder in ['July31.2024','Sept23.2024','May28.2024','July02.2024','Jan20.2025','Aug20.2023','Jan15.2022']:
+    if folder in ['July31.2024','Sept23.2024','May28.2024','July02.2024','Jan20.2025','Aug20.2023','Jan15.2022',
+                  'Sept19.2022_L','July29.2021_L']:
         LIV = False
     if folder in ['May13.2024', 'Feb15.2025']:
         HAN = False
+    if 'han' in folder:
+        LIV = False
+    if 'liv' in folder:
+        HAN = False
+
+
 
     for location, runornot in zip(['LIV','HAN'],[LIV,HAN]):
         if not runornot:
@@ -43,6 +50,8 @@ for folder in os.listdir(root_data):
 
         starttime = streams[0][0].stats.starttime
         endtime = streams[0][0].stats.endtime
+        fmt = "%Y-%m-%dT%H:%M:%S"
+        print(f'{starttime.strftime(fmt)},{starttime.strftime(fmt)},{endtime.strftime(fmt)},{starttime.strftime(fmt)},{endtime.strftime(fmt)},{folder}')
         zoom_start = starttime+(endtime-starttime)/4
         zoom_end = zoom_start+(endtime-starttime)/4/2
         d = starttime.date
@@ -54,6 +63,9 @@ for folder in os.listdir(root_data):
         plt.subplots_adjust(hspace=0)
 
         for i, seed in enumerate(streams):
+            if 'VA' in name[i]:
+                if seed == None:
+                    continue
 
             # raw data
             ax = axs[i,0]
@@ -64,6 +76,7 @@ for folder in os.listdir(root_data):
                 color = 'k'
                 if 'VA' in name[i]:
                     ax.plot(seed[0].times('matplotlib'), seed.select(channel=f'DHX')[0].data, color=color, label=f'{name[i][4:]}X')
+
                 else:
                     ax.plot(seed[0].times('matplotlib'), seed.select(channel=f'DH{name[i][5]}')[0].data, color=color, label=f'{name[i][4:]}{name[i][5]}')
             ax.legend(loc='lower right')
@@ -81,6 +94,7 @@ for folder in os.listdir(root_data):
                 color = 'k'
                 if 'VA' in name[i]:
                     ax.plot(seed_f_s[0].times('matplotlib'), seed_f_s.select(channel=f'DHX')[0].data, color=color, label=f'{name[i][4:]}X')
+
                 else:
                     ax.plot(seed_f_s[0].times('matplotlib'), seed_f_s.select(channel=f'DH{name[i][5]}')[0].data, color=color, label=f'{name[i][4:]}{name[i][5]}')
             #ax.legend(loc='lower right')
@@ -101,4 +115,4 @@ for folder in os.listdir(root_data):
 
         fig.savefig(f'{root_savefig}/{folder}_{location}.png', dpi=300, bbox_inches='tight')
 
-plt.show()
+        #plt.show()
