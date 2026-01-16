@@ -4,7 +4,7 @@ from obspy.geodetics.base import gps2dist_azimuth
 import os
 
 
-path = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/' # path to event_times_LIV.txt file
+path = '' #'/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/' # path to event_times_LIV.txt file
 root_data = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/miniseed_LIGO'
 # the columns in this file are:
 # Eventtime,   tstart,       tend,        eventstart,            eventend,          location, latitude, longitude, mag, name, country, type
@@ -106,6 +106,8 @@ table = table.sort_values(by=' mag', ascending=False)
 
 output_path = f'{path}event_table_latex.txt'
 table.to_csv(output_path, index=False)
+output_path_local = f'event_table_latex.txt'
+table.to_csv(output_path_local, index=False)
 
 with open(f'{path}event_table_latex.txt', 'w') as f:
     for _, row in table.iterrows():
