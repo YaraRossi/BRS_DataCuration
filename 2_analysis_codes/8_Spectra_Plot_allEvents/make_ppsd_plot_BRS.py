@@ -7,9 +7,10 @@ import matplotlib.pyplot as plt
 
 # roots
 root_savefig = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/2_Figures/'
-root_data = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/miniseed_LIGO'
+root_data = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/zenodo_upload/miniseed_LIGO'
 root_xml = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/metadata'
-response = read_inventory('%s/LIGO_HAN_LIV.xml' %root_xml)
+response_H = read_inventory('%s/LIGO_HAN_LIV.xml' %root_xml)
+response_L = read_inventory('%s/LIGO_HAN_LIV_lowsps.xml' %root_xml)
 path = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data'
 
 
@@ -18,18 +19,23 @@ path = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Co
 for LIV, HAN, station in zip([True, False], [False, True], ['LIV', 'HAN']):
     j = 0
     for folder in os.listdir(root_data):
-        if folder in ['.DS_Store', 'Aug20.2023', 'Feb15.2025']:
+        if folder in ['.DS_Store', 'Feb15.2025_liv', 'Jan15.2022_han', 'July02.2024_han', 'May13.2024_liv',
+                      'Dec05.2024', 'Mar04.2025_han']:
+            continue
+        if 'han' in folder and LIV==True:
+            continue
+        if 'liv' in folder and HAN==True:
             continue
 
         if LIV:
-            if folder in ['July31.2024','Sept23.2024','May28.2024','July02.2024','Jan20.2025','Aug20.2023','Jan15.2022']:
-                continue
-        if HAN:
-            if folder in ['May13.2024']:
+            if folder in ['July31.2024','Sept23.2024','May28.2024','July02.2024',
+                          'Jan20.2025','Aug20.2023','Jan15.2022']:
                 continue
 
+
+        print(folder)
         events = pd.read_csv(f'{path}/event_times_{station}.txt')
-        data_event = events[events['location'] == folder]
+        data_event = events[events['location'] == folder.split('_')[0]]
         starttime = UTCDateTime(str(data_event['tstart'].iloc[0]))
         eventstart = UTCDateTime(str(data_event['eventstart'].iloc[0]))
 
@@ -51,6 +57,11 @@ for LIV, HAN, station in zip([True, False], [False, True], ['LIV', 'HAN']):
         p_s_w_o = 0.1# 0.1
         p_s_o = 0.007
         ppsd_length = 600
+
+        if '_L' in folder:
+            response = response_L
+        else:
+            response = response_H
 
 
         if j == 0:
