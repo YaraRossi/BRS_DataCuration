@@ -19,11 +19,11 @@ path = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Co
 for folder in os.listdir(root_data):
     if folder in ['.DS_Store', 'Aug20.2023', 'Feb15.2025']:
         continue
-    if 'July29.2025' not in folder:
-       continue
+    '''if 'Sept23.2024' not in folder:
+       continue'''
 
 
-    LIV, HAN = True, False
+    LIV, HAN = True, True
 
     if folder in ['July31.2024','Sept23.2024','May28.2024','July02.2024','Jan20.2025','Aug20.2023','Jan15.2022','May13.2024']:
         LIV = False
@@ -38,7 +38,7 @@ for folder in os.listdir(root_data):
         events_all = f'{path}/events_2019_2025_updated.txt'  # Replace with your actual file path
         data = pd.read_csv(events)
         data_all = pd.read_csv(events_all)
-        # get Backazimuth to rotate data:
+        # get Backazimuth to rotate data
         # azimuth of station:
         channel = response.select(network='LI', station='LIV', location='EX', channel='DJY')[0][0][0]
         azimuth = channel.azimuth
@@ -54,6 +54,9 @@ for folder in os.listdir(root_data):
         source_longitude = data_event[' longitude'].values.astype(float)
         starttime = UTCDateTime(str(data_event['eventstart'].iloc[0]))
         endtime = UTCDateTime(str(data_event['eventend'].iloc[0]))
+        if folder == 'July29.2025':
+            starttime = starttime+700
+            endtime = starttime+3000
         magnitude = data_event[' mag'].values.astype(float)
         station_latitude = 30.562775410180993
         station_longitude = -90.77469251757329
@@ -62,7 +65,7 @@ for folder in os.listdir(root_data):
 
         # theoretical backazimuth and distance
         baz = gps2dist_azimuth(source_latitude, source_longitude, station_latitude, station_longitude)
-        baz_rot = (azimuth-baz[2])/180*numpy.pi
+        baz_rot = (azimuth+360-baz[2])/180*numpy.pi
         scale_R = -1
         scale_T = 1e6
 
@@ -87,19 +90,19 @@ for folder in os.listdir(root_data):
         LIV_I_R[0].data = LIV_I_DJ_baz[1,:]
 
         # seis
-        LIV_EY_DHX = read('%s/%s/LI_LIV_EY_DHX.ms' %(root_data,folder))
-        LIV_EY_DHY = read('%s/%s/LI_LIV_EY_DHY.ms' %(root_data,folder))
+        #LIV_EY_DHX = read('%s/%s/LI_LIV_EY_DHX.ms' %(root_data,folder))
+        #LIV_EY_DHY = read('%s/%s/LI_LIV_EY_DHY.ms' %(root_data,folder))
         LIV_EY_DHZ = read('%s/%s/LI_LIV_EY_DHZ.ms' %(root_data,folder))
-        LIV_EX_DHX = read('%s/%s/LI_LIV_EX_DHX.ms' %(root_data,folder))
-        LIV_EX_DHY = read('%s/%s/LI_LIV_EX_DHY.ms' %(root_data,folder))
+        #LIV_EX_DHX = read('%s/%s/LI_LIV_EX_DHX.ms' %(root_data,folder))
+        #LIV_EX_DHY = read('%s/%s/LI_LIV_EX_DHY.ms' %(root_data,folder))
         LIV_EX_DHZ = read('%s/%s/LI_LIV_EX_DHZ.ms' %(root_data,folder))
 
 
-        LIV_IY_DHX = read('%s/%s/LI_LIV_IY_DHX.ms' %(root_data,folder))
-        LIV_IY_DHY = read('%s/%s/LI_LIV_IY_DHY.ms' %(root_data,folder))
+        #LIV_IY_DHX = read('%s/%s/LI_LIV_IY_DHX.ms' %(root_data,folder))
+        #LIV_IY_DHY = read('%s/%s/LI_LIV_IY_DHY.ms' %(root_data,folder))
         LIV_IY_DHZ = read('%s/%s/LI_LIV_IY_DHZ.ms' %(root_data,folder))
-        LIV_IX_DHX = read('%s/%s/LI_LIV_IX_DHX.ms' %(root_data,folder))
-        LIV_IX_DHY = read('%s/%s/LI_LIV_IX_DHY.ms' %(root_data,folder))
+        #LIV_IX_DHX = read('%s/%s/LI_LIV_IX_DHX.ms' %(root_data,folder))
+        #LIV_IX_DHY = read('%s/%s/LI_LIV_IX_DHY.ms' %(root_data,folder))
         LIV_IX_DHZ = read('%s/%s/LI_LIV_IX_DHZ.ms' %(root_data,folder))
 
         if magnitude > 5:
@@ -107,17 +110,23 @@ for folder in os.listdir(root_data):
             freqmax = [0.02, 0.04, 0.06, 0.08, 0.1,  49]
             #freqmin = [0.008,0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.008]
             #freqmax = [0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1,  49]
+            begin_title='a) '
+            text_loc = [0.03, 0.05]
         elif magnitude < 5:
             freqmin = [0.1, 0.3, 0.5, 0.7, 0.9, 1.1, 2,  5, 15, 25,35,0.008]
             freqmax = [0.3, 0.5, 0.7, 0.9, 1.1,   2, 5, 10, 20, 30,40,49]
+            freqmin = [0.7, 0.9, 1.1, 2,  5, 10, 0.008]
+            freqmax = [0.9, 1.1,   2, 5, 10, 20, 49]
+            begin_title='b) '
+            text_loc = [0.8, 0.05]
 
-        fig_Ey, axs_Ey = plt.subplots(len(freqmin), 1, figsize=(8.5,len(freqmin)*0.7), sharex=True)
+        fig_Ey, axs_Ey = plt.subplots(len(freqmin), 1, figsize=(8.5,len(freqmin)*0.4), sharex=True)
         plt.subplots_adjust(hspace=0, top=0.95, bottom=0.05)
-        fig_Ex, axs_Ex = plt.subplots(len(freqmin), 1, figsize=(8.5,len(freqmin)*0.7), sharex=True)
+        fig_Ex, axs_Ex = plt.subplots(len(freqmin), 1, figsize=(8.5,len(freqmin)*0.4), sharex=True)
         plt.subplots_adjust(hspace=0, top=0.95, bottom=0.05)
-        fig_Iy, axs_Iy = plt.subplots(len(freqmin), 1, figsize=(8.5,len(freqmin)*0.7), sharex=True)
+        fig_Iy, axs_Iy = plt.subplots(len(freqmin), 1, figsize=(8.5,len(freqmin)*0.4), sharex=True)
         plt.subplots_adjust(hspace=0, top=0.95, bottom=0.05)
-        fig_Ix, axs_Ix = plt.subplots(len(freqmin), 1, figsize=(8.5,len(freqmin)*0.7), sharex=True)
+        fig_Ix, axs_Ix = plt.subplots(len(freqmin), 1, figsize=(8.5,len(freqmin)*0.4), sharex=True)
         plt.subplots_adjust(hspace=0, top=0.95, bottom=0.05)
 
         '''for axs in [axs_Ey, axs_Ex, axs_Iy, axs_Ix]:
@@ -136,7 +145,10 @@ for folder in os.listdir(root_data):
                 data_t = data_t.slice(starttime, endtime)
                 data_t = data_t.remove_response(inventory=response, pre_filt=None, output="VEL", water_level=60, plot=False)
                 data_proc = data_t.copy().detrend('simple').taper(0.1).filter('bandpass', freqmin=freqmin, freqmax=freqmax,zerophase=True)
-                ax.plot(data_proc[0].times(), data_proc[0].data*scale_T, color='k', label=label_t)
+                ax.plot(data_proc[0].times(), data_proc[0].data*scale_T, color='k', label=label_t, linewidth=0.7)
+                ax.relim()
+                ax.autoscale_view()
+                ax.margins(x=0)
 
             for data_r, label_r, ax in zip([ LIV_I_T, LIV_I_R, LIV_E_T, LIV_E_R],
                                        ['LIV_I_T','LIV_I_R','LIV_E_T','LIV_E_R'],
@@ -146,23 +158,29 @@ for folder in os.listdir(root_data):
                 data_r = data_r.slice(starttime, endtime)
                 data_r = data_r#.remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False)
                 data_proc = data_r.copy().detrend('simple').taper(0.1).filter('bandpass', freqmin=freqmin, freqmax=freqmax,zerophase=True)
-                ax_twin.plot(data_proc[0].times(), data_proc[0].data*scale_R, color='red', label=label_r)
+                ax_twin.plot(data_proc[0].times(), data_proc[0].data*scale_R, color='red', label=label_r, linewidth=0.7)
                 ax_twin.yaxis.label.set_color('red')
                 ax_twin.tick_params(axis='y', colors='red')
 
                 #ax.legend(loc='upper right')
-                ax.margins(0)
+                #ax.margins(0)
                 #ax.xaxis_date()
-                ax.text(0.80,0.1, f'{freqmin}-{freqmax} Hz', transform=ax_twin.transAxes)
+                ax.text(text_loc[0], text_loc[1], f'{freqmin}-{freqmax} Hz', transform=ax_twin.transAxes)
+                ax_twin.relim()
+                ax_twin.autoscale_view()
+                ax_twin.margins(x=0)
         start = data_proc[0].stats.starttime
         formatted_time_new = start.strftime('%Y-%m-%dT%H:%M:%S')
+
         for ax, title, scale in zip([axs_Ix.flat, axs_Iy.flat, axs_Ex.flat, axs_Ey.flat],
                                     ['IT', 'IR', 'ET', 'ER'],
                                     [scale_R,scale_R,scale_R,scale_R]):
             #ax[0].set_title(f'LIV_{folder}_{title}, M{round(float(magnitude[0]),1)}, baz = {round(baz[2],2)}°, $vel_Z$ vs $rot_H$*{scale}')
-            ax[0].set_title(f'LIV @ {title} | {formatted_time_new} | M{round(float(magnitude[0]),1)} | dist = {int(dist_liv)} km | BAz = {round(baz[2],2)}° | $vel_Z$ vs $rot_H$*{scale}')
+            ax[0].set_title(f'{begin_title}LIV @ {title} | Mw {round(float(magnitude[0]),1)} @ {int(dist_liv)} km | $v_Z$ vs $r_H \cdot'
+                            f'${scale}', loc='left')
 
             ax[-1].set_xlabel(f'Time [s]')
+
         for fig, name in zip([fig_Ey, fig_Ex, fig_Iy, fig_Ix],['ER', 'ET', 'IR', 'IT']):
             #fig.savefig(f'{root_savefig}/{folder}/LI_LIV_{folder}_{name}_dispersion_all_stations.png', dpi=150, bbox_inches='tight')
             fig.supylabel(f'velocity [$\mu$m/s]', ha='right', x=0.07)
@@ -185,6 +203,9 @@ for folder in os.listdir(root_data):
         source_longitude = data_event[' longitude'].values.astype(float)
         starttime = UTCDateTime(str(data_event['eventstart'].iloc[0]))
         endtime = UTCDateTime(str(data_event['eventend'].iloc[0]))
+        if folder == 'July29.2025':
+            starttime = starttime+700
+            endtime = starttime+3000
         magnitude = data_event[' mag'].values.astype(float)
 
 
@@ -193,7 +214,7 @@ for folder in os.listdir(root_data):
         station_longitude = -119.407 #-120.7
         dist_han = gps2dist_azimuth(source_latitude, source_longitude, station_latitude, station_longitude)[0] / 1000
         baz = gps2dist_azimuth(source_latitude, source_longitude, station_latitude, station_longitude)
-        baz_rot = (azimuth - baz[2]) / 180 * numpy.pi
+        baz_rot = (azimuth+360-baz[2])/180*numpy.pi
         scale_R = -1
         scale_T = 1e6
 
@@ -222,16 +243,22 @@ for folder in os.listdir(root_data):
             freqmax = [0.02, 0.04, 0.06, 0.08, 0.1,  49]
             #freqmin = [0.008, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.008]
             #freqmax = [0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1, 49]
+            begin_title='a) '
+            text_loc = [0.03, 0.05]
         elif magnitude < 2:
             freqmin = [0.3, 0.8]
             freqmax = [0.8, 30]
         elif magnitude < 5:
             freqmin = [0.1, 0.8, 1.5, 2.0, 2.5, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10, 20, 30, 0.008]
             freqmax = [0.8, 1.5, 2.0, 2.5, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10, 20, 30, 49, 49]
+            freqmin = [0.7, 0.9, 1.1, 2,  5, 10, 0.008]
+            freqmax = [0.9, 1.1,   2, 5, 10, 20, 49]
+            begin_title='b) '
+            text_loc = [0.8, 0.05]
 
-        fig_Ey, axs_Ey = plt.subplots(len(freqmin), 1, figsize=(8.5, len(freqmin)*0.7), sharex=True)
+        fig_Ey, axs_Ey = plt.subplots(len(freqmin), 1, figsize=(8.5, len(freqmin)*0.4), sharex=True)
         plt.subplots_adjust(hspace=0, top=0.95, bottom=0.05)
-        fig_Ex, axs_Ex = plt.subplots(len(freqmin), 1, figsize=(8.5, len(freqmin)*0.7), sharex=True)
+        fig_Ex, axs_Ex = plt.subplots(len(freqmin), 1, figsize=(8.5, len(freqmin)*0.4), sharex=True)
         plt.subplots_adjust(hspace=0, top=0.95, bottom=0.05)
 
         '''for axs in [axs_Ey, axs_Ex]:
@@ -248,7 +275,10 @@ for folder in os.listdir(root_data):
                 data_t = data_t.slice(starttime, endtime)
                 data_t = data_t.remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60,plot=False)
                 data_proc = data_t.copy().detrend('simple').taper(0.1).filter('bandpass', freqmin=freqmin,freqmax=freqmax, zerophase=True)
-                ax.plot(data_proc[0].times(), data_proc[0].data*scale_T, color='k', label=label_t)
+                ax.plot(data_proc[0].times(), data_proc[0].data*scale_T, color='k', label=label_t, linewidth=0.7)
+                ax.relim()
+                ax.autoscale_view()
+                ax.margins(x=0)
 
             for data_r, label_r, ax in zip([HAN_EX_DJY, HAN_EY_DJX],
                                            ['HAN_EX_DJY', 'HAN_EY_DJX'],
@@ -258,21 +288,24 @@ for folder in os.listdir(root_data):
                 data_r = data_r.slice(starttime, endtime)
                 data_r = data_r.remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60,plot=False)
                 data_proc = data_r.copy().detrend('simple').taper(0.1).filter('bandpass', freqmin=freqmin,freqmax=freqmax, zerophase=True)
-                ax_twin.plot(data_proc[0].times(), data_proc[0].data*scale_R, color='red', label=label_r)
+                ax_twin.plot(data_proc[0].times(), data_proc[0].data*scale_R, color='red', label=label_r, linewidth=0.7)
                 ax_twin.yaxis.label.set_color('red')
                 ax_twin.tick_params(axis='y', colors='red')
 
                 # ax.legend(loc='upper right')
-                ax.margins(0)
+                #ax.margins(0)
                 #ax.xaxis_date()
-                ax.text(0.80, 0.1, f'{freqmin}-{freqmax} Hz', transform=ax_twin.transAxes)
+                ax.text(text_loc[0], text_loc[1], f'{freqmin}-{freqmax} Hz', transform=ax_twin.transAxes,)
+                ax_twin.relim()
+                ax_twin.autoscale_view()
+                ax_twin.margins(x=0)
             start = data_proc[0].stats.starttime
         formatted_time_new = start.strftime('%Y-%m-%dT%H:%M:%S')
         for ax, title, scale in zip([axs_Ex.flat, axs_Ey.flat],
                                      ['EX', 'EY'],
                                      [scale_R,scale_R,scale_R,scale_R]):
             #ax[0].set_title(f'HAN_{folder}_{title}, M{round(float(magnitude[0]),1)}, baz = {round(baz[2],2)}°, $vel_Z$ vs $rot_H$*{scale}')
-            ax[0].set_title(f'HAN @ {title} | {formatted_time_new} | M{round(float(magnitude[0]),1)} | dist={int(dist_han)} km | BAz = {round(baz[2],2)}° | $vel_Z$ vs $rot_H \cdot${scale}')
+            ax[0].set_title(f'{begin_title}HAN @ {title} | Ml {round(float(magnitude[0]),1)} @ {int(dist_han)} km | $v_Z$ vs $r_H \cdot${scale}', loc='left')
             ax[-1].set_xlabel(f'Time [s]')
         for fig, name in zip([fig_Ey, fig_Ex], ['EY', 'EX']):
             # fig.savefig(f'{root_savefig}/{folder}/LI_HAN_{folder}_{name}_dispersion_all_stations.png', dpi=150, bbox_inches='tight')
