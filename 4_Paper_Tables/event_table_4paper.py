@@ -32,6 +32,8 @@ list_of_errors = {
     'Mar04.2021': r'\makecell{LIV.EY.DJX\\unusable data}',
     'Jun23.2020': r'\makecell{LIV.EY.DJX\\unusable data}',
     'Oct19.2020': r'\makecell{LIV.EY.DJX\\unusable data}',
+    'Jan16.2026': r'\makecell{all LIV BRS\\unusable data}',
+    'Sept19.2022': r'\makecell{all LIV BRS\\unusable data}',
     'Dec08.2025': r'only 1 sps data'
 }
 # LIV.EY.DJX for some events, i.e. Mar04.2021, Jun23.2020, Oct19.2020
