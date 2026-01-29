@@ -3,11 +3,11 @@ from numpy import pi
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 from obspy import read, UTCDateTime, read_inventory
-from obspy.signal.cross_correlation import correlate
-from obspy.signal.rotate import rotate_ne_rt
 from obspy.geodetics.base import gps2dist_azimuth
 import scipy.signal as signal
 import sys
+
+
 sys.path.append(
     "/Users/yararossi/Documents/Work/Towards_Quantification/1_Coding/1.11_BRS_data_curation/BRS_DataCuration/2_analysis_codes"
 )
@@ -20,12 +20,11 @@ from obspy.signal.spectral_estimation import get_nlnm, get_nhnm
 
 
 # roots
-root_savefig = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/2_Figures/Backazimuth_estimations/fixed_freq'
-root_savedata = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/correlation_baz_csv'
+root_savefig = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/2_Figures/2_Raw_PSD'
 root_data = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/miniseed_LIGO'
 root_xml = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/metadata'
 response = read_inventory('%s/LIGO_HAN_LIV.xml' %root_xml)
-path = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data'
+path = '/Users/yararossi/Documents/Work/Towards_Quantification/1_Coding/1.11_BRS_data_curation/BRS_DataCuration/4_Paper_Tables'
 events = pd.read_csv(f'{path}/event_times_LIV.txt')
 
 # Import Noise models
@@ -42,33 +41,40 @@ rlnm_amp_psd = rlnm_df['rlnm_median (rad2/Hz)'].values
 
 # Make Figure:
 fig, axs = plt.subplots(nrows=1, ncols=2, figsize=(8,4))
-axs[0].plot(1/per_nlnm, nlnm, color='grey')
-axs[0].plot(1/per_nhnm, nhnm, color='grey') # make freq out of it
-axs[0].set_xlim(1e-3,270)
+plt.subplots_adjust(wspace=0.3)
+axs[0].plot(1/per_nhnm, nhnm, color='grey', label='NHNM') # make freq out of it
+axs[0].plot(1/per_nlnm, nlnm, color='k', label='NLNM')
+axs[0].set_xlim(1e-3,20)
 
-axs[1].loglog(rlnm_freq, rlnm_amp_psd, color='grey')
-axs[0].set_xlim(1e-3,270)
+axs[1].plot(rlnm_freq, 10 * numpy.log10(rlnm_amp_psd*1e18), color='k', label='RLNM')
+axs[1].set_xlim(1e-3,20)
 
 
 # import data:
 # BRS
 for folder in os.listdir(root_data):
+    if folder in ['Sept19.2022_liv','Jan16.2026']: # BRS data is really bad for LIV
+        continue
     if folder in ['July31.2024','Sept23.2024','May28.2024','July02.2024_han','Jan20.2025','Aug20.2023','Jan15.2022_han',
                   '.DS_Store','May13.2024_liv','Dec05.2024', 'Sept19.2022_L','July29.2021_L',
-                  'Jun20.2025_lownoise_L','Feb16.2025_highnoise_L','Mar04.2025_han', 'Feb15.2025_liv']:
+                  'Jun20.2025_lownoise_L','Feb16.2025_highnoise_L','Mar04.2025_han', 'Feb15.2025_liv', 'Sept08.2023_L']:
         continue
     if 'han' in folder:
         continue
+
+    print(folder)
     data_event = events[events['location'] == folder.split('_')[0]]
 
     starttime = UTCDateTime(str(data_event['eventstart'].iloc[0]))
     endtime = UTCDateTime(str(data_event['eventend'].iloc[0]))
 
-    print(folder)
-
     # theoretical baz
     source_latitude = data_event[' latitude'].values.astype(float)
     source_longitude = data_event[' longitude'].values.astype(float)
+    magnitude = data_event[' mag'].values.astype(float)[0]
+    norm = mpl.colors.Normalize(vmin=6, vmax=9)
+    cmap = mpl.cm.get_cmap('viridis')
+    color = cmap(norm(magnitude))
     station_latitude = 30.562775410180993
     station_longitude = -90.77469251757329
     baz = gps2dist_azimuth(source_latitude, source_longitude, station_latitude, station_longitude)
@@ -110,14 +116,43 @@ for folder in os.listdir(root_data):
 
     ########################################################################################################################
     # Plot Data, psd_db = 10 * numpy.log10(psd)
-    nperseg= 4048
     data_t = LIV_IY_DHZ[0]
-    f_t, P_t = signal.welch(data_t.data, 1 / data_t.stats.delta, nperseg=int(len(data_t)/4))
-    axs[0].semilogx(f_t, 10 * numpy.log10(P_t), linestyle='-')
+    nperseg= 1/data_t.stats.delta*100
+    nfft=nperseg
+    f_t, P_t = signal.welch(data_t.data, 1 / data_t.stats.delta, nperseg=nperseg, nfft=nfft)
+    axs[0].semilogx(f_t, 10 * numpy.log10(P_t), linestyle='-', color=color)
 
     data_r = LIV_I_DJE[0]
-    f_r, P_r = signal.welch(data_r.data, 1 / data_r.stats.delta, nperseg=int(len(data_t)/4))
-    axs[1].loglog(f_r, P_r, linestyle='-')
+    nperseg= 1/data_t.stats.delta*100
+    nfft=nperseg
+    f_r, P_r = signal.welch(data_r.data, 1 / data_r.stats.delta, nperseg=nperseg, nfft=nfft)
+    axs[1].semilogx(f_r, 10 * numpy.log10(P_r), linestyle='-', color=color)
+
+
+    ########################################################################################################################
+    # make labels etc
+    axs[0].set_xlabel('Frequency [Hz]')
+    axs[1].set_xlabel('Frequency [Hz]')
+    axs[0].set_ylabel(r'PSD [$(m/s/s)^2/Hz$][dB]')
+    axs[1].set_ylabel(r'PSD [$(nrad)^2/Hz$][dB]')
+    axs[0].set_title('a)', loc='left')
+    axs[1].set_title('b)', loc='left')
+
+    fig = axs[1].figure
+    pos = axs[1].get_position()
+
+    cax = fig.add_axes([
+        pos.x1 + 0.01,  # left
+        pos.y0,  # bottom
+        0.02,  # width
+        pos.height  # height
+    ])
+    sm = mpl.cm.ScalarMappable(norm=norm, cmap=cmap)
+    plt.colorbar(sm, cax=cax, label='Event magnitude')
+
     print('done event')
 
+axs[0].legend(loc='lower left')
+axs[1].legend(loc='lower left')
+fig.savefig(f'{root_savefig}/all_PSD_{location}.png', dpi=300, bbox_inches='tight')
 plt.show()
