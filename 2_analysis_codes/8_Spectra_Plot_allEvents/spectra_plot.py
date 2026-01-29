@@ -83,10 +83,10 @@ for folder in os.listdir(root_data):
     # download data
     location = 'LIV'
     LIV_EY_DJX, LIV_EX_DJY, LIV_IY_DJX, LIV_IX_DJY, LIV_IX_DH, LIV_IY_DH, LIV_EX_DH, LIV_EY_DH = get_ligo_data(folder,location)
-    LIV_IY_DHX, LIV_IY_DHY, LIV_IY_DHZ = LIV_IY_DH.select(channel='DHX'), LIV_IY_DH.select(channel='DHY'), LIV_IY_DH.select(channel='DHZ')
+    LIV_IY_DHX, LIV_IY_DHY, LIV_IY_DHZ = LIV_IY_DH.select(channel='*HX'), LIV_IY_DH.select(channel='*HY'), LIV_IY_DH.select(channel='*HZ')
 
     # rotate to EN
-    channel = response.select(network='LI', station='LIV', location='IX', channel='DJY')[0][0][0]
+    channel = response.select(network='LI', station='LIV', location='IX', channel='*JY')[0][0][0]
     az = channel.azimuth/180*pi
     LIV_I_DJ = numpy.array([LIV_IY_DJX[0].data, LIV_IX_DJY[0].data, LIV_IX_DJY[0].data * 0])
     LIV_I_DJ_baz = rot_vec(0, 0, az, LIV_I_DJ)
