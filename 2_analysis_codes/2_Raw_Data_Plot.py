@@ -7,21 +7,18 @@ from functions import get_ligo_data
 import os
 import matplotlib.pyplot as plt
 
-folder = 'Jun28.2024'
-location = 'LIV'
 root_savefig = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/2_Figures/1_Raw_Filter'
 root_data = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/miniseed_LIGO'
 
 for folder in os.listdir(root_data):
     if folder in ['.DS_Store']:
         continue
-    if folder not in ['Mar04.2025_han']:
+    if folder not in ['Dec08.2025']:
         continue
 
     LIV, HAN = True, True
 
-    if folder in ['July31.2024','Sept23.2024','May28.2024','July02.2024','Jan20.2025','Aug20.2023','Jan15.2022',
-                  'Sept19.2022_L','July29.2021_L']:
+    if folder in ['July31.2024','Sept23.2024','May28.2024','July02.2024','Jan20.2025','Aug20.2023','Jan15.2022','July29.2021_L']:
         LIV = False
     if folder in ['May13.2024', 'Feb15.2025']:
         HAN = False
@@ -115,4 +112,4 @@ for folder in os.listdir(root_data):
 
         fig.savefig(f'{root_savefig}/{folder}_{location}.png', dpi=300, bbox_inches='tight')
 
-        #plt.show()
+        plt.show()

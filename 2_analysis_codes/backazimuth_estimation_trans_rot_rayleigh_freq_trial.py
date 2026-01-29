@@ -25,15 +25,16 @@ event_all = pd.read_csv('../4_Paper_Tables/events_2019_2025_updated.txt')
 # BRS
 folder = 'Jun28.2024' #'Sept15.2024'
 for folder in os.listdir(root_data):
-    if folder in ['July31.2024','Sept23.2024','May28.2024','July02.2024','Jan20.2025','Aug20.2023','Jan15.2022','.DS_Store','May13.2024']:
+    if folder in ['July31.2024','Sept23.2024','May28.2024','July02.2024','Jan20.2025','Aug20.2023',
+                  'Jan15.2022','.DS_Store','May13.2024','Dec05.2024','Feb']:
         continue
     data_event = events[events['location'] == folder]
     data_event_all = event_all[event_all['location'] == folder]
-    if data_event.empty:
+    '''if data_event.empty:
         data_event = data_event_all
         if data_event.empty:
             print(folder, 'event still missing from eventfile)')
-            continue
+            continue'''
 
     starttime = UTCDateTime(str(data_event['eventstart'].iloc[0]))
     endtime = UTCDateTime(str(data_event['eventend'].iloc[0]))

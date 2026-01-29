@@ -10,20 +10,20 @@ import scipy.signal as signal
 
 
 root_savefig = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/2_Figures/2_Raw_PSD'
-root_data = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/miniseed_LIGO_newbatch'
+root_data = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/miniseed_LIGO'
 
 for folder in os.listdir(root_data):
     if folder in ['.DS_Store']:
         continue
-    '''if folder not in ['Feb15.2025']:
-        continue'''
+    if folder not in ['Jan16.2026','Sept08.2023_L','Sept19.2022_liv','Sept19.2022_han_L']:
+        continue
 
     LIV, HAN = True, True
 
     if folder in ['July31.2024','Sept23.2024','May28.2024','July02.2024','Jan20.2025','Aug20.2023','Jan15.2022',
-                  'Sept19.2022_L','July29.2021_L','Aug14.2021_Haiti_L','Mar28.2025_han','July16.2025_han_L']:
+                  'July29.2021_L']:
         LIV = False
-    if folder in ['May13.2024', 'Feb15.2025','Mar28.2025_liv_L','July16.2025_liv']:
+    if folder in ['May13.2024', 'Feb15.2025']:
         HAN = False
     if 'han' in folder:
         LIV = False
