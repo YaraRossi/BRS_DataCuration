@@ -19,8 +19,8 @@ path = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Co
 for folder in os.listdir(root_data):
     if folder in ['.DS_Store', 'Aug20.2023', 'Feb15.2025']:
         continue
-    '''if 'Sept23.2024' not in folder:
-       continue'''
+    if 'July29.2025' not in folder:
+       continue
 
 
     LIV, HAN = True, True
@@ -45,11 +45,11 @@ for folder in os.listdir(root_data):
         # event location from event info
 
         data_event =  data[data['location'] == folder]
-        if data_event.empty:
+        '''if data_event.empty:
             data_event = data_all[data_all['location'] == folder]
             if data_event.empty:
                 print(folder, 'event still missing from eventfile')
-                continue
+                continue'''
         source_latitude = data_event[' latitude'].values.astype(float)
         source_longitude = data_event[' longitude'].values.astype(float)
         starttime = UTCDateTime(str(data_event['eventstart'].iloc[0]))
@@ -120,14 +120,15 @@ for folder in os.listdir(root_data):
             begin_title='b) '
             text_loc = [0.8, 0.05]
 
-        fig_Ey, axs_Ey = plt.subplots(len(freqmin), 1, figsize=(8.5,len(freqmin)*0.4), sharex=True)
+        fig_Ey, axs_Ey = plt.subplots(len(freqmin), 1, figsize=(8.5,len(freqmin)*0.6), sharex=True)
         plt.subplots_adjust(hspace=0, top=0.95, bottom=0.05)
-        fig_Ex, axs_Ex = plt.subplots(len(freqmin), 1, figsize=(8.5,len(freqmin)*0.4), sharex=True)
+        fig_Ex, axs_Ex = plt.subplots(len(freqmin), 1, figsize=(8.5,len(freqmin)*0.6), sharex=True)
         plt.subplots_adjust(hspace=0, top=0.95, bottom=0.05)
-        fig_Iy, axs_Iy = plt.subplots(len(freqmin), 1, figsize=(8.5,len(freqmin)*0.4), sharex=True)
+        fig_Iy, axs_Iy = plt.subplots(len(freqmin), 1, figsize=(8.5,len(freqmin)*0.6), sharex=True)
         plt.subplots_adjust(hspace=0, top=0.95, bottom=0.05)
-        fig_Ix, axs_Ix = plt.subplots(len(freqmin), 1, figsize=(8.5,len(freqmin)*0.4), sharex=True)
+        fig_Ix, axs_Ix = plt.subplots(len(freqmin), 1, figsize=(8.5,len(freqmin)*0.6), sharex=True)
         plt.subplots_adjust(hspace=0, top=0.95, bottom=0.05)
+
 
         '''for axs in [axs_Ey, axs_Ex, axs_Iy, axs_Ix]:
             for ax in axs:
@@ -186,7 +187,7 @@ for folder in os.listdir(root_data):
             fig.supylabel(f'velocity [$\mu$m/s]', ha='right', x=0.07)
             supylabel2(fig, f'angle [nrad]', color='red')
             fig.savefig('%s/LI_LIV_%s_%s_dispersion_all_stations.png' %(root_savefig,folder,name), dpi=300,bbox_inches='tight')
-        #plt.show()
+        plt.show()
         #plt.close()
         #exit()
 
@@ -256,9 +257,9 @@ for folder in os.listdir(root_data):
             begin_title='b) '
             text_loc = [0.8, 0.05]
 
-        fig_Ey, axs_Ey = plt.subplots(len(freqmin), 1, figsize=(8.5, len(freqmin)*0.4), sharex=True)
+        fig_Ey, axs_Ey = plt.subplots(len(freqmin), 1, figsize=(8.5, len(freqmin)*0.6), sharex=True)
         plt.subplots_adjust(hspace=0, top=0.95, bottom=0.05)
-        fig_Ex, axs_Ex = plt.subplots(len(freqmin), 1, figsize=(8.5, len(freqmin)*0.4), sharex=True)
+        fig_Ex, axs_Ex = plt.subplots(len(freqmin), 1, figsize=(8.5, len(freqmin)*0.6), sharex=True)
         plt.subplots_adjust(hspace=0, top=0.95, bottom=0.05)
 
         '''for axs in [axs_Ey, axs_Ex]:
