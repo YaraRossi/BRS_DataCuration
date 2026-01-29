@@ -15,15 +15,15 @@ root_data = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/C
 for folder in os.listdir(root_data):
     if folder in ['.DS_Store']:
         continue
-    if folder not in ['Jan16.2026','Sept08.2023_L','Sept19.2022_liv','Sept19.2022_han_L']:
+    if folder not in ['2026-01-16','2023-09-08_L','2022-09-19_liv','2022-09-19_han_L']:
         continue
 
     LIV, HAN = True, True
 
-    if folder in ['July31.2024','Sept23.2024','May28.2024','July02.2024','Jan20.2025','Aug20.2023','Jan15.2022',
-                  'July29.2021_L']:
+    if folder in ['2024-07-31','2024-09-23','2024-05-28','2024-07-02','2025-01-20','2023-08-20','2022-01-15',
+                  '2021-07-29_L']:
         LIV = False
-    if folder in ['May13.2024', 'Feb15.2025']:
+    if folder in ['2024-05-13', '2025-02-15']:
         HAN = False
     if 'han' in folder:
         LIV = False

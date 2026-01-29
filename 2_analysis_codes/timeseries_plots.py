@@ -8,9 +8,9 @@ root_data = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/C
 root_savefig = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/2_Figures/LIGO_analysis'
 
 for folder in os.listdir(root_data):
-    if folder in ['.DS_Store', 'Aug20.2023', 'Feb15.2025']:
+    if folder in ['.DS_Store', '2023-08-20', '2025-02-15']:
         continue
-    '''if 'Apr02.2024' not in folder:
+    '''if '2024-04-02' not in folder:
        continue'''
 
     # make a folder to save all the figures
@@ -20,9 +20,9 @@ for folder in os.listdir(root_data):
 
     LIV, HAN = True, False
 
-    if folder in ['July31.2024','Sept23.2024','May28.2024','July02.2024','Jan20.2025','Jan15.2022','Aug20.2023']:
+    if folder in ['2024-07-31','2024-09-23','2024-05-28','2024-07-02','2025-01-20','2022-01-15','2023-08-20']:
         LIV = False
-    if folder in ['May13.2024']:
+    if folder in ['2024-05-13']:
         HAN = False
 
     if LIV:

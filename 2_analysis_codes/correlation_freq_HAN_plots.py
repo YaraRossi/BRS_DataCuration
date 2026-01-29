@@ -28,7 +28,7 @@ for folder in os.listdir(root_data):
     if not os.path.exists(newpath):
         os.makedirs(newpath)
 
-    if folder in ['May13.2024']:
+    if folder in ['2024-05-13']:
         continue
 
     selected_rows = event_times.loc[event_times['location'] == folder]

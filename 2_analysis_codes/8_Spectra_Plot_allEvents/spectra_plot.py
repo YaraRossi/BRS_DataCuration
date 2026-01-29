@@ -53,11 +53,11 @@ axs[1].set_xlim(1e-3,20)
 # import data:
 # BRS
 for folder in os.listdir(root_data):
-    if folder in ['Sept19.2022_liv','Jan16.2026']: # BRS data is really bad for LIV
+    if folder in ['2022-09-19_liv','2026-01-16']: # BRS data is really bad for LIV
         continue
-    if folder in ['July31.2024','Sept23.2024','May28.2024','July02.2024_han','Jan20.2025','Aug20.2023','Jan15.2022_han',
-                  '.DS_Store','May13.2024_liv','Dec05.2024', 'Sept19.2022_L','July29.2021_L',
-                  'Jun20.2025_lownoise_L','Feb16.2025_highnoise_L','Mar04.2025_han', 'Feb15.2025_liv', 'Sept08.2023_L']:
+    if folder in ['2024-07-31','2024-09-23','2024-05-28','2024-07-02_han','2025-01-20','2023-08-20','2022-01-15_han',
+                  '.DS_Store','2024-05-13_liv','2024-12-05', '2022-09-19_L','2021-07-29_L',
+                  '2025-06-20_lownoise_L','2025-02-16_highnoise_L','2025-03-04_han', '2025-02-15_liv', '2023-09-08_L']:
         continue
     if 'han' in folder:
         continue

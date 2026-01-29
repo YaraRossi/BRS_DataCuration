@@ -18,9 +18,9 @@ for folder in os.listdir(root_data):
 
     LIV, HAN = True, False
 
-    if folder in ['July31.2024','Sept23.2024','May28.2024','July02.2024','Jan20.2025']:
+    if folder in ['2024-07-31','2024-09-23','2024-05-28','2024-07-02','2025-01-20']:
         LIV = False
-    if folder in ['May13.2024']:
+    if folder in ['2024-05-13']:
         HAN = False
 
     if LIV:

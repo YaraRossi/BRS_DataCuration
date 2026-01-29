@@ -4,7 +4,7 @@ from functions import rot_vec
 
 root_data = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/miniseed_LIGO'
 root_xml = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/metadata'
-folder = 'Apr02.2024'
+folder = '2024-04-02'
 
 ## 1. READ DATA
 # BRS

@@ -15,7 +15,7 @@ noise, event = True, False
 
 # get data
 root_data_ligo = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/miniseed_LIGO'
-folder = 'Dec05.2024'
+folder = '2024-12-05'
 # BRS
 HAN_EY_DJX = read('%s/%s/LI_HAN_EY_DJX.ms' % (root_data_ligo, folder))
 HAN_EX_DJY = read('%s/%s/LI_HAN_EX_DJY.ms' % (root_data_ligo, folder))

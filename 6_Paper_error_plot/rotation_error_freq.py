@@ -77,17 +77,17 @@ tick_labels = [f"{f0}–{f1} Hz" for f0, f1 in zip(freqmin_s, freqmax_s)]
 colorbar_small = [bounds, cmap, norm, tick_locs, tick_labels]'''
 
 for folder in os.listdir(root_data):
-    if folder in ['.DS_Store', 'Feb15.2025_liv', 'Jan15.2022_han','July02.2024_han', 'May13.2024_liv','Dec05.2024',
-                  'Jun20.2025_lownoise_L','Feb16.2025_highnoise_L','Mar04.2025_han']:
+    if folder in ['.DS_Store', '2025-02-15_liv', '2022-01-15_han','2024-07-02_han', '2024-05-13_liv','2024-12-05',
+                  '2025-06-20_lownoise_L','2025-02-16_highnoise_L','2025-03-04_han']:
         continue
-    '''if 'Mar28.2025' not in folder:
+    '''if '2025-03-28' not in folder:
        continue'''
 
 
     LIV, HAN = True, True
 
-    if folder in ['July31.2024','Sept23.2024','May28.2024','July02.2024','Jan20.2025','Aug20.2023','Jan15.2022',
-                  'Sept19.2022_L','July29.2021_L']:
+    if folder in ['2024-07-31','2024-09-23','2024-05-28','2024-07-02','2025-01-20','2023-08-20','2022-01-15',
+                  '2022-09-19_L','2021-07-29_L']:
         LIV = False
 
     if 'han' in folder:
@@ -96,16 +96,16 @@ for folder in os.listdir(root_data):
         HAN = False
 
     # there are two events where the sampling rate is different so these folders need special treatment:
-    if 'Mar28.2025_han' in folder:
+    if '2025-03-28_han' in folder:
         HAN = True
         LIV = True
-    elif 'Mar28.2025_liv_L' in folder:
+    elif '2025-03-28_liv_L' in folder:
         continue
 
-    if 'July16.2025_han_L' in folder:
+    if '2025-07-16_han_L' in folder:
         HAN = True
         LIV = True
-    elif 'July16.2025_liv' in folder:
+    elif '2025-07-16_liv' in folder:
         continue
 
     print(folder)
@@ -118,10 +118,10 @@ for folder in os.listdir(root_data):
 
 
     if LIV:
-        if 'Mar28.2025' in folder:
-            folder = 'Mar28.2025_liv_L'
-        if 'July16.2025' in folder:
-            folder = 'July16.2025_liv'
+        if '2025-03-28' in folder:
+            folder = '2025-03-28_liv_L'
+        if '2025-07-16' in folder:
+            folder = '2025-07-16_liv'
         events = f'{path}/event_times_LIV.txt'  # Replace with your actual file path
         data = pd.read_csv(events)
         # get Backazimuth to rotate data:
@@ -264,10 +264,10 @@ for folder in os.listdir(root_data):
         plt.close(fig_event_ts_t)
 
     if HAN:
-        if 'Mar28.2025' in folder:
-            folder = 'Mar28.2025_han'
-        if 'July16.2025' in folder:
-            folder = 'July16.2025_han_L'
+        if '2025-03-28' in folder:
+            folder = '2025-03-28_han'
+        if '2025-07-16' in folder:
+            folder = '2025-07-16_han_L'
         events = f'{path}/event_times_HAN.txt'  # Replace with your actual file path
         data = pd.read_csv(events)
         # get Backazimuth to rotate data:

@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 
 
-folder = 'Jun28.2024'
+folder = '2024-06-28'
 location = 'LIV'
 root_savefig = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/2_Figures/Tcouple'
 

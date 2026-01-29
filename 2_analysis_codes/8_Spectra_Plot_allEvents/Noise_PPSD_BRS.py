@@ -29,7 +29,7 @@ rlnm_db = 10 * numpy.log10(rlnm_amp_psd*1e18) # make nrad,
 # BRS
 for LIV, HAN, station in zip([True, False], [False, True], ['LIV', 'HAN']):
     j = 0
-    for folder in ['Jun20.2025_lownoise_L','Feb16.2025_highnoise_L']:
+    for folder in ['2025-06-20_lownoise_L','2025-02-16_highnoise_L']:
 
         print(folder)
         events = pd.read_csv(f'{path}/event_times_{station}.txt')

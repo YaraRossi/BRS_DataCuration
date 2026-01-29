@@ -22,7 +22,7 @@ def parse_arguments():
     parser.add_argument('--input', type=str, required=True,
                         help='Path to input data directory or file')
     parser.add_argument('--event', type=str, default=None,
-                        help='Event subdirectory (e.g., "Jun28.2024/")')
+                        help='Event subdirectory (e.g., "2024-06-28/")')
     
     # Output arguments
     group = parser.add_mutually_exclusive_group(required=True)

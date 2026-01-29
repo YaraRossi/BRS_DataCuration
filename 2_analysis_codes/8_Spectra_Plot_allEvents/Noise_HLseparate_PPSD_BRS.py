@@ -29,7 +29,7 @@ rlnm_db = 10 * numpy.log10(rlnm_amp_psd*1e18) # make nrad,
 # BRS
 for LIV, HAN, station in zip([True, False], [False, True], ['LIV', 'HAN']):
     j = 0
-    for folder, addon in zip(['Jun20.2025_lownoise_L','Feb16.2025_highnoise_L'],
+    for folder, addon in zip(['2025-06-20_lownoise_L','2025-02-16_highnoise_L'],
                              ['L','H']):
 
         print(folder)

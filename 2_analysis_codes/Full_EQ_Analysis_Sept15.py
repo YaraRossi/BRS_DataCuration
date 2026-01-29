@@ -14,8 +14,8 @@ root_event = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/
 
 event_times = pd.read_csv('%s/event_times_LIV.txt' %root_event, parse_dates=True)
 #Eventtime,tstart,tend,eventstart,eventend,location
-folder = 'Sept15.2024'
-folder = 'Apr02.2024'
+folder = '2024-09-15'
+folder = '2024-04-02'
 
 selected_rows = event_times.loc[event_times['location'] == folder]
 starttime = UTCDateTime(str(selected_rows['eventstart'].iloc[0]))

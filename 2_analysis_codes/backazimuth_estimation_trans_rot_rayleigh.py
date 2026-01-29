@@ -20,7 +20,7 @@ events = pd.read_csv(f'{path}/event_times_LIV.txt')
 
 # import data:
 # BRS
-folder = 'Jun28.2024' #'Sept15.2024'
+folder = '2024-06-28' #'2024-09-15'
 data_event = events[events['location'] == folder]
 starttime = UTCDateTime(str(data_event['eventstart'].iloc[0]))
 endtime = UTCDateTime(str(data_event['eventend'].iloc[0]))

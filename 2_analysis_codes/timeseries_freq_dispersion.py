@@ -17,17 +17,17 @@ path = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Co
 
 
 for folder in os.listdir(root_data):
-    if folder in ['.DS_Store', 'Aug20.2023', 'Feb15.2025']:
+    if folder in ['.DS_Store', '2023-08-20', '2025-02-15']:
         continue
-    if 'July29.2025' not in folder:
+    if '2025-07-29' not in folder:
        continue
 
 
     LIV, HAN = True, True
 
-    if folder in ['July31.2024','Sept23.2024','May28.2024','July02.2024','Jan20.2025','Aug20.2023','Jan15.2022','May13.2024']:
+    if folder in ['2024-07-31','2024-09-23','2024-05-28','2024-07-02','2025-01-20','2023-08-20','2022-01-15','2024-05-13']:
         LIV = False
-    if folder in ['May13.2024']:
+    if folder in ['2024-05-13']:
         HAN = False
     print(folder)
 
@@ -54,7 +54,7 @@ for folder in os.listdir(root_data):
         source_longitude = data_event[' longitude'].values.astype(float)
         starttime = UTCDateTime(str(data_event['eventstart'].iloc[0]))
         endtime = UTCDateTime(str(data_event['eventend'].iloc[0]))
-        if folder == 'July29.2025':
+        if folder == '2025-07-29':
             starttime = starttime+700
             endtime = starttime+3000
         magnitude = data_event[' mag'].values.astype(float)
@@ -204,7 +204,7 @@ for folder in os.listdir(root_data):
         source_longitude = data_event[' longitude'].values.astype(float)
         starttime = UTCDateTime(str(data_event['eventstart'].iloc[0]))
         endtime = UTCDateTime(str(data_event['eventend'].iloc[0]))
-        if folder == 'July29.2025':
+        if folder == '2025-07-29':
             starttime = starttime+700
             endtime = starttime+3000
         magnitude = data_event[' mag'].values.astype(float)

@@ -24,12 +24,12 @@ events = pd.read_csv(f'{path}/event_times_LIV.txt')
 # import data:
 # BRS
 for folder in os.listdir(root_data):
-    if folder in ['.DS_Store', 'Aug20.2023', 'Feb15.2025']:
+    if folder in ['.DS_Store', '2023-08-20', '2025-02-15']:
         continue
-    '''if 'Sept15.2024' not in folder:
+    '''if '2024-09-15' not in folder:
        continue'''
 
-    if folder in ['July31.2024','Sept23.2024','May28.2024','July02.2024','Jan20.2025','Aug20.2023','Jan15.2022']:
+    if folder in ['2024-07-31','2024-09-23','2024-05-28','2024-07-02','2025-01-20','2023-08-20','2022-01-15']:
         continue
 
     print(folder)

@@ -23,10 +23,10 @@ event_all = pd.read_csv('../4_Paper_Tables/events_2019_2025_updated.txt')
 
 # import data:
 # BRS
-folder = 'Jun28.2024' #'Sept15.2024'
+folder = '2024-06-28' #'2024-09-15'
 for folder in os.listdir(root_data):
-    if folder in ['July31.2024','Sept23.2024','May28.2024','July02.2024','Jan20.2025','Aug20.2023',
-                  'Jan15.2022','.DS_Store','May13.2024','Dec05.2024','Feb']:
+    if folder in ['2024-07-31','2024-09-23','2024-05-28','2024-07-02','2025-01-20','2023-08-20',
+                  '2022-01-15','.DS_Store','2024-05-13','2024-12-05','Feb']:
         continue
     data_event = events[events['location'] == folder]
     data_event_all = event_all[event_all['location'] == folder]

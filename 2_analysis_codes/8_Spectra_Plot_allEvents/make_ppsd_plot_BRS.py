@@ -19,8 +19,8 @@ path = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Co
 for LIV, HAN, station in zip([True, False], [False, True], ['LIV', 'HAN']):
     j = 0
     for folder in os.listdir(root_data):
-        if folder in ['.DS_Store', 'Feb15.2025_liv', 'Jan15.2022_han', 'July02.2024_han', 'May13.2024_liv',
-                      'Dec05.2024', 'Mar04.2025_han']:
+        if folder in ['.DS_Store', '2025-02-15_liv', '2022-01-15_han', '2024-07-02_han', '2024-05-13_liv',
+                      '2024-12-05', '2025-03-04_han']:
             continue
         if 'han' in folder and LIV==True:
             continue
@@ -28,8 +28,8 @@ for LIV, HAN, station in zip([True, False], [False, True], ['LIV', 'HAN']):
             continue
 
         if LIV:
-            if folder in ['July31.2024','Sept23.2024','May28.2024','July02.2024',
-                          'Jan20.2025','Aug20.2023','Jan15.2022']:
+            if folder in ['2024-07-31','2024-09-23','2024-05-28','2024-07-02',
+                          '2025-01-20','2023-08-20','2022-01-15']:
                 continue
 
 

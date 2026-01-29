@@ -20,26 +20,26 @@ data = pd.concat([data_liv, data_han[~data_han['location'].isin(data_liv['locati
 
 # add note for stations that are not good quality:
 list_of_errors = {
-    'Apr02.2024': r'\makecell{LIV.IX.DJY\\abnormal resonance}',
-    'Dec05.2024': r'\makecell{clipping of\\seismometers}',
-    'Feb08.2025': r'\makecell{clipping of\\seismometers}',
-    'May28.2024': r'\makecell{HAN.VA.DHX\\high noise level}',
-    'Sept23.2024': r'\makecell{HAN.VA.DHX\\high noise level}',
-    'Jan20.2025': r'\makecell{HAN.VA.DHX\\high noise level}',
-    'Jul31.2024': r'\makecell{HAN.VA.DHX\\high noise level}',
-    'Aug20.2023': r'\makecell{HAN.VA.DHX\\high noise level}',
-    'Dec17.2024': r'\makecell{HAN.VA.DHX\\high noise level}',
-    'Mar04.2021': r'\makecell{LIV.EY.DJX\\unusable data}',
-    'Jun23.2020': r'\makecell{LIV.EY.DJX\\unusable data}',
-    'Oct19.2020': r'\makecell{LIV.EY.DJX\\unusable data}',
-    'Jan16.2026': r'\makecell{all LIV BRS\\unusable data}',
-    'Sept19.2022': r'\makecell{all LIV BRS\\unusable data}',
-    'Dec08.2025': r'only 1 sps data'
+    '2024-04-02': r'\makecell{LIV.IX.DJY\\abnormal resonance}',
+    '2024-12-05': r'\makecell{clipping of\\seismometers}',
+    '2025-02-08': r'\makecell{clipping of\\seismometers}',
+    '2024-05-28': r'\makecell{HAN.VA.DHX\\high noise level}',
+    '2024-09-23': r'\makecell{HAN.VA.DHX\\high noise level}',
+    '2025-01-20': r'\makecell{HAN.VA.DHX\\high noise level}',
+    '2024-07-31': r'\makecell{HAN.VA.DHX\\high noise level}',
+    '2023-08-20': r'\makecell{HAN.VA.DHX\\high noise level}',
+    '2024-12-17': r'\makecell{HAN.VA.DHX\\high noise level}',
+    '2021-03-04': r'\makecell{LIV.EY.DJX\\unusable data}',
+    '2020-06-23': r'\makecell{LIV.EY.DJX\\unusable data}',
+    '2020-10-19': r'\makecell{LIV.EY.DJX\\unusable data}',
+    '2026-01-16': r'\makecell{all LIV BRS\\unusable data}',
+    '2022-09-19': r'\makecell{all LIV BRS\\unusable data}',
+    '2025-12-08': r'only 1 sps data'
 }
-# LIV.EY.DJX for some events, i.e. Mar04.2021, Jun23.2020, Oct19.2020
+# LIV.EY.DJX for some events, i.e. 2021-03-04, 2020-06-23, 2020-10-19
 
 # list of events for Andreas
-events_of_interest = ['Apr02.2024', 'Jun28.2024','Dec17.2024','Jul29.2025','Sep15.2024',]
+events_of_interest = ['2024-04-02', '2024-06-28','2024-12-17','2025-07-29','2024-09-15',]
 
 ## get distances for events
 

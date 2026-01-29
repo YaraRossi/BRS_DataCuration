@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 root_data = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/miniseed_LIGO'
 root_xml   = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/metadata'
-folder     = 'Apr02.2024'
+folder     = '2024-04-02'
 
 # --- Statt HAN_EX_* jetzt LIV_EX_* einlesen ---
 LIV_EX_DHX = read('%s/%s/LI_LIV_EX_DHX.ms' % (root_data, folder))
