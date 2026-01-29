@@ -49,9 +49,9 @@ sta_han = Station(
 ##############################################################
 #### BRS data channels DJX and DJY
 
-cha_han_DJX_EY = Channel(
+cha_han_BJX_EY = Channel(
     # This is the channel code according to the SEED standard.
-    code="DJX",
+    code="BJX",
     # This is the location code according to the SEED standard.
     location_code="EY",
     # Note that these coordinates can differ from the station coordinates.
@@ -62,8 +62,8 @@ cha_han_DJX_EY = Channel(
     azimuth=324.0007, # done
     dip=0.0, # done
     sample_rate=10) # done
-cha_han_DJY_EX = Channel(
-    code="DJY",
+cha_han_BJY_EX = Channel(
+    code="BJY",
     location_code="EX",
     latitude=46.48433894, # Shoshana Phone, error= 2.97m
     longitude=-119.438079, # Shoshana Phone, error= 2.97m
@@ -77,8 +77,8 @@ cha_han_DJY_EX = Channel(
 #### Seis LIGO data channels DHX, DHY and DHZ for locations EX and EY, IY
 
 # Location EX
-cha_han_DHX_EX = Channel(
-    code="DHX",
+cha_han_BHX_EX = Channel(
+    code="BHX",
     location_code="EX",
     latitude=46.48433894, # Shoshana Phone, error= 2.97m
     longitude=-119.438079, # Shoshana Phone, error= 2.97m
@@ -87,8 +87,8 @@ cha_han_DHX_EX = Channel(
     azimuth=324.0007, # done
     dip=0, # done
     sample_rate=10) # done
-cha_han_DHY_EX = Channel(
-    code="DHY",
+cha_han_BHY_EX = Channel(
+    code="BHY",
     location_code="EX",
     latitude=46.48433894, # Shoshana Phone, error= 2.97m
     longitude=-119.438079, # Shoshana Phone, error= 2.97m
@@ -97,8 +97,8 @@ cha_han_DHY_EX = Channel(
     azimuth=234.0007, # done
     dip=0, # done
     sample_rate=10) # done
-cha_han_DHZ_EX = Channel(
-    code="DHZ",
+cha_han_BHZ_EX = Channel(
+    code="BHZ",
     location_code="EX",
     latitude=46.48433894, # Shoshana Phone, error= 2.97m
     longitude=-119.438079, # Shoshana Phone, error= 2.97m
@@ -109,8 +109,8 @@ cha_han_DHZ_EX = Channel(
     sample_rate=10) # done
 
 # Location EY
-cha_han_DHX_EY = Channel(
-    code="DHX",
+cha_han_BHX_EY = Channel(
+    code="BHX",
     location_code="EY",
     latitude=46.43388683, # Shoshana Phone, error 6.1m
     longitude=-119.449623, # Shoshana Phone, error= 6.1m
@@ -119,8 +119,8 @@ cha_han_DHX_EY = Channel(
     azimuth=324.0007, # done
     dip=0, # done
     sample_rate=10) # done
-cha_han_DHY_EY = Channel(
-    code="DHY",
+cha_han_BHY_EY = Channel(
+    code="BHY",
     location_code="EY",
     latitude=46.43388683, # Shoshana Phone, error 6.1m
     longitude=-119.449623, # Shoshana Phone, error= 6.1m
@@ -129,8 +129,8 @@ cha_han_DHY_EY = Channel(
     azimuth=234.0007, # done
     dip=0, # done
     sample_rate=10) # done
-cha_han_DHZ_EY = Channel(
-    code="DHZ",
+cha_han_BHZ_EY = Channel(
+    code="BHZ",
     location_code="EY",
     latitude=46.43388683, # Shoshana Phone, error 6.1m
     longitude=-119.449623, # Shoshana Phone, error= 6.1m
@@ -142,8 +142,8 @@ cha_han_DHZ_EY = Channel(
 
 # Paul is estimating these.
 '''# Location IY
-cha_han_DHX_IY = Channel(
-    code="DHX",
+cha_han_BHX_IY = Channel(
+    code="BHX",
     location_code="IY",
     latitude=???, # Shoshana Phone, error 6.1m
     longitude=???, # Shoshana Phone, error= 6.1m
@@ -152,8 +152,8 @@ cha_han_DHX_IY = Channel(
     azimuth=324.0007, # done
     dip=0, # done
     sample_rate=10) # done
-cha_han_DHY_IY = Channel(
-    code="DHY",
+cha_han_BHY_IY = Channel(
+    code="BHY",
     location_code="IY",
     latitude=???, # Shoshana Phone, error 6.1m
     longitude=???, # Shoshana Phone, error= 6.1m
@@ -162,8 +162,8 @@ cha_han_DHY_IY = Channel(
     azimuth=234.0007, # done
     dip=0, # done
     sample_rate=10) # done
-cha_han_DHZ_IY = Channel(
-    code="DHZ",
+cha_han_BHZ_IY = Channel(
+    code="BHZ",
     location_code="EY",
     latitude=???, #
     longitude=???, # 
@@ -176,8 +176,8 @@ cha_han_DHZ_IY = Channel(
 ##############################################################
 #### Seis HAN Vault data channels DHX and DHY
 # Location VA
-cha_han_DHX_VA = Channel(
-    code="DHX",
+cha_han_BHX_VA = Channel(
+    code="BHX",
     location_code="VA",
     latitude=46.461704,
     longitude=-119.417683,
@@ -186,8 +186,8 @@ cha_han_DHX_VA = Channel(
     azimuth=324.0007,  # done
     dip=0,  # done
     sample_rate=10) # done
-cha_han_DHY_VA = Channel(
-    code="DHY",
+cha_han_BHY_VA = Channel(
+    code="BHY",
     location_code="VA",
     latitude=46.461704,
     longitude=-119.417683,
@@ -211,8 +211,8 @@ sta_liv = Station(
 ##############################################################
 #### BRS data channels DJX and DJY
 
-cha_liv_DJX_IY = Channel(
-    code="DJX",
+cha_liv_BJX_IY = Channel(
+    code="BJX",
     location_code="IY",
     latitude=30.5630716, # done, Michael
     longitude=-90.7743621, # done, Michael
@@ -221,8 +221,8 @@ cha_liv_DJX_IY = Channel(
     azimuth=252.2835, # done
     dip=0.0, # done
     sample_rate=10) # done
-cha_liv_DJY_IX = Channel(
-    code="DJY",
+cha_liv_BJY_IX = Channel(
+    code="BJY",
     location_code="IX",
     latitude=30.5630722, # done, Michael
     longitude=-90.7743672, # done, Michael
@@ -231,8 +231,8 @@ cha_liv_DJY_IX = Channel(
     azimuth=162.2835, # done
     dip=0.0, # done
     sample_rate=10) # done
-cha_liv_DJX_EY = Channel(
-    code="DJX",
+cha_liv_BJX_EY = Channel(
+    code="BJX",
     location_code="EY",
     latitude=30.5286229, # done, Michael
     longitude=-90.7613708, # done, Michael
@@ -241,8 +241,8 @@ cha_liv_DJX_EY = Channel(
     azimuth=252.2835, # done
     dip=0.0, # done
     sample_rate=10) # done
-cha_liv_DJY_EX = Channel(
-    code="DJY",
+cha_liv_BJY_EX = Channel(
+    code="BJY",
     location_code="EX",
     latitude=30.5521257, # done, Michael
     longitude=-90.8140179, # done, Michael
@@ -256,8 +256,8 @@ cha_liv_DJY_EX = Channel(
 #### Seis LIGO data channels DHX, DHY and DHZ for locations IW, IS, EW and ES
 
 # Location IW
-cha_liv_DHX_IX = Channel(
-    code="DHX",
+cha_liv_BHX_IX = Channel(
+    code="BHX",
     location_code="IX",
     latitude=30.5630722, # done, Michael
     longitude=-90.7743672, # done, Michael
@@ -266,8 +266,8 @@ cha_liv_DHX_IX = Channel(
     azimuth=252.2835, # done
     dip=0, # done
     sample_rate=10) # done
-cha_liv_DHY_IX = Channel(
-    code="DHY",
+cha_liv_BHY_IX = Channel(
+    code="BHY",
     location_code="IX",
     latitude=30.5630722, # done, Michael
     longitude=-90.7743672, # done, Michael
@@ -276,8 +276,8 @@ cha_liv_DHY_IX = Channel(
     azimuth=162.2835, # done
     dip=0, # done
     sample_rate=10) # done
-cha_liv_DHZ_IX = Channel(
-    code="DHZ",
+cha_liv_BHZ_IX = Channel(
+    code="BHZ",
     location_code="IX",
     latitude=30.5630722, # done, Michael
     longitude=-90.7743672, # done, Michael
@@ -288,8 +288,8 @@ cha_liv_DHZ_IX = Channel(
     sample_rate=10) # done
 
 # Location IY
-cha_liv_DHX_IY = Channel(
-    code="DHX",
+cha_liv_BHX_IY = Channel(
+    code="BHX",
     location_code="IY",
     latitude=30.5630716, # done, Michael
     longitude=-90.7743621, # done, Michael
@@ -298,8 +298,8 @@ cha_liv_DHX_IY = Channel(
     azimuth=252.2835, # done
     dip=0, # done
     sample_rate=10) # done
-cha_liv_DHY_IY = Channel(
-    code="DHY",
+cha_liv_BHY_IY = Channel(
+    code="BHY",
     location_code="IY",
     latitude=30.5630716, # done, Michael
     longitude=-90.7743621, # done, Michael
@@ -308,8 +308,8 @@ cha_liv_DHY_IY = Channel(
     azimuth=162.2835, # done
     dip=0, # done
     sample_rate=10) # done
-cha_liv_DHZ_IY = Channel(
-    code="DHZ",
+cha_liv_BHZ_IY = Channel(
+    code="BHZ",
     location_code="IY",
     latitude=30.5630716, # done, Michael
     longitude=-90.7743621, # done, Michael
@@ -320,8 +320,8 @@ cha_liv_DHZ_IY = Channel(
     sample_rate=10) # done
 
 # Location EX
-cha_liv_DHX_EX = Channel(
-    code="DHX",
+cha_liv_BHX_EX = Channel(
+    code="BHX",
     location_code="EX",
     latitude=30.5521257, # done, Michael
     longitude=-90.8140179, # done, Michael
@@ -330,8 +330,8 @@ cha_liv_DHX_EX = Channel(
     azimuth=252.2835, # done
     dip=0, # done
     sample_rate=10) # done
-cha_liv_DHY_EX = Channel(
-    code="DHY",
+cha_liv_BHY_EX = Channel(
+    code="BHY",
     location_code="EX",
     latitude=30.5521257, # done, Michael
     longitude=-90.8140179, # done, Michael
@@ -340,8 +340,8 @@ cha_liv_DHY_EX = Channel(
     azimuth=162.2835, # done
     dip=0, # done
     sample_rate=10) # done
-cha_liv_DHZ_EX = Channel(
-    code="DHZ",
+cha_liv_BHZ_EX = Channel(
+    code="BHZ",
     location_code="EX",
     latitude=30.5521257, # done, Michael
     longitude=-90.8140179, # done, Michael
@@ -352,8 +352,8 @@ cha_liv_DHZ_EX = Channel(
     sample_rate=10) # done
 
 # Location EY
-cha_liv_DHX_EY = Channel(
-    code="DHX",
+cha_liv_BHX_EY = Channel(
+    code="BHX",
     location_code="EY",
     latitude=30.5286229, # done, Michael
     longitude=-90.7613708, # done, Michael
@@ -362,8 +362,8 @@ cha_liv_DHX_EY = Channel(
     azimuth=252.2835, # done
     dip=0, # done
     sample_rate=10) # done
-cha_liv_DHY_EY = Channel(
-    code="DHY",
+cha_liv_BHY_EY = Channel(
+    code="BHY",
     location_code="EY",
     latitude=30.5286229, # done, Michael
     longitude=-90.7613708, # done, Michael
@@ -372,8 +372,8 @@ cha_liv_DHY_EY = Channel(
     azimuth=162.2835, # done
     dip=0, # done
     sample_rate=10) # done
-cha_liv_DHZ_EY = Channel(
-    code="DHZ",
+cha_liv_BHZ_EY = Channel(
+    code="BHZ",
     location_code="EY",
     latitude=30.5286229, # done, Michael
     longitude=-90.7613708, # done, Michael
@@ -388,8 +388,8 @@ Does this station even exist?
 ##############################################################
 #### Seis LIV Vault data channels DHX and DHY
 # Location VA
-cha_liv_DHX_VA = Channel(
-    code="DHX",
+cha_liv_BHX_VA = Channel(
+    code="BHX",
     location_code="VA",
     latitude=???,
     longitude=???,
@@ -398,8 +398,8 @@ cha_liv_DHX_VA = Channel(
     azimuth=???,
     dip=???,
     sample_rate=???)
-cha_liv_DHY_VA = Channel(
-    code="DHY",
+cha_liv_BHY_VA = Channel(
+    code="BHY",
     location_code="VA",
     latitude=???,
     longitude=???,
@@ -408,8 +408,8 @@ cha_liv_DHY_VA = Channel(
     azimuth=???,
     dip=???,
     sample_rate=???)
-cha_liv_DHY_VA = Channel(
-    code="DHY",
+cha_liv_BHY_VA = Channel(
+    code="BHY",
     location_code="VA",
     latitude=???,
     longitude=???,
@@ -459,65 +459,65 @@ response_seisligo = nrl.get_response( # doctest: +SKIP
 
 # Now tie it all together.
 # add response to channels HAN
-cha_han_DJX_EY.response = response_BRS
-cha_han_DJY_EX.response = response_BRS
+cha_han_BJX_EY.response = response_BRS
+cha_han_BJY_EX.response = response_BRS
 
-cha_han_DHX_EX.response = response_seisligo
-cha_han_DHY_EX.response = response_seisligo
-cha_han_DHZ_EX.response = response_seisligo
-cha_han_DHX_EY.response = response_seisligo
-cha_han_DHY_EY.response = response_seisligo
-cha_han_DHZ_EY.response = response_seisligo
-cha_han_DHX_VA.response = response_seisligo
-cha_han_DHY_VA.response = response_seisligo
+cha_han_BHX_EX.response = response_seisligo
+cha_han_BHY_EX.response = response_seisligo
+cha_han_BHZ_EX.response = response_seisligo
+cha_han_BHX_EY.response = response_seisligo
+cha_han_BHY_EY.response = response_seisligo
+cha_han_BHZ_EY.response = response_seisligo
+cha_han_BHX_VA.response = response_seisligo
+cha_han_BHY_VA.response = response_seisligo
 
 # add channels to station Hanford
-sta_han.channels.append(cha_han_DJX_EY)
-sta_han.channels.append(cha_han_DJY_EX)
-sta_han.channels.append(cha_han_DHX_EX)
-sta_han.channels.append(cha_han_DHY_EX)
-sta_han.channels.append(cha_han_DHZ_EX)
-sta_han.channels.append(cha_han_DHX_EY)
-sta_han.channels.append(cha_han_DHY_EY)
-sta_han.channels.append(cha_han_DHZ_EY)
-sta_han.channels.append(cha_han_DHX_VA)
-sta_han.channels.append(cha_han_DHY_VA)
+sta_han.channels.append(cha_han_BJX_EY)
+sta_han.channels.append(cha_han_BJY_EX)
+sta_han.channels.append(cha_han_BHX_EX)
+sta_han.channels.append(cha_han_BHY_EX)
+sta_han.channels.append(cha_han_BHZ_EX)
+sta_han.channels.append(cha_han_BHX_EY)
+sta_han.channels.append(cha_han_BHY_EY)
+sta_han.channels.append(cha_han_BHZ_EY)
+sta_han.channels.append(cha_han_BHX_VA)
+sta_han.channels.append(cha_han_BHY_VA)
 
 # add response to channels LIV
-cha_liv_DJX_IY.response = response_BRS
-cha_liv_DJY_IX.response = response_BRS
-cha_liv_DJX_EY.response = response_BRS
-cha_liv_DJY_EX.response = response_BRS
-cha_liv_DHX_IY.response = response_seisligo
-cha_liv_DHY_IY.response = response_seisligo
-cha_liv_DHZ_IY.response = response_seisligo
-cha_liv_DHX_IX.response = response_seisligo
-cha_liv_DHY_IX.response = response_seisligo
-cha_liv_DHZ_IX.response = response_seisligo
-cha_liv_DHX_EY.response = response_seisligo
-cha_liv_DHY_EY.response = response_seisligo
-cha_liv_DHZ_EY.response = response_seisligo
-cha_liv_DHX_EX.response = response_seisligo
-cha_liv_DHY_EX.response = response_seisligo
-cha_liv_DHZ_EX.response = response_seisligo
+cha_liv_BJX_IY.response = response_BRS
+cha_liv_BJY_IX.response = response_BRS
+cha_liv_BJX_EY.response = response_BRS
+cha_liv_BJY_EX.response = response_BRS
+cha_liv_BHX_IY.response = response_seisligo
+cha_liv_BHY_IY.response = response_seisligo
+cha_liv_BHZ_IY.response = response_seisligo
+cha_liv_BHX_IX.response = response_seisligo
+cha_liv_BHY_IX.response = response_seisligo
+cha_liv_BHZ_IX.response = response_seisligo
+cha_liv_BHX_EY.response = response_seisligo
+cha_liv_BHY_EY.response = response_seisligo
+cha_liv_BHZ_EY.response = response_seisligo
+cha_liv_BHX_EX.response = response_seisligo
+cha_liv_BHY_EX.response = response_seisligo
+cha_liv_BHZ_EX.response = response_seisligo
 
 # add channels to station Hanford
-sta_liv.channels.append(cha_liv_DJX_IY)
-sta_liv.channels.append(cha_liv_DJY_IX)
-sta_liv.channels.append(cha_liv_DJX_EY)
-sta_liv.channels.append(cha_liv_DJY_EX)
-sta_liv.channels.append(cha_liv_DHX_IY)
-sta_liv.channels.append(cha_liv_DHY_IY)
-sta_liv.channels.append(cha_liv_DHZ_IY)
-sta_liv.channels.append(cha_liv_DHX_IX)
-sta_liv.channels.append(cha_liv_DHY_IX)
-sta_liv.channels.append(cha_liv_DHZ_IX)
-sta_liv.channels.append(cha_liv_DHX_EY)
-sta_liv.channels.append(cha_liv_DHY_EY)
-sta_liv.channels.append(cha_liv_DHZ_EY)
-sta_liv.channels.append(cha_liv_DHX_EX)
-sta_liv.channels.append(cha_liv_DHY_EX)
-sta_liv.channels.append(cha_liv_DHZ_EX)
+sta_liv.channels.append(cha_liv_BJX_IY)
+sta_liv.channels.append(cha_liv_BJY_IX)
+sta_liv.channels.append(cha_liv_BJX_EY)
+sta_liv.channels.append(cha_liv_BJY_EX)
+sta_liv.channels.append(cha_liv_BHX_IY)
+sta_liv.channels.append(cha_liv_BHY_IY)
+sta_liv.channels.append(cha_liv_BHZ_IY)
+sta_liv.channels.append(cha_liv_BHX_IX)
+sta_liv.channels.append(cha_liv_BHY_IX)
+sta_liv.channels.append(cha_liv_BHZ_IX)
+sta_liv.channels.append(cha_liv_BHX_EY)
+sta_liv.channels.append(cha_liv_BHY_EY)
+sta_liv.channels.append(cha_liv_BHZ_EY)
+sta_liv.channels.append(cha_liv_BHX_EX)
+sta_liv.channels.append(cha_liv_BHY_EX)
+sta_liv.channels.append(cha_liv_BHZ_EX)
 
 # add station Hanford to Network LI
 net.stations.append(sta_han)

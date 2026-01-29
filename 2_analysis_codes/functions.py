@@ -127,25 +127,25 @@ def get_ligo_data(folder, location):
     if location == 'LIV':
         ## 1. READ DATA
         # BRS
-        LIV_EY_DJX = read('%s/%s/LI_LIV_EY_DJX.ms' %(root_data,folder))
-        LIV_EX_DJY = read('%s/%s/LI_LIV_EX_DJY.ms' %(root_data,folder))
-        LIV_IY_DJX = read('%s/%s/LI_LIV_IY_DJX.ms' %(root_data,folder))
-        LIV_IX_DJY = read('%s/%s/LI_LIV_IX_DJY.ms' %(root_data,folder))
+        LIV_EY_DJX = read('%s/%s/LI_LIV_EY_[DB]JX.ms' %(root_data,folder))
+        LIV_EX_DJY = read('%s/%s/LI_LIV_EX_[DB]JY.ms' %(root_data,folder))
+        LIV_IY_DJX = read('%s/%s/LI_LIV_IY_[DB]JX.ms' %(root_data,folder))
+        LIV_IX_DJY = read('%s/%s/LI_LIV_IX_[DB]JY.ms' %(root_data,folder))
 
         # seis
-        LIV_EY_DH = read('%s/%s/LI_LIV_EY_DHX.ms' %(root_data,folder))
-        LIV_EY_DH += read('%s/%s/LI_LIV_EY_DHY.ms' %(root_data,folder))
-        LIV_EY_DH += read('%s/%s/LI_LIV_EY_DHZ.ms' %(root_data,folder))
-        LIV_EX_DH = read('%s/%s/LI_LIV_EX_DHX.ms' %(root_data,folder))
-        LIV_EX_DH += read('%s/%s/LI_LIV_EX_DHY.ms' %(root_data,folder))
-        LIV_EX_DH += read('%s/%s/LI_LIV_EX_DHZ.ms' %(root_data,folder))
+        LIV_EY_DH = read('%s/%s/LI_LIV_EY_[DB]HX.ms' %(root_data,folder))
+        LIV_EY_DH += read('%s/%s/LI_LIV_EY_[DB]HY.ms' %(root_data,folder))
+        LIV_EY_DH += read('%s/%s/LI_LIV_EY_[DB]HZ.ms' %(root_data,folder))
+        LIV_EX_DH = read('%s/%s/LI_LIV_EX_[DB]HX.ms' %(root_data,folder))
+        LIV_EX_DH += read('%s/%s/LI_LIV_EX_[DB]HY.ms' %(root_data,folder))
+        LIV_EX_DH += read('%s/%s/LI_LIV_EX_[DB]HZ.ms' %(root_data,folder))
 
-        LIV_IY_DH = read('%s/%s/LI_LIV_IY_DHX.ms' %(root_data,folder))
-        LIV_IY_DH += read('%s/%s/LI_LIV_IY_DHY.ms' %(root_data,folder))
-        LIV_IY_DH += read('%s/%s/LI_LIV_IY_DHZ.ms' %(root_data,folder))
-        LIV_IX_DH = read('%s/%s/LI_LIV_IX_DHX.ms' %(root_data,folder))
-        LIV_IX_DH += read('%s/%s/LI_LIV_IX_DHY.ms' %(root_data,folder))
-        LIV_IX_DH += read('%s/%s/LI_LIV_IX_DHZ.ms' %(root_data,folder))
+        LIV_IY_DH = read('%s/%s/LI_LIV_IY_[DB]HX.ms' %(root_data,folder))
+        LIV_IY_DH += read('%s/%s/LI_LIV_IY_[DB]HY.ms' %(root_data,folder))
+        LIV_IY_DH += read('%s/%s/LI_LIV_IY_[DB]HZ.ms' %(root_data,folder))
+        LIV_IX_DH = read('%s/%s/LI_LIV_IX_[DB]HX.ms' %(root_data,folder))
+        LIV_IX_DH += read('%s/%s/LI_LIV_IX_[DB]HY.ms' %(root_data,folder))
+        LIV_IX_DH += read('%s/%s/LI_LIV_IX_[DB]HZ.ms' %(root_data,folder))
 
         if '_L' in folder:
             response = read_inventory('%s/LIGO_HAN_LIV_lowsps.xml' % root_xml)
@@ -169,23 +169,23 @@ def get_ligo_data(folder, location):
 
     if location == 'HAN':
         # BRS
-        HAN_EY_DJX = read('%s/%s/LI_HAN_EY_DJX.ms' % (root_data, folder))
-        HAN_EX_DJY = read('%s/%s/LI_HAN_EX_DJY.ms' % (root_data, folder))
+        HAN_EY_DJX = read('%s/%s/LI_HAN_EY_[DB]JX.ms' % (root_data, folder))
+        HAN_EX_DJY = read('%s/%s/LI_HAN_EX_[DB]JY.ms' % (root_data, folder))
 
         # seis
-        HAN_EY_DH = read('%s/%s/LI_HAN_EY_DHX.ms' % (root_data, folder))
-        HAN_EY_DH += read('%s/%s/LI_HAN_EY_DHY.ms' % (root_data, folder))
-        HAN_EY_DH += read('%s/%s/LI_HAN_EY_DHZ.ms' % (root_data, folder))
-        HAN_EX_DH = read('%s/%s/LI_HAN_EX_DHX.ms' % (root_data, folder))
-        HAN_EX_DH += read('%s/%s/LI_HAN_EX_DHY.ms' % (root_data, folder))
-        HAN_EX_DH += read('%s/%s/LI_HAN_EX_DHZ.ms' % (root_data, folder))
+        HAN_EY_DH = read('%s/%s/LI_HAN_EY_[DB]HX.ms' % (root_data, folder))
+        HAN_EY_DH += read('%s/%s/LI_HAN_EY_[DB]HY.ms' % (root_data, folder))
+        HAN_EY_DH += read('%s/%s/LI_HAN_EY_[DB]HZ.ms' % (root_data, folder))
+        HAN_EX_DH = read('%s/%s/LI_HAN_EX_[DB]HX.ms' % (root_data, folder))
+        HAN_EX_DH += read('%s/%s/LI_HAN_EX_[DB]HY.ms' % (root_data, folder))
+        HAN_EX_DH += read('%s/%s/LI_HAN_EX_[DB]HZ.ms' % (root_data, folder))
 
-        '''HAN_IY_DH = read('%s/%s/LI_HAN_IY_DHX.ms' % (root_data, folder))
-        HAN_IY_DH += read('%s/%s/LI_HAN_IY_DHY.ms' % (root_data, folder))
-        HAN_IY_DH += read('%s/%s/LI_HAN_IY_DHZ.ms' % (root_data, folder))'''
+        '''HAN_IY_DH = read('%s/%s/LI_HAN_IY_[DB]HX.ms' % (root_data, folder))
+        HAN_IY_DH += read('%s/%s/LI_HAN_IY_[DB]HY.ms' % (root_data, folder))
+        HAN_IY_DH += read('%s/%s/LI_HAN_IY_[DB]HZ.ms' % (root_data, folder))'''
         try:
-            HAN_VA_DH = read('%s/%s/LI_HAN_VA_DHX.ms' % (root_data, folder))
-            HAN_VA_DH += read('%s/%s/LI_HAN_VA_DHY.ms' % (root_data, folder))
+            HAN_VA_DH = read('%s/%s/LI_HAN_VA_[DB]HX.ms' % (root_data, folder))
+            HAN_VA_DH += read('%s/%s/LI_HAN_VA_[DB]HY.ms' % (root_data, folder))
         except:
             HAN_VA_DH = None
 
