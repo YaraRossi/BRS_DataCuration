@@ -2,6 +2,22 @@ import matplotlib.pyplot as plt
 import numpy as np
 from obspy import read, read_inventory
 
+def getBRS_SN():
+    import numpy
+
+    path = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/BRS_sensornoise_TheoryModel.txt'
+
+    # Read two-column text file:
+    # column 1: Frequency (Hz)
+    # column 2: Noise ASD (rad/sqrt(Hz))
+    data = numpy.loadtxt(path)
+
+    # Split into separate vectors
+    freq = data[:, 0]
+    BRSnoise = data[:, 1]
+
+    return freq, BRSnoise
+
 
 def plot_traces_offset(traces, label, offset=None):
     """
@@ -121,8 +137,9 @@ def supylabel2(fig, s, **kwargs):
     fig.text(**kwargs)
 
 def get_ligo_data(folder, location):
-    root_data = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/miniseed_LIGO' #zenodo_upload/miniseed_LIGO'
-    root_xml = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/metadata'
+    root_data = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/zenodo_upload/miniseed_LIGO'
+    #root_xml = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/metadata'
+    root_xml = '/Users/yararossi/Documents/Work/Towards_Quantification/1_Coding/1.11_BRS_data_curation/BRS_DataCuration/1_conversion_codes'
 
     if location == 'LIV':
         ## 1. READ DATA
@@ -154,10 +171,10 @@ def get_ligo_data(folder, location):
 
         ## 3. REMOVE RESPONSE
         # BRS
-        LIV_EY_DJX.remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False)
-        LIV_EX_DJY.remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False)
-        LIV_IY_DJX.remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False)
-        LIV_IX_DJY.remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False)
+        #LIV_EY_DJX.remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False)
+        #LIV_EX_DJY.remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False)
+        #LIV_IY_DJX.remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False)
+        #LIV_IX_DJY.remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False)
 
         # SEIS
         LIV_EY_DH.remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False)
@@ -196,8 +213,8 @@ def get_ligo_data(folder, location):
 
         ## 3. REMOVE RESPONSE
         # BRS
-        HAN_EY_DJX.remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False)
-        HAN_EX_DJY.remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False)
+        #HAN_EY_DJX.remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False)
+        #HAN_EX_DJY.remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False)
 
         # SEIS
         HAN_EY_DH.remove_response(inventory=response, pre_filt=None, output="DEF", water_level=60, plot=False)
@@ -209,4 +226,106 @@ def get_ligo_data(folder, location):
             HAN_VA_DH = None
 
         return HAN_EY_DJX, HAN_EX_DJY, HAN_EY_DH, HAN_EX_DH, HAN_VA_DH # HAN_IY_DH,
+
+
+def get_UW_data(folder, location):
+    """
+    Download UW.NIKE and UW.LIGO seismic and rotation data from the same project folder structure as LIGO data.
+    
+    Parameters
+    ----------
+    folder : str
+        Event folder name (e.g., '2024-04-02')
+    location : str
+        Station location ('HAN' for Hanford, 'LIV' for Livingston)
+        
+    Returns
+    -------
+    UW_NIKE_HH : obspy.Stream or None
+        UW.NIKE high-gain seismometer data (HHE, HHN, HHZ channels combined) or None if not available
+    UW_NIKE_EN : obspy.Stream or None
+        UW.NIKE displacement/rotation sensor data (ENE, ENN, ENZ channels combined) or None if not available
+    UW_LIGO_HH : obspy.Stream or None
+        UW.LIGO high-gain seismometer data (HHE, HHN, HHZ channels combined) or None if not available
+        
+    Notes
+    -----
+    Returns None for missing data to easily detect if data exists or not.
+    This function currently skips remove_response - TODO: Add response removal when metadata is available.
+    """
+    root_data = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/zenodo_upload/miniseed_LIGO'
+
+    root_xml = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/zenodo_upload/UW_combined.xml'
+    response = read_inventory(root_xml)
+
+    if location == 'HAN':
+        # UW.NIKE - Try to read HH channels (seismometer)
+        try:
+            UW_NIKE_HH = read('%s/%s/UW_NIKE_--_HHE.*' % (root_data, folder))
+            UW_NIKE_HH += read('%s/%s/UW_NIKE_--_HHN.*' % (root_data, folder))
+            UW_NIKE_HH += read('%s/%s/UW_NIKE_--_HHZ.*' % (root_data, folder))
+        except:
+            UW_NIKE_HH = None
+
+        # UW.NIKE - Try to read EN channels (displacement/rotation)
+        try:
+            UW_NIKE_EN = read('%s/%s/UW_NIKE_--_ENE.*' % (root_data, folder))
+            UW_NIKE_EN += read('%s/%s/UW_NIKE_--_ENN.*' % (root_data, folder))
+            UW_NIKE_EN += read('%s/%s/UW_NIKE_--_ENZ.*' % (root_data, folder))
+        except:
+            UW_NIKE_EN = None
+
+        # UW.LIGO - Try to read HH channels (seismometer)
+        try:
+            UW_LIGO_HH = read('%s/%s/UW_LIGO_--_HHE.*' % (root_data, folder))
+            UW_LIGO_HH += read('%s/%s/UW_LIGO_--_HHN.*' % (root_data, folder))
+            UW_LIGO_HH += read('%s/%s/UW_LIGO_--_HHZ.*' % (root_data, folder))
+        except:
+            UW_LIGO_HH = None
+
+        if UW_NIKE_HH is not None:
+            UW_NIKE_HH.remove_response(inventory=response, pre_filt=None, output="VEL", water_level=60, plot=False)
+        if UW_NIKE_EN is not None:
+            UW_NIKE_EN.remove_response(inventory=response, pre_filt=None, output="VEL", water_level=60, plot=False)
+        if UW_LIGO_HH is not None:
+            UW_LIGO_HH.remove_response(inventory=response, pre_filt=None, output="VEL", water_level=60, plot=False)
+
+        return UW_NIKE_HH, UW_NIKE_EN, UW_LIGO_HH
+
+    elif location == 'LIV':
+        # UW.NIKE - Try to read HH channels (seismometer)
+        try:
+            UW_NIKE_HH = read('%s/%s/UW_NIKE_--_HHE.*' % (root_data, folder))
+            UW_NIKE_HH += read('%s/%s/UW_NIKE_--_HHN.*' % (root_data, folder))
+            UW_NIKE_HH += read('%s/%s/UW_NIKE_--_HHZ.*' % (root_data, folder))
+        except:
+            UW_NIKE_HH = None
+
+        # UW.NIKE - Try to read EN channels (displacement/rotation)
+        try:
+            UW_NIKE_EN = read('%s/%s/UW_NIKE_--_ENE.*' % (root_data, folder))
+            UW_NIKE_EN += read('%s/%s/UW_NIKE_--_ENN.*' % (root_data, folder))
+            UW_NIKE_EN += read('%s/%s/UW_NIKE_--_ENZ.*' % (root_data, folder))
+        except:
+            UW_NIKE_EN = None
+
+        # UW.LIGO - Try to read HH channels (seismometer)
+        try:
+            UW_LIGO_HH = read('%s/%s/UW_LIGO_--_HHE.*' % (root_data, folder))
+            UW_LIGO_HH += read('%s/%s/UW_LIGO_--_HHN.*' % (root_data, folder))
+            UW_LIGO_HH += read('%s/%s/UW_LIGO_--_HHZ.*' % (root_data, folder))
+        except:
+            UW_LIGO_HH = None
+
+        if UW_NIKE_HH is not None:
+            UW_NIKE_HH.remove_response(inventory=response, pre_filt=None, output="VEL", water_level=10, plot=False)
+        if UW_NIKE_EN is not None:
+            UW_NIKE_EN.remove_response(inventory=response, pre_filt=None, output="VEL", water_level=10, plot=False)
+        if UW_LIGO_HH is not None:
+            UW_LIGO_HH.remove_response(inventory=response, pre_filt=None, output="VEL", water_level=10, plot=False)
+
+        return UW_NIKE_HH, UW_NIKE_EN, UW_LIGO_HH
+
+    else:
+        raise ValueError(f"Unknown location: {location}. Use 'HAN' or 'LIV'.")
 

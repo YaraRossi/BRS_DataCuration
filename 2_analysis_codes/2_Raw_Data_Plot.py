@@ -3,18 +3,18 @@ from IPython.core.pylabtools import figsize
 from debugpy.launcher import channel
 import matplotlib.dates as mdates
 from obspy import read, UTCDateTime, read_inventory
-from functions import get_ligo_data
+from functions import get_ligo_data, get_UW_data
 import os
 import matplotlib.pyplot as plt
 
 root_savefig = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/2_Figures/1_Raw_Filter'
-root_data = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/miniseed_LIGO'
+root_data = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/zenodo_upload/miniseed_LIGO'
 
 for folder in os.listdir(root_data):
     if folder in ['.DS_Store']:
         continue
-    '''if folder not in ['2025-12-08']:
-        continue'''
+    if folder not in ['2025-12-08']:
+        continue
 
     LIV, HAN = True, True
 
@@ -40,15 +40,25 @@ for folder in os.listdir(root_data):
             nrows=8
         elif location == 'HAN':
             HAN_EY_DJX, HAN_EX_DJY, HAN_EY_DH, HAN_EX_DH, HAN_VA_DH = get_ligo_data(folder, location)
-            streams = HAN_EY_DJX, HAN_EX_DJY, HAN_EY_DH, HAN_EX_DH, HAN_VA_DH
-            name = ['HAN_EY_DJX', 'HAN_EX_DJY', 'HAN_EY_DH', 'HAN_EX_DH', 'HAN_VA_DH']
-            nrows=5
+            UW_NIKE_HH, UW_NIKE_EN, UW_LIGO_HH = get_UW_data(folder, location)
+            streams = HAN_EY_DJX, HAN_EX_DJY, HAN_EY_DH, HAN_EX_DH, HAN_VA_DH, UW_NIKE_HH, UW_NIKE_EN, UW_LIGO_HH
+            name = ['HAN_EY_DJX', 'HAN_EX_DJY', 'HAN_EY_DH', 'HAN_EX_DH', 'HAN_VA_DH', 'UW_NIKE_HH', 'UW_NIKE_EN', 'UW_LIGO_HH']
+            nrows=8
 
 
         starttime = streams[0][0].stats.starttime
         endtime = streams[0][0].stats.endtime
         fmt = "%Y-%m-%dT%H:%M:%S"
-        print(f'{starttime.strftime(fmt)},{starttime.strftime(fmt)},{endtime.strftime(fmt)},{starttime.strftime(fmt)},{endtime.strftime(fmt)},{folder}')
+        
+        # Print start and end times for each station/variable
+        print(f"\n=== Event: {folder}, Location: {location} ===")
+        for seed, stream_name in zip(streams, name):
+            if seed is not None:
+                print(f'{stream_name}: {seed[0].stats.starttime.strftime(fmt)} - {seed[0].stats.endtime.strftime(fmt)}')
+            else:
+                print(f'{stream_name}: No data available')
+        print()
+        
         zoom_start = starttime+(endtime-starttime)/4
         zoom_end = zoom_start+(endtime-starttime)/4/2
         d = starttime.date
@@ -60,22 +70,24 @@ for folder in os.listdir(root_data):
         plt.subplots_adjust(hspace=0)
 
         for i, seed in enumerate(streams):
-            if 'VA' in name[i]:
-                if seed == None:
-                    continue
+            # Skip if data is None (for missing HAN_VA_DH or UW data)
+            if seed == None:
+                continue
 
             # raw data
             ax = axs[i,0]
             if 'J' in name[i]:
                 color = 'red'
                 ax.plot(seed[0].times('matplotlib'), seed[0].data, color=color, label=name[i][4:])
+            elif 'VA' in name[i]:
+                color = 'k'
+                ax.plot(seed[0].times('matplotlib'), seed.select(channel='*HX')[0].data, color=color, label=f'{name[i][4:]}X')
+            elif 'UW' in name[i]:
+                color = 'blue'
+                ax.plot(seed[0].times('matplotlib'), seed.select(channel='*E')[0].data, color=color, label=f'{name[i]}E')
             else:
                 color = 'k'
-                if 'VA' in name[i]:
-                    ax.plot(seed[0].times('matplotlib'), seed.select(channel=f'DHX')[0].data, color=color, label=f'{name[i][4:]}X')
-
-                else:
-                    ax.plot(seed[0].times('matplotlib'), seed.select(channel=f'DH{name[i][5]}')[0].data, color=color, label=f'{name[i][4:]}{name[i][5]}')
+                ax.plot(seed[0].times('matplotlib'), seed.select(channel=f'*H{name[i][5]}')[0].data, color=color, label=f'{name[i][4:]}{name[i][5]}')
             ax.legend(loc='lower right')
             ax.margins(0)
 
@@ -87,13 +99,15 @@ for folder in os.listdir(root_data):
             if 'J' in name[i]:
                 color = 'red'
                 ax.plot(seed_f_s[0].times('matplotlib'), seed_f_s[0].data, color=color, label=name[i][4:])
+            elif 'VA' in name[i]:
+                color = 'k'
+                ax.plot(seed_f_s[0].times('matplotlib'), seed_f_s.select(channel=f'*HX')[0].data, color=color, label=f'{name[i][4:]}X')
+            elif 'UW' in name[i]:
+                color = 'blue'
+                ax.plot(seed_f_s[0].times('matplotlib'), seed_f_s.select(channel='*E')[0].data, color=color, label=f'{name[i]}E')
             else:
                 color = 'k'
-                if 'VA' in name[i]:
-                    ax.plot(seed_f_s[0].times('matplotlib'), seed_f_s.select(channel=f'DHX')[0].data, color=color, label=f'{name[i][4:]}X')
-
-                else:
-                    ax.plot(seed_f_s[0].times('matplotlib'), seed_f_s.select(channel=f'DH{name[i][5]}')[0].data, color=color, label=f'{name[i][4:]}{name[i][5]}')
+                ax.plot(seed_f_s[0].times('matplotlib'), seed_f_s.select(channel=f'*H{name[i][5]}')[0].data, color=color, label=f'{name[i][4:]}{name[i][5]}')
             #ax.legend(loc='lower right')
             ax.margins(0)
 
@@ -112,4 +126,4 @@ for folder in os.listdir(root_data):
 
         fig.savefig(f'{root_savefig}/{folder}_{location}.png', dpi=300, bbox_inches='tight')
 
-        plt.show()
+        #plt.show()
