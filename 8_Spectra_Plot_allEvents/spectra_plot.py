@@ -53,7 +53,7 @@ axs[1].set_xlim(1e-3,20)
 # import data:
 # BRS
 for folder in os.listdir(root_data):
-    if folder in ['2022-09-19_liv','2026-01-16']: # BRS data is really bad for LIV
+    if folder in ['2022-09-19_liv','2026-01-16']:
         continue
     if folder in ['2024-07-31','2024-09-23','2024-05-28','2024-07-02_han','2025-01-20','2023-08-20','2022-01-15_han',
                   '.DS_Store','2024-05-13_liv','2024-12-05', '2022-09-19_L','2021-07-29_L',
@@ -117,13 +117,13 @@ for folder in os.listdir(root_data):
     ########################################################################################################################
     # Plot Data, psd_db = 10 * numpy.log10(psd)
     data_t = LIV_IY_DHZ[0]
-    nperseg= 1/data_t.stats.delta*100
+    nperseg= 1/data_t.stats.delta*500
     nfft=nperseg
     f_t, P_t = signal.welch(data_t.data, 1 / data_t.stats.delta, nperseg=nperseg, nfft=nfft)
     axs[0].semilogx(f_t, 10 * numpy.log10(P_t), linestyle='-', color=color)
 
     data_r = LIV_I_DJE[0]
-    nperseg= 1/data_t.stats.delta*100
+    nperseg= 1/data_t.stats.delta*500
     nfft=nperseg
     f_r, P_r = signal.welch(data_r.data, 1 / data_r.stats.delta, nperseg=nperseg, nfft=nfft)
     axs[1].semilogx(f_r, 10 * numpy.log10(P_r), linestyle='-', color=color)
@@ -154,5 +154,5 @@ for folder in os.listdir(root_data):
 
 axs[0].legend(loc='lower left')
 axs[1].legend(loc='lower left')
-fig.savefig(f'{root_savefig}/all_PSD_{location}.png', dpi=300, bbox_inches='tight')
+#fig.savefig(f'{root_savefig}/all_PSD_{location}.png', dpi=300, bbox_inches='tight')
 plt.show()

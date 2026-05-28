@@ -2,6 +2,7 @@ import numpy
 from numpy import pi
 import matplotlib.pyplot as plt
 import matplotlib as mpl
+from matplotlib.ticker import MultipleLocator
 from obspy import read, UTCDateTime, read_inventory
 from obspy.signal.cross_correlation import correlate
 from obspy.signal.rotate import rotate_ne_rt
@@ -19,27 +20,26 @@ root_xml = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CR
 response = read_inventory('%s/LIGO_HAN_LIV.xml' %root_xml)
 path = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data'
 events = pd.read_csv(f'{path}/event_times_LIV.txt')
-event_all = pd.read_csv('../4_Paper_Tables/events_2019_2025_updated.txt')
+#event_all = pd.read_csv('../4_Paper_Tables/events_2019_2025_updated.txt')
 
 # import data:
 # BRS
 folder = '2024-06-28' #'2024-09-15'
 for folder in os.listdir(root_data):
-    if folder in ['2024-07-31','2024-09-23','2024-05-28','2024-07-02','2025-01-20','2023-08-20',
-                  '2022-01-15','.DS_Store','2024-05-13','2024-12-05','Feb']:
+    if 'han' in folder:
         continue
-    data_event = events[events['location'] == folder]
-    data_event_all = event_all[event_all['location'] == folder]
-    '''if data_event.empty:
-        data_event = data_event_all
-        if data_event.empty:
-            print(folder, 'event still missing from eventfile)')
-            continue'''
+    if folder in ['2024-07-31','2024-09-23','2024-05-28','2024-07-02','2025-01-20','2023-08-20',
+                  '2022-01-15','.DS_Store','2024-05-13_liv','2024-12-05','2025-06-20_lownoise_L',
+                  '2025-02-16_highnoise_L', '2025-02-15_liv','2022-09-19_liv']:
+        continue
+
+    print(folder)
+    data_event = events[events['location'] == folder.split('_')[0]]
+
 
     starttime = UTCDateTime(str(data_event['eventstart'].iloc[0]))
     endtime = UTCDateTime(str(data_event['eventend'].iloc[0]))
 
-    print(folder)
 
     # theoretical baz
     source_latitude = data_event[' latitude'].values.astype(float)
@@ -52,10 +52,10 @@ for folder in os.listdir(root_data):
     # download data
     location = 'LIV'
     LIV_EY_DJX, LIV_EX_DJY, LIV_IY_DJX, LIV_IX_DJY, LIV_IX_DH, LIV_IY_DH, LIV_EX_DH, LIV_EY_DH = get_ligo_data(folder,location)
-    _, _, LIV_IY_DHZ_orig = LIV_IY_DH.select(channel='DHX'), LIV_IY_DH.select(channel='DHY'), LIV_IY_DH.select(channel='DHZ')
+    _, _, LIV_IY_DHZ_orig = LIV_IY_DH.select(channel='*HX'), LIV_IY_DH.select(channel='*HY'), LIV_IY_DH.select(channel='*HZ')
 
     # rotate to EN
-    channel = response.select(network='LI', station='LIV', location='IX', channel='DJY')[0][0][0]
+    channel = response.select(network='LI', station='LIV', location='IX', channel='*JY')[0][0][0]
     az = channel.azimuth/180*pi
     LIV_I_DJ = numpy.array([LIV_IY_DJX[0].data, LIV_IX_DJY[0].data, LIV_IX_DJY[0].data * 0])
     LIV_I_DJ_baz = rot_vec(0, 0, az, LIV_I_DJ)
@@ -69,16 +69,16 @@ for folder in os.listdir(root_data):
     # remove response, slice, detrend, filter
     for i in range(1,2):
 
-        freqmin, freqmax = 0.02,0.2#round(mid_freq-step_freq*i,3), round(mid_freq+step_freq*i,3)
+        freqmin, freqmax = 0.01,0.1#round(mid_freq-step_freq*i,3), round(mid_freq+step_freq*i,3)
         print(freqmin, freqmax)
-        LIV_I_E = LIV_I_E_orig.copy().slice(starttime, endtime).filter('lowpass',freq=10,zerophase=True).detrend('simple').taper(0.02).resample(20).filter('bandpass', freqmin=freqmin, freqmax=freqmax,zerophase=True)
-        LIV_I_N = LIV_I_N_orig.copy().slice(starttime, endtime).filter('lowpass',freq=10,zerophase=True).detrend('simple').taper(0.02).resample(20).filter('bandpass', freqmin=freqmin, freqmax=freqmax,zerophase=True)
-        LIV_IY_DHZ = LIV_IY_DHZ_orig.copy().slice(starttime, endtime).filter('lowpass',freq=10,zerophase=True).detrend('simple').taper(0.02).resample(20).filter('bandpass', freqmin=freqmin, freqmax=freqmax,zerophase=True)
+        LIV_I_E = LIV_I_E_orig.copy().slice(starttime, endtime).filter('lowpass',freq=4.5,zerophase=True).detrend('simple').taper(0.02).resample(10).filter('bandpass', freqmin=freqmin, freqmax=freqmax,zerophase=True)
+        LIV_I_N = LIV_I_N_orig.copy().slice(starttime, endtime).filter('lowpass',freq=4.5,zerophase=True).detrend('simple').taper(0.02).resample(10).filter('bandpass', freqmin=freqmin, freqmax=freqmax,zerophase=True)
+        LIV_IY_DHZ = LIV_IY_DHZ_orig.copy().slice(starttime, endtime).filter('lowpass',freq=4.5,zerophase=True).detrend('simple').taper(0.02).resample(10).filter('bandpass', freqmin=freqmin, freqmax=freqmax,zerophase=True)
 
         ########################################################################################################################
 
         sampling_rate = int(LIV_I_N[0].stats.sampling_rate)
-        sec = 90  # window length for correlation
+        sec = 1/freqmin*2  # window length for correlation
         overlap = 0.5
         win_samples = int(sampling_rate * sec)
         hop_samples = int(win_samples * (1.0 - overlap))
@@ -144,12 +144,12 @@ for folder in os.listdir(root_data):
         # plotting data:
         time = numpy.linspace(0, len(LIV_I_N[0].data)/sampling_rate,len(LIV_I_N[0].data)) ## Time-array
         # vertical velocity
-        fig = plt.figure(figsize=(12, 8))
-        plt.subplot2grid((3, 30), (0, 0), colspan=29)
-        plt.plot(time, LIV_IY_DHZ[0].data, 'k', label='vertical velocity')
-        plt.xlim(0, time[-1])
-        plt.ylabel('transv. acc. \n[$nm/s$]')
-        plt.legend()
+        fig = plt.figure(figsize=(9, 5))
+        ax1 = plt.subplot2grid((2, 50), (0, 0), colspan=49)
+        ax1.plot(time, LIV_IY_DHZ[0].data, 'k', label='vertical velocity')
+        ax1.set_xlim(0, time[-1])
+        ax1.set_ylabel('[$nm/s$]')
+        ax1.legend(loc='lower left')
 
         '''# add P- and S-wave arrivals
         plt.axvline(arriv_p);plt.annotate('P-arrival', xy=(arriv_p+20,numpy.max(LIV_IY_DHZ[0].data)),xycoords='data');
@@ -157,13 +157,14 @@ for folder in os.listdir(root_data):
 
         # transverse rotation
         r,t = rotate_ne_rt(LIV_I_N[0].data, LIV_I_E[0].data, baz[2])
-        plt.subplot2grid((3, 30), (1, 0), colspan=29)
-        plt.plot(time, r, linestyle='--', color='lightpink',label='radial angle')
-        plt.plot(time, t, 'red',label='transversal angle')
-        plt.xlim(0, time[-1])
-        plt.ylabel('vert. rot. rate \n[nrad]')
-        plt.ticklabel_format(axis='y', style='sci', scilimits=(-2,2))
-        plt.legend(loc='lower left')
+        # plt.subplot2grid((3, 30), (1, 0), colspan=29)
+        ax1_twin = ax1.twinx()
+        ax1_twin.plot(time, r, linestyle='--', color='lightpink',label='radial angle')
+        ax1_twin.plot(time, t, 'red',label='transversal angle')
+        ax1_twin.set_xlim(0, time[-1])
+        ax1_twin.set_ylabel('[nrad]', color='red')
+        ax1_twin.ticklabel_format(axis='y', style='sci', scilimits=(-2,2))
+        ax1_twin.legend(loc='lower right')
         '''plt.axvline(arriv_p)
         plt.axvline(arriv_s)'''
 
@@ -171,7 +172,7 @@ for folder in os.listdir(root_data):
         # backazimuth estimation plot
         time_calc = numpy.array([((i * hop_samples + win_samples / 2) / sampling_rate) for i in range(num_windows)])
         # old time_calc = numpy.arange(sec/2., sec * num_windows, sec)
-        plt.subplot2grid((3, 30), (2, 0), colspan=29)
+        plt.subplot2grid((2, 50), (1, 0), colspan=49)
         im = plt.pcolor(X, Y, corrbaz, cmap=plt.cm.RdYlGn_r, vmin=-1,vmax=1)
         plt.plot(time_calc, baz_maxcorr, '.k')
         plt.plot(time_calc, baz_midpoints, '*b')
@@ -179,22 +180,26 @@ for folder in os.listdir(root_data):
         plt.ylim(0, 360)
         plt.ylabel(u'estimated \nbackazimuth [°]')
         plt.xlabel('time [s]')
+        ax = plt.gca()
+        ax.yaxis.set_major_locator(MultipleLocator(60))
+        ax.yaxis.set_minor_locator(MultipleLocator(10))
 
         # plot theoretical Backazimuth for comparison
         xx = [0, time[-1]]
         tba = [baz[2], baz[2]]
         plt.plot(xx, tba, c='.5', lw=1.5)
-        plt.text(2600, 106, u'Theor. BAz = '+str(round(baz[2],2))+'°', color='k',fontsize=12,backgroundcolor='.9')
+        plt.text(0.1, 0.1, u'Theor. BAz = '+str(round(baz[2],2))+'°',
+                 color='k',fontsize=12,backgroundcolor='.9',transform=plt.gca().transAxes)
 
 
         # add colorbar
-        cax = plt.subplot2grid((3, 30), (2, 29))
+        cax = plt.subplot2grid((2, 50), (1, 49))
         norm = mpl.colors.Normalize(vmin=-1, vmax=1)
         cb1 = mpl.colorbar.ColorbarBase(cax, cmap=plt.cm.RdYlGn_r, norm=norm, orientation='vertical')
 
-        plt.suptitle(f'f={freqmin}-{freqmax}')
+        plt.suptitle(f'{location} internal | {folder} | f={freqmin}-{freqmax}')
 
-        fig.savefig(f'{root_savefig}/BAZ_{folder}_{freqmin}_{freqmax}.png', dpi=300, bbox_inches='tight')
+        fig.savefig(f'{root_savefig}/BAZ_{folder}_{freqmin}_{freqmax}_LIV_internal.png', dpi=300, bbox_inches='tight')
 
         # Save correlation and BAz data
 
@@ -217,6 +222,6 @@ for folder in os.listdir(root_data):
                 'max_trans':max_trans
                 }
         df = pd.DataFrame(data)
-        df.to_csv(f'{root_savedata}/{folder}_{freqmin}_{freqmax}_corr_baz.csv')
+        df.to_csv(f'{root_savedata}/{folder}_{freqmin}_{freqmax}_LIV_internal_corr_baz.csv')
 
-plt.show()
+#plt.show()

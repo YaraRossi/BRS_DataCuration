@@ -6,12 +6,24 @@ import scipy.signal as signal
 import numpy
 import sys
 sys.path.append("../2_analysis_codes")
-from functions import plot_traces_offset, get_ligo_data
+from functions import plot_traces_offset, get_ligo_data, getBRS_SN
 from numpy import pi
 
 
 root_savefig = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/2_Figures/Eigenmode'
 root_event = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data'
+
+# get RLNM
+root_RLNM = '/Users/yararossi/Documents/Work/Random_Workstuff/RLNM/'
+rlnm_df = pd.read_csv("%s/ModelForFelix_freq.csv" % root_RLNM)
+rlnm_freq = rlnm_df['frequency'].values
+rlnm_amp = numpy.sqrt(rlnm_df['rlnm_median (rad2/Hz)'].values*rlnm_freq)
+rlnm_amp_psd = rlnm_df['rlnm_median (rad2/Hz)'].values
+
+# get BRS theoretical noise level
+freq_BRSSN, noise_BRSSN_asd = getBRS_SN()
+noise_BRSSN_psd = (noise_BRSSN_asd * 1e9) ** 2
+noise_BRSSN_db = 10 * numpy.log10(noise_BRSSN_psd)
 
 # get data
 root_data_ligo = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/miniseed_LIGO'
@@ -86,11 +98,12 @@ for data_all, nperseg, line_all, color_all, label_type in zip([data_all_event,da
         if 'J3' in label:
             continue
 
-        f_t, P_t = signal.welch(data[0].data, 1 / data[0].stats.delta, nperseg=nperseg)
+        f_t, P_t = signal.welch(data[0].data, 1 / data[0].stats.delta, nperseg=nperseg, scaling='density')
 
         ax.loglog(f_t, P_t, color=color, label=f'{label} - {label_type}', linestyle=line)
 
-
+ax.loglog(rlnm_freq, rlnm_amp_psd*1e18, color='blue', label='RLNM')
+ax.loglog(freq_BRSSN, noise_BRSSN_psd, color='lightblue', label='BRS noise Model')
 ax.set_xlim(left=0.008, right=125)
 ax.set_ylim(top=1e6, bottom=1e-7)
 
@@ -117,12 +130,11 @@ for data_all, nperseg, line_all, color_all, label_type in zip([data_all_event,da
 leg = ax.legend(loc="upper left", bbox_to_anchor=(1.01, 1), borderaxespad=0)  # Move legend further right
 for line in leg.get_lines():
     line.set_linewidth(3.0)
-ax.set_ylabel(r'Amplitude [$nrad^2/Hz$]')
+ax.set_ylabel(r'PSD [$nrad^2/Hz$]')
 ax.set_xlabel('Frequency [Hz]')
 ax.set_title('(c)',loc='left')
 plt.subplots_adjust(right=0.75)  # Ensure space for legend
-plt.savefig('%s/Eigenmode_Error_PSD_%s_4poster.png' % (root_savefig, folder), dpi=300,
-            bbox_inches='tight')
+#plt.savefig('%s/Eigenmode_Error_PSD_%s_4poster.png' % (root_savefig, folder), dpi=300,bbox_inches='tight')
 
 
 plt.show()

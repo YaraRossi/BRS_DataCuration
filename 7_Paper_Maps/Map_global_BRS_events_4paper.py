@@ -18,10 +18,10 @@ data = pd.read_csv(events)
 
 # Define seismic stations (global examples)
 stations = [
-    (-119.40785307788653, 46.45511825164643, 'HAN', 'black'),   # WA, USA
+    (-119.40785307788653, 46.45511825164643, 'HAN', 'blue'),   # WA, USA
     #(-118.12602285654852, 34.136726696087834, 'CAL'),  # CA, USA
     #(-116.492470, 33.582325, 'BSPF', 'blue'),                   # CA, USA
-    (-90.77469251757329, 30.562775410180993, 'LIV', 'black'),   # LA, USA
+    (-90.77469251757329, 30.562775410180993, 'LIV', 'blue'),   # LA, USA
     #(11.275483826919913, 48.16291747145096, 'ROMY', 'purple4')   # Europe
     #(12.8780,49.1444, 'G-RING') # Germany
 ]
@@ -45,6 +45,8 @@ fig.coast(land="gray50", water="white", shorelines="1/0.5p,black", borders=[1])
 
 # plot all events as black stars
 for _, data_event in data.iterrows():
+    if pd.isna(data_event[' type']):
+        continue
     if 'tornado' in data_event[' type']:
         continue
     if 'eruption' in data_event[' type']:
@@ -52,7 +54,7 @@ for _, data_event in data.iterrows():
     source_latitude = float(data_event[' latitude'])
     source_longitude = float(data_event[' longitude'])
 
-    fig.plot(x=source_longitude, y=source_latitude, style="a0.8c", fill="yellow", pen="black")
+    fig.plot(x=source_longitude, y=source_latitude, style="a0.5c", fill="red", pen="black")
 
 
 # Plot all earthquakes as red stars

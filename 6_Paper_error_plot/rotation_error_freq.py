@@ -13,9 +13,7 @@ from obspy.geodetics.base import gps2dist_azimuth
 import sys
 import gc
 
-sys.path.append(
-    "/Users/yararossi/Documents/Work/Towards_Quantification/1_Coding/1.11_BRS_data_curation/BRS_DataCuration/2_analysis_codes"
-)
+sys.path.append("/Users/yararossi/Documents/Work/Towards_Quantification/1_Coding/1.11_BRS_data_curation/BRS_DataCuration/2_analysis_codes")
 from functions import rot_vec, supylabel2, get_ligo_data
 from datetime import datetime
 tic = time.time()
@@ -78,16 +76,17 @@ colorbar_small = [bounds, cmap, norm, tick_locs, tick_labels]'''
 
 for folder in os.listdir(root_data):
     if folder in ['.DS_Store', '2025-02-15_liv', '2022-01-15_han','2024-07-02_han', '2024-05-13_liv','2024-12-05',
-                  '2025-06-20_lownoise_L','2025-02-16_highnoise_L','2025-03-04_han']:
+                  '2025-06-20_lownoise_L','2025-02-16_highnoise_L','2024-06-20_lownoise_han_L',
+                  '2024-12-08_highnoise_han_L','2026-01-16']:
         continue
-    '''if '2025-03-28' not in folder:
+    '''if '2020-10-19' not in folder:
        continue'''
 
 
     LIV, HAN = True, True
 
     if folder in ['2024-07-31','2024-09-23','2024-05-28','2024-07-02','2025-01-20','2023-08-20','2022-01-15',
-                  '2022-09-19_L','2021-07-29_L']:
+                  '2022-09-19_liv','2021-07-29_L']:
         LIV = False
 
     if 'han' in folder:
@@ -126,7 +125,7 @@ for folder in os.listdir(root_data):
         data = pd.read_csv(events)
         # get Backazimuth to rotate data:
         # azimuth of station:
-        channel = response.select(network='LI', station='LIV', location='EX', channel='DJY')[0][0][0]
+        channel = response.select(network='LI', station='LIV', location='EX', channel='*JY')[0][0][0]
         azimuth = channel.azimuth
         # event location from event info
         data_event =  data[data['location'] == folder.split('_')[0]]
@@ -151,10 +150,10 @@ for folder in os.listdir(root_data):
 
         LIV_EY_DJX, LIV_EX_DJY, LIV_IY_DJX, LIV_IX_DJY, LIV_IX_DH, LIV_IY_DH, LIV_EX_DH, LIV_EY_DH = get_ligo_data(folder, location='LIV')
 
-        LIV_EY_DHY = LIV_EY_DH.select(channel='DHY')
-        LIV_EX_DHX = LIV_EX_DH.select(channel='DHX')
-        LIV_IY_DHY = LIV_IY_DH.select(channel='DHY')
-        LIV_IX_DHX = LIV_IX_DH.select(channel='DHX')
+        LIV_EY_DHY = LIV_EY_DH.select(channel='*HY')
+        LIV_EX_DHX = LIV_EX_DH.select(channel='*HX')
+        LIV_IY_DHY = LIV_IY_DH.select(channel='*HY')
+        LIV_IX_DHX = LIV_IX_DH.select(channel='*HX')
 
         if magnitude > 5:
             freqmin = freqmin_b
@@ -220,15 +219,20 @@ for folder in os.listdir(root_data):
                                                                                 ['LIV_EY_DHY', 'LIV_EX_DHX', 'LIV_IY_DHY', 'LIV_IX_DHX'],
                                                                                 axs_event.flat, axs_event_ts_r.flat, axs_event_ts_t.flat):
 
+                if label_r in ['LIV_EY_DJX']:
+                    if folder[:10] in ['2020-10-19','2020-06-23','2021-03-04']:
+                        continue
+
                 #data_r = data_r.filter('bandpass', freqmin=0.001, freqmax=100, zerophase=True)
                 data_r = data_r.slice(starttime, endtime)
                 data_r_proc = data_r.copy().detrend('simple').taper(taper_percent).filter('bandpass', freqmin=freqmin, freqmax=freqmax,zerophase=True)
 
                 #data_t = data_t.filter('bandpass', freqmin=0.001, freqmax=100, zerophase=True)
                 data_t = data_t.slice(starttime, endtime)
-                data_t_proc = data_t.copy().detrend('simple').taper(taper_percent).filter('bandpass', freqmin=freqmin, freqmax=freqmax, zerophase=True)
+                data_t_proc_vel = data_t.copy().detrend('simple').taper(taper_percent).filter('bandpass', freqmin=freqmin, freqmax=freqmax, zerophase=True)
+                data_t_proc_acc = data_t.copy().detrend('simple').taper(taper_percent).filter('bandpass', freqmin=freqmin, freqmax=freqmax, zerophase=True).differentiate()
 
-                rot_error_acc_t = data_t_proc.copy()
+                rot_error_acc_t = data_t_proc_vel.copy()
                 rot_error_acc_t[0].stats.sampling_rate = data_r_proc[0].stats.sampling_rate
                 angle_rad = data_r_proc[0].data/1e9
                 rot_error_acc_t[0].data = angle_rad*9.81 #sin(angle_rad)*9.81
@@ -238,19 +242,21 @@ for folder in os.listdir(root_data):
                                                                                                    freqmax=freqmax,
                                                                                                    zerophase=True)
                 PREV = max(abs(rot_error_vel_t[0].data))
-                PGV = max(abs(data_t_proc[0].data))
+                PREA = max(abs(rot_error_acc_t[0].data))
+                PGV = max(abs(data_t_proc_vel[0].data))
+                PGA = max(abs(data_t_proc_acc[0].data))
                 PGRA = max(abs(angle_rad))
 
                 if magnitude > 5:
-                    axs_tele_re.scatter(PGV, PREV, marker=marker_event, color=color, label=f'f {freqmin}-{freqmax} Hz')
+                    axs_tele_re.scatter(PGA, PREA, marker=marker_event, color=color, label=f'f {freqmin}-{freqmax} Hz')
                     axs_tele_am.scatter(PGV, PGRA, marker=marker_event, color=color, label=f'f {freqmin}-{freqmax} Hz')
                 elif magnitude < 5:
-                    axs_local_re.scatter(PGV, PREV, marker=marker_event, color=color, label=f'f {freqmin}-{freqmax} Hz')
+                    axs_local_re.scatter(PGA, PREA, marker=marker_event, color=color, label=f'f {freqmin}-{freqmax} Hz')
                     axs_local_am.scatter(PGV, PGRA, marker=marker_event, color=color, label=f'f {freqmin}-{freqmax} Hz')
 
                 ax_event.scatter(PGV, PREV, marker=marker_event, color=color, label=f'f {freqmin}-{freqmax} Hz')
                 ax_event_ts_r.plot(rot_error_vel_t[0].times(),rot_error_vel_t[0].data, linewidth=0.2, color=color, label=f'f {freqmin}-{freqmax} Hz')
-                ax_event_ts_t.plot(data_t_proc[0].times(),data_t_proc[0].data, linewidth=0.2, color=color, label=f'f {freqmin}-{freqmax} Hz')
+                ax_event_ts_t.plot(data_t_proc_vel[0].times(),data_t_proc_vel[0].data, linewidth=0.2, color=color, label=f'f {freqmin}-{freqmax} Hz')
 
                 ax_event.set_xscale("log")
                 ax_event.set_yscale("log")
@@ -272,7 +278,7 @@ for folder in os.listdir(root_data):
         data = pd.read_csv(events)
         # get Backazimuth to rotate data:
         # azimuth of station:
-        channel = response.select(network='LI', station='HAN', location='EX', channel='DJY')[0][0][0]
+        channel = response.select(network='LI', station='HAN', location='EX', channel='*JY')[0][0][0]
         azimuth = channel.azimuth
         # event location from event info
         data_event =  data[data['location'] == folder.split('_')[0]]
@@ -299,8 +305,8 @@ for folder in os.listdir(root_data):
 
         HAN_EY_DJX, HAN_EX_DJY, HAN_EY_DH, HAN_EX_DH, HAN_VA_DH = get_ligo_data(folder, location='HAN')
 
-        HAN_EX_DHX = HAN_EX_DH.select(channel='DHX')
-        HAN_EY_DHY = HAN_EY_DH.select(channel='DHY')
+        HAN_EX_DHX = HAN_EX_DH.select(channel='*HX')
+        HAN_EY_DHY = HAN_EY_DH.select(channel='*HY')
 
 
         if magnitude > 5:
@@ -380,32 +386,35 @@ for folder in os.listdir(root_data):
 
                 #data_t = data_t.filter('bandpass', freqmin=0.001, freqmax=100, zerophase=True)
                 data_t = data_t.slice(starttime, endtime)
-                data_t_proc = data_t.copy().detrend('simple').taper(taper_percent).filter('bandpass', freqmin=freqmin, freqmax=freqmax, zerophase=True)
+                data_t_proc_vel = data_t.copy().detrend('simple').taper(taper_percent).filter('bandpass', freqmin=freqmin, freqmax=freqmax, zerophase=True)
+                data_t_proc_acc = data_t.copy().detrend('simple').taper(taper_percent).filter('bandpass', freqmin=freqmin, freqmax=freqmax, zerophase=True).differentiate()
 
-                rot_error_acc_t = data_t_proc.copy()
+                rot_error_acc_t = data_t_proc_vel.copy()
                 rot_error_acc_t[0].stats.sampling_rate = data_r_proc[0].stats.sampling_rate
-                angle_rad = data_r_proc[0].data / 1e9
-                rot_error_acc_t[0].data = sin(angle_rad) * 9.81
+                angle_rad = data_r_proc[0].data/1e9
+                rot_error_acc_t[0].data = angle_rad*9.81 #sin(angle_rad)*9.81
                 rot_error_vel_t = rot_error_acc_t.copy().detrend('simple').filter('bandpass', freqmin=freqmin, freqmax=freqmax,
                                                                 zerophase=True).integrate().filter('bandpass',
                                                                                                    freqmin=freqmin,
                                                                                                    freqmax=freqmax,
                                                                                                    zerophase=True)
                 PREV = max(abs(rot_error_vel_t[0].data))
-                PGV = max(abs(data_t_proc[0].data))
+                PREA = max(abs(rot_error_acc_t[0].data))
+                PGV = max(abs(data_t_proc_vel[0].data))
+                PGA = max(abs(data_t_proc_acc[0].data))
                 PGRA = max(abs(angle_rad))
 
                 if magnitude > 5:
-                    axs_tele_re.scatter(PGV, PREV, marker=marker_event, facecolor = 'None', edgecolor=color, label=f'f {freqmin}-{freqmax} Hz')
+                    axs_tele_re.scatter(PGA, PREA, marker=marker_event, facecolor = 'None', edgecolor=color, label=f'f {freqmin}-{freqmax} Hz')
                     axs_tele_am.scatter(PGV, PGRA, marker=marker_event, facecolor = 'None', edgecolor=color, label=f'f {freqmin}-{freqmax} Hz')
 
                 elif magnitude < 5:
-                    axs_local_re.scatter(PGV, PREV, marker=marker_event, facecolor = 'None', edgecolor=color, label=f'f {freqmin}-{freqmax} Hz')
+                    axs_local_re.scatter(PGA, PREA, marker=marker_event, facecolor = 'None', edgecolor=color, label=f'f {freqmin}-{freqmax} Hz')
                     axs_local_am.scatter(PGV, PGRA, marker=marker_event, facecolor = 'None', edgecolor=color, label=f'f {freqmin}-{freqmax} Hz')
 
                 ax_event.scatter(PGV, PREV, marker=marker_event, facecolor = 'None', edgecolor=color, label=f'f {freqmin}-{freqmax} Hz')
                 ax_event_ts_r.plot(rot_error_vel_t[0].times(),rot_error_vel_t[0].data, linewidth=0.2, color=color, label=f'f {freqmin}-{freqmax} Hz')
-                ax_event_ts_t.plot(data_t_proc[0].times(),data_t_proc[0].data, linewidth=0.2, color=color, label=f'f {freqmin}-{freqmax} Hz')
+                ax_event_ts_t.plot(data_t_proc_vel[0].times(),data_t_proc_vel[0].data, linewidth=0.2, color=color, label=f'f {freqmin}-{freqmax} Hz')
 
                 ax_event.set_xscale("log")
                 ax_event.set_yscale("log")
@@ -467,23 +476,25 @@ handles_tele.append(h)
 handles_local.append(h)
 labels_tele.append('LIV Station')
 labels_local.append('LIV Station')
-xlim_tele, xlim_local = [1e-6,1e-3], [1e-8,1e-4]
+xlim_tele, xlim_local = [1e-7,2e-3], [1e-8,2e-3]
 
-for fig, ax, colorbar, title, ylabel, handles, labels, xlim in zip([fig_tele_re,fig_local_re, fig_tele_am, fig_local_am],
+for fig, ax, colorbar, title, ylabel, xlabel, handles, labels, xlim, ylim in zip([fig_tele_re,fig_local_re, fig_tele_am, fig_local_am],
                                     [axs_tele_re, axs_local_re, axs_tele_am, axs_local_am],
                                     [colorbar_big,colorbar_small,colorbar_big,colorbar_small],
                                     ['c) Teleseismic events with Mw > 5', 'd) Local events with M < 5','a) Teleseismic events with Mw > 5', 'b) Local events with M < 5'],
-                                    ['Rotation error PREV [m/s]','Rotation error PREV [m/s]','Rotation angle PGRA [rad]','Rotation angle PGRA [rad]'],
+                                    ['Rotation error PREA [m/s/s]','Rotation error PREA [m/s/s]','Rotation angle PGRA [rad]','Rotation angle PGRA [rad]'],
+                                    ['PGA [m/s/s]','PGA [m/s/s]','PGV [m/s]','PGV [m/s]'],
                                     [handles_tele, handles_local, handles_tele, handles_local],
                                     [labels_tele, labels_local, labels_tele, labels_local],
-                                    [xlim_tele,xlim_local,xlim_tele,xlim_local]
+                                    [xlim_tele,xlim_local,xlim_tele,xlim_local],
+                                    [1e-9, 1e-10, 1e-10, 5e-11]
                                                              ):
     ax.set_title(title, loc='left')
     ax.set_xscale("log")
     ax.set_yscale("log")
-    #ax.set_ylimit(bottom=10^-12)
+    #ax.set_ylim(bottom=ylim)
     #ax.set_xlimit(left=10^-11)
-    if 'PREV' in ylabel:
+    if 'PREA' in ylabel:
         xx = numpy.logspace(numpy.log10(xlim[0]), numpy.log10(xlim[1]), 100)
         if '> 5' in title:
             ax.plot(xx, xx, color='gray', linestyle='-',linewidth=1, zorder=0)
@@ -505,10 +516,12 @@ for fig, ax, colorbar, title, ylabel, handles, labels, xlim in zip([fig_tele_re,
         ax.text(xx[-1],xx[-1]/1000,'0.001', ha='right')
         ax.plot(xx, xx/10000, color='gray', linestyle='-.',linewidth=1, zorder=0)
         ax.text(xx[-1],xx[-1]/10000,'0.0001', ha='right')
+        ax.plot(xx, xx/100000, color='gray', linestyle='-.',linewidth=1, zorder=0)
+        ax.text(xx[-1],xx[-1]/100000,'0.00001', ha='right')
 
 
     ax.legend(handles,labels, handler_map={tuple: HandlerTuple(ndivide=None)}, loc='upper left',frameon=False, fontsize='small')
-    ax.set_xlabel('PGV [m/s]')
+    ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)
 
     pos = ax.get_position()

@@ -38,16 +38,16 @@ for LIV, HAN, station in zip([True, False], [False, True], ['LIV', 'HAN']):
         eventstart = UTCDateTime(str(data_event['eventstart'].iloc[0]))
 
         if LIV:
-            LIV_EY_DJX = read('%s/%s/LI_LIV_EY_DJX.ms' % (root_data, folder))
-            LIV_EX_DJY = read('%s/%s/LI_LIV_EX_DJY.ms' % (root_data, folder))
-            LIV_IY_DJX = read('%s/%s/LI_LIV_IY_DJX.ms' % (root_data, folder))
-            LIV_IX_DJY = read('%s/%s/LI_LIV_IX_DJY.ms' % (root_data, folder))
+            LIV_EY_DJX = read('%s/%s/LI_LIV_EY_*JX.ms' % (root_data, folder))
+            LIV_EX_DJY = read('%s/%s/LI_LIV_EX_*JY.ms' % (root_data, folder))
+            LIV_IY_DJX = read('%s/%s/LI_LIV_IY_*JX.ms' % (root_data, folder))
+            LIV_IX_DJY = read('%s/%s/LI_LIV_IX_*JY.ms' % (root_data, folder))
 
-            LIV_EY_DHX = read('%s/%s/LI_LIV_EY_DHX.ms' % (root_data, folder))
+            LIV_EY_DHX = read('%s/%s/LI_LIV_EY_*HX.ms' % (root_data, folder))
 
         if HAN:
-            HAN_EY_DJX = read('%s/%s/LI_HAN_EY_DJX.ms' % (root_data, folder))
-            HAN_EX_DJY = read('%s/%s/LI_HAN_EX_DJY.ms' % (root_data, folder))
+            HAN_EY_DJX = read('%s/%s/LI_HAN_EY_*JX.ms' % (root_data, folder))
+            HAN_EX_DJY = read('%s/%s/LI_HAN_EX_*JY.ms' % (root_data, folder))
 
 
         db_bins_r = (-55, 55,1)
@@ -64,22 +64,22 @@ for LIV, HAN, station in zip([True, False], [False, True], ['LIV', 'HAN']):
 
         if j == 0:
             if LIV:
-                r_ppsd_LIV_EY_DJX = PPSD(LIV_EY_DJX[0].stats, metadata=response, db_bins=db_bins_r,
+                r_ppsd_LIV_EY_DJX = PPSD(LIV_EY_DJX[0].stats, metadata=None, db_bins=db_bins_r,
                                 period_step_octaves=p_s_o, period_smoothing_width_octaves=p_s_w_o, ppsd_length=ppsd_length)
-                r_ppsd_LIV_EX_DJY = PPSD(LIV_EX_DJY[0].stats, metadata=response, db_bins=db_bins_r,
+                r_ppsd_LIV_EX_DJY = PPSD(LIV_EX_DJY[0].stats, metadata=None, db_bins=db_bins_r,
                                 period_step_octaves=p_s_o, period_smoothing_width_octaves=p_s_w_o, ppsd_length=ppsd_length)
-                r_ppsd_LIV_IY_DJX = PPSD(LIV_IY_DJX[0].stats, metadata=response, db_bins=db_bins_r,
+                r_ppsd_LIV_IY_DJX = PPSD(LIV_IY_DJX[0].stats, metadata=None, db_bins=db_bins_r,
                                 period_step_octaves=p_s_o, period_smoothing_width_octaves=p_s_w_o, ppsd_length=ppsd_length)
-                r_ppsd_LIV_IX_DJY = PPSD(LIV_IX_DJY[0].stats, metadata=response, db_bins=db_bins_r,
+                r_ppsd_LIV_IX_DJY = PPSD(LIV_IX_DJY[0].stats, metadata=None, db_bins=db_bins_r,
                                 period_step_octaves=p_s_o, period_smoothing_width_octaves=p_s_w_o, ppsd_length=ppsd_length)
-                t_ppsd_LIV_EY_DHX = PPSD(LIV_EY_DHX[0].stats, metadata=response, db_bins=db_bins_t,
+                t_ppsd_LIV_EY_DHX = PPSD(LIV_EY_DHX[0].stats, metadata=None, db_bins=db_bins_t,
                                 period_step_octaves=p_s_o, period_smoothing_width_octaves=p_s_w_o, ppsd_length=ppsd_length)
                 j = 1
             if HAN:
-                r_ppsd_HAN_EY_DJX = PPSD(HAN_EY_DJX[0].stats, metadata=response, db_bins=db_bins_r,
+                r_ppsd_HAN_EY_DJX = PPSD(HAN_EY_DJX[0].stats, metadata=None, db_bins=db_bins_r,
                                          period_step_octaves=p_s_o, period_smoothing_width_octaves=p_s_w_o,
                                          ppsd_length=ppsd_length)
-                r_ppsd_HAN_EX_DJY = PPSD(HAN_EX_DJY[0].stats, metadata=response, db_bins=db_bins_r,
+                r_ppsd_HAN_EX_DJY = PPSD(HAN_EX_DJY[0].stats, metadata=None, db_bins=db_bins_r,
                                          period_step_octaves=p_s_o, period_smoothing_width_octaves=p_s_w_o,
                                          ppsd_length=ppsd_length)
                 j = 1
@@ -103,24 +103,32 @@ for LIV, HAN, station in zip([True, False], [False, True], ['LIV', 'HAN']):
         axes = fig.axes
         axes[0].set_ylabel("Amplitude [nrad^2/Hz] [dB]")
         axes[0].plot(freq_rlnm, rlnm_db, 'grey', lw=2, label='Rotational LNM')
+        axes[0].set_title("")
+        axes[0].set_title('(c) LIV.EY.BJX', loc='left')
         fig.savefig('%s/PPSD/Noise_PPSD_LIV_EY_DJX.png' % (root_savefig), dpi=300)
 
         fig = r_ppsd_LIV_EX_DJY.plot(show=False, cmap=cmap, xaxis_frequency=freq, period_lim=(0.003, 6))
         axes = fig.axes
         axes[0].set_ylabel("Amplitude [nrad^2/Hz] [dB]")
         axes[0].plot(freq_rlnm, rlnm_db, 'grey', lw=2, label='Rotational LNM')
+        axes[0].set_title("")
+        axes[0].set_title('(d) LIV.EX.BJY', loc='left')
         fig.savefig('%s/PPSD/Noise_PPSD_LIV_EX_DJY.png' % (root_savefig), dpi=300)
 
         fig = r_ppsd_LIV_IY_DJX.plot(show=False, cmap=cmap, xaxis_frequency=freq, period_lim=(0.003, 6))
         axes = fig.axes
         axes[0].set_ylabel("Amplitude [nrad^2/Hz] [dB]")
         axes[0].plot(freq_rlnm, rlnm_db, 'grey', lw=2, label='Rotational LNM')
+        axes[0].set_title("")
+        axes[0].set_title('(e) LIV.IY.BJX', loc='left')
         fig.savefig('%s/PPSD/Noise_PPSD_LIV_IY_DJX.png' % (root_savefig), dpi=300)
 
         fig = r_ppsd_LIV_IX_DJY.plot(show=False, cmap=cmap, xaxis_frequency=freq, period_lim=(0.003, 6))
         axes = fig.axes
         axes[0].set_ylabel("Amplitude [nrad^2/Hz] [dB]")
         axes[0].plot(freq_rlnm, rlnm_db, 'grey', lw=2, label='Rotational LNM')
+        axes[0].set_title("")
+        axes[0].set_title('(f) LIV.IX.BJY', loc='left')
         fig.savefig('%s/PPSD/Noise_PPSD_LIV_IX_DJY.png' % (root_savefig), dpi=300)
 
         fig = t_ppsd_LIV_EY_DHX.plot(show=False, cmap=cmap, xaxis_frequency=freq, period_lim=(0.003, 6))
@@ -131,10 +139,14 @@ for LIV, HAN, station in zip([True, False], [False, True], ['LIV', 'HAN']):
         axes = fig.axes
         axes[0].set_ylabel("Amplitude [nrad^2/Hz] [dB]")
         axes[0].plot(freq_rlnm, rlnm_db, 'grey', lw=2, label='Rotational LNM')
+        axes[0].set_title("")
+        axes[0].set_title('(a) HAN.EY.BJX', loc='left')
         fig.savefig('%s/PPSD/Noise_PPSD_HAN_EY_DJX.png' % (root_savefig), dpi=300)
 
         fig = r_ppsd_HAN_EX_DJY.plot(show=False, cmap=cmap, xaxis_frequency=freq, period_lim=(0.003, 6))
         axes = fig.axes
         axes[0].set_ylabel("Amplitude [nrad^2/Hz] [dB]")
         axes[0].plot(freq_rlnm, rlnm_db, 'grey', lw=2, label='Rotational LNM')
+        axes[0].set_title("")
+        axes[0].set_title('(b) HAN.EX.BJY', loc='left')
         fig.savefig('%s/PPSD/Noise_PPSD_HAN_EX_DJY.png' % (root_savefig), dpi=300)

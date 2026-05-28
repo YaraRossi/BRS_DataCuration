@@ -5,6 +5,7 @@ from obspy.clients.nrl import NRL
 
 root_data = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data'
 root_xml = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/metadata'
+root_xml ='/Users/yararossi/Documents/Work/Towards_Quantification/1_Coding/1.11_BRS_data_curation/BRS_DataCuration/1_conversion_codes'
 
 # link to station xml documentation
 # http://docs.fdsn.org/projects/stationxml/en/latest/reference.html#
@@ -15,7 +16,7 @@ inv = Inventory(
     # We'll add networks later.
     networks=[],
     # The source should be the id whoever create the file.
-    source="ObsPy-Tutorial")
+    source="Yara-Rossi")
 
 net = Network(
     # This is the network code according to the SEED standard.

@@ -13,7 +13,7 @@ coordinates = [
 ]
 
 # Create a new figure and axes object
-fig = plt.figure(figsize=(4, 4))
+fig = plt.figure(figsize=(4.5, 4.5))
 ax = plt.axes(projection=ccrs.PlateCarree())
 
 # Add satellite imagery background using Cartopy's OSM tiles
@@ -24,23 +24,25 @@ ax.add_image(img, 12)
 ax.add_feature(cfeature.BORDERS, linestyle=':')
 ax.add_feature(cfeature.COASTLINE)
 
-# Plot the coordinates as markers
-for lat, lon, name in coordinates:
-    ax.plot(lon, lat, marker='^', color='blue', markersize=14, markeredgecolor='white', markeredgewidth=0.2, transform=ccrs.PlateCarree())
-    if 'E' not in name:
-        ax.plot(lon, lat, marker='^', color='white', markersize=14, markeredgecolor='blue', markeredgewidth=1.5, transform=ccrs.PlateCarree())
-    ax.text(lon+0.001, lat, f'{name}', color='white', fontsize=15, ha='left', transform=ccrs.PlateCarree())
-
-# Set map extent to focus on the region of interest (WA, USA)
-ax.set_extent([-119.465, -119.39, 46.4225, 46.4925], crs=ccrs.PlateCarree())
-
 # Add gridlines
 gridlines = ax.gridlines(draw_labels=True, linewidth=0.5)
 gridlines.top_labels = False
 gridlines.right_labels = False
 
+# Plot the coordinates as markers
+for lat, lon, name in coordinates:
+    ax.plot(lon, lat, marker='^', color='blue', markersize=14, markeredgecolor='black', markeredgewidth=0.2, transform=ccrs.PlateCarree())
+    if 'E' not in name:
+        ax.plot(lon, lat, marker='^', color='white', markersize=14, markeredgecolor='blue', markeredgewidth=1.5, transform=ccrs.PlateCarree())
+    ax.text(lon+0.001, lat, f'{name}', color='white', fontsize=11, ha='left', transform=ccrs.PlateCarree())
+
+# Set map extent to focus on the region of interest (WA, USA)
+ax.set_extent([-119.465, -119.39, 46.4225, 46.4925], crs=ccrs.PlateCarree())
+
+
+
 # Display the plot with title
-plt.title('(c) Hanford site', loc='left')
+plt.title('(c) Hanford site', loc='left', fontsize=11)
 fig.savefig(f"{root_savefig}/MAP_LIV_BRS_4Paper.png", bbox_inches='tight', dpi=300)
 plt.show()
 
