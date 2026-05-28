@@ -5,7 +5,7 @@ import os
 
 
 path = '' #'/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/' # path to event_times_LIV.txt file
-root_data = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/miniseed_LIGO'
+root_data = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/zenodo_upload/miniseed_LIGO'
 # the columns in this file are:
 # Eventtime,   tstart,       tend,        eventstart,            eventend,          location, latitude, longitude, mag, name, country, type
 # which is:
@@ -20,21 +20,20 @@ data = pd.concat([data_liv, data_han[~data_han['location'].isin(data_liv['locati
 
 # add note for stations that are not good quality:
 list_of_errors = {
-    '2024-04-02': r'\makecell{LIV.IX.DJY\\abnormal resonance}',
-    '2024-12-05': r'\makecell{clipping of\\seismometers}',
-    '2025-02-08': r'\makecell{clipping of\\seismometers}',
-    '2024-05-28': r'\makecell{HAN.VA.DHX\\high noise level}',
-    '2024-09-23': r'\makecell{HAN.VA.DHX\\high noise level}',
-    '2025-01-20': r'\makecell{HAN.VA.DHX\\high noise level}',
-    '2024-07-31': r'\makecell{HAN.VA.DHX\\high noise level}',
-    '2023-08-20': r'\makecell{HAN.VA.DHX\\high noise level}',
-    '2024-12-17': r'\makecell{HAN.VA.DHX\\high noise level}',
-    '2021-03-04': r'\makecell{LIV.EY.DJX\\unusable data}',
-    '2020-06-23': r'\makecell{LIV.EY.DJX\\unusable data}',
-    '2020-10-19': r'\makecell{LIV.EY.DJX\\unusable data}',
-    '2026-01-16': r'\makecell{all LIV BRS\\unusable data}',
-    '2022-09-19': r'\makecell{all LIV BRS\\unusable data}',
-    '2025-12-08': r'only 1 sps data'
+    '2024-04-02': r'\makecell[t]{LIV.IX.DJY\\abnormal resonance}',
+    '2024-12-05': r'\makecell[t]{clipping of\\seismometers}',
+    '2025-02-08': r'\makecell[t]{clipping of\\seismometers}',
+    '2024-05-28': r'\makecell[t]{HAN.VA.DHX\\high noise level}',
+    '2024-09-23': r'\makecell[t]{HAN.VA.DHX\\high noise level}',
+    '2025-01-20': r'\makecell[t]{HAN.VA.DHX\\high noise level}',
+    '2024-07-31': r'\makecell[t]{HAN.VA.DHX\\high noise level}',
+    '2023-08-20': r'\makecell[t]{HAN.VA.DHX\\high noise level}',
+    '2024-12-17': r'\makecell[t]{HAN.VA.DHX\\high noise level}',
+    '2021-03-04': r'\makecell[t]{LIV.EY.DJX\\unusable data}',
+    '2020-06-23': r'\makecell[t]{LIV.EY.DJX\\unusable data}',
+    '2020-10-19': r'\makecell[t]{LIV.EY.DJX\\unusable data}',
+    '2026-01-16': r'\makecell[t]{all LIV BRS\\unusable data}',
+    '2022-09-19': r'\makecell[t]{all LIV BRS\\unusable data}',
 }
 # LIV.EY.DJX for some events, i.e. 2021-03-04, 2020-06-23, 2020-10-19
 
@@ -44,6 +43,7 @@ events_of_interest = ['2024-04-02', '2024-06-28','2024-12-17','2025-07-29','2024
 ## get distances for events
 
 dist_han, dist_liv = [],[]
+baz_han, baz_liv = [],[]
 for _, data_event in data.iterrows():
     source_latitude = float(data_event[' latitude'])
     source_longitude = float(data_event[' longitude'])
@@ -51,10 +51,12 @@ for _, data_event in data.iterrows():
     station_latitude = 46.455#47.5
     station_longitude = -119.407 #-120.7
     dist_han.append(int(gps2dist_azimuth(source_latitude, source_longitude, station_latitude, station_longitude)[0]/1000))
+    baz_han.append(int(gps2dist_azimuth(source_latitude, source_longitude, station_latitude, station_longitude)[2]))
     # LIV
     station_latitude = 30.562775410180993
     station_longitude = -90.77469251757329
     dist_liv.append(int(gps2dist_azimuth(source_latitude, source_longitude, station_latitude, station_longitude)[0]/1000))
+    baz_liv.append(int(gps2dist_azimuth(source_latitude, source_longitude, station_latitude, station_longitude)[2]))
 
 
 table = data[[' mag']].copy()
@@ -63,8 +65,10 @@ table['name'] = data[' name'].astype(str) + ',' + data[' country'].astype(str)
 order = [' latitude', ' longitude', 'Eventtime']
 table[order] = data[order]
 table['dist_han'] = dist_han
+table['baz_han'] = baz_han
 table['dist_liv'] = dist_liv
-table['type'] = data[' type']
+table['baz_liv'] = baz_liv
+table['type'] = data[' type'].str[:3]
 
 # which data is available:
 availability = []
@@ -84,27 +88,53 @@ for event_name in data['location']:
         has_B = False
 
 
+
     if has_B:
-        availability.append('HAN, LIV')
+        availability.append('Both')
     elif has_han:
         availability.append('HAN')
     elif has_liv:
         availability.append('LIV')
     else:
-        availability.append('HAN, LIV')  # no data found
+        availability.append('Both')  # both data in same folder with high sampüling rate
 
 
 table['availability'] = availability
 # add error column (empty if no issue)
 table['errors'] = data['location'].map(list_of_errors).fillna('')
 
+# Drop some of the events
+table.drop(table[table['type'].str.contains('to', na=False)].index, inplace=True)
+table.drop(table[table['type'].str.contains('er', na=False)].index, inplace=True)
+table.drop(table[table['type'].str.contains('F2', na=False)].index, inplace=True)
+table.drop(table[table['name'].str.contains('Toyah', na=False)].index, inplace=True)
+table['type'] = table['type'].str.replace('ea', 'eq', regex=False)
 
-table.drop(table[table['type'].str.contains('tornado', na=False)].index, inplace=True)
-table.drop(table[table['type'].str.contains('eruption', na=False)].index, inplace=True)
-print(table)
+# replace all nan with '-'
+table.fillna('-', inplace=True)
+
+
 
 # sort table according to magnitude
 table = table.sort_values(by=' mag', ascending=False)
+
+# change high noise and low noise events
+mask = table['type'].isin([' hi', ' lo'])
+table.loc[mask] = table.loc[mask].replace({
+    0.0: '-',
+    '0': '-',
+    '0.0': '-',
+    20004: '-',
+    20004.0: '-',
+    '20004': '-',
+    '20004.0': '-',
+    'nan,nan': ' unknown',
+    'nan, nan': ' unknown',
+})
+table = table.applymap(lambda x: '-' if (x == 0 and isinstance(x, int)) else x)
+table = table.applymap(lambda x: '-' if (x == 20004 and isinstance(x, int)) else x)
+
+print(table.loc[mask])
 
 output_path = f'{path}event_table_latex.txt'
 table.to_csv(output_path, index=False)
