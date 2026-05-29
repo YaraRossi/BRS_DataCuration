@@ -15,7 +15,7 @@ inv = Inventory(
     # We'll add networks later.
     networks=[],
     # The source should be the id whoever create the file.
-    source="ObsPy-Tutorial")
+    source="Yara-Rossi")
 
 net = Network(
     # This is the network code according to the SEED standard.
@@ -140,14 +140,14 @@ cha_han_BHZ_EY = Channel(
     dip=-90, # done
     sample_rate=10) # done
 
-# Paul is estimating these.
-'''# Location IY
+# coordinates from https://dcc.ligo.org/public/0002/T980044/001/T980044-10.pdf 
+# and offset from vertex estimated by Paul ({7119, 5734, 0} mm in X, Y, and Z )
 cha_han_BHX_IY = Channel(
     code="BHX",
     location_code="IY",
-    latitude=???, # Shoshana Phone, error 6.1m
-    longitude=???, # Shoshana Phone, error= 6.1m
-    elevation=142.555, # done
+    latitude=46.455155, # 
+    longitude=-119.407818, # 
+    elevation=143.921, # done
     depth=0.0, # done
     azimuth=324.0007, # done
     dip=0, # done
@@ -155,23 +155,23 @@ cha_han_BHX_IY = Channel(
 cha_han_BHY_IY = Channel(
     code="BHY",
     location_code="IY",
-    latitude=???, # Shoshana Phone, error 6.1m
-    longitude=???, # Shoshana Phone, error= 6.1m
-    elevation=142.555, # done
+    latitude=46.455155, # 
+    longitude=-119.407818, # 
+    elevation=143.921, # done
     depth=0.0, # done
     azimuth=234.0007, # done
     dip=0, # done
     sample_rate=10) # done
 cha_han_BHZ_IY = Channel(
     code="BHZ",
-    location_code="EY",
-    latitude=???, #
-    longitude=???, # 
-    elevation=142.555, # done
+    location_code="IY",
+    latitude=46.455155, # 
+    longitude=-119.407818, # 
+    elevation=143.921, # done
     depth=0.0, # done
     azimuth=0, # done
     dip=-90, # done
-    sample_rate=10) # done'''
+    sample_rate=10) # done
 
 ##############################################################
 #### Seis HAN Vault data channels DHX and DHY
@@ -470,6 +470,9 @@ cha_han_BHY_EY.response = response_seisligo
 cha_han_BHZ_EY.response = response_seisligo
 cha_han_BHX_VA.response = response_seisligo
 cha_han_BHY_VA.response = response_seisligo
+cha_han_BHX_IY.response = response_seisligo
+cha_han_BHY_IY.response = response_seisligo
+cha_han_BHZ_IY.response = response_seisligo
 
 # add channels to station Hanford
 sta_han.channels.append(cha_han_BJX_EY)
@@ -482,6 +485,9 @@ sta_han.channels.append(cha_han_BHY_EY)
 sta_han.channels.append(cha_han_BHZ_EY)
 sta_han.channels.append(cha_han_BHX_VA)
 sta_han.channels.append(cha_han_BHY_VA)
+sta_han.channels.append(cha_han_BHX_IY)
+sta_han.channels.append(cha_han_BHY_IY)
+sta_han.channels.append(cha_han_BHZ_IY)
 
 # add response to channels LIV
 cha_liv_BJX_IY.response = response_BRS
@@ -501,7 +507,7 @@ cha_liv_BHX_EX.response = response_seisligo
 cha_liv_BHY_EX.response = response_seisligo
 cha_liv_BHZ_EX.response = response_seisligo
 
-# add channels to station Hanford
+# add channels to station Livingston
 sta_liv.channels.append(cha_liv_BJX_IY)
 sta_liv.channels.append(cha_liv_BJY_IX)
 sta_liv.channels.append(cha_liv_BJX_EY)
@@ -521,7 +527,7 @@ sta_liv.channels.append(cha_liv_BHZ_EX)
 
 # add station Hanford to Network LI
 net.stations.append(sta_han)
-# add station Hanford to Network LI
+# add station Livingston to Network LI
 net.stations.append(sta_liv)
 
 
