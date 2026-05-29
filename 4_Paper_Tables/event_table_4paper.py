@@ -4,7 +4,7 @@ from obspy.geodetics.base import gps2dist_azimuth
 import os
 
 
-path = '' #'/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/' # path to event_times_LIV.txt file
+path = '/Users/yararossi/Documents/Work/Towards_Quantification/1_Coding/1.11_BRS_data_curation/BRS_DataCuration/4_Paper_Tables/' #'/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/' # path to event_times_LIV.txt file
 root_data = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/zenodo_upload/miniseed_LIGO'
 # the columns in this file are:
 # Eventtime,   tstart,       tend,        eventstart,            eventend,          location, latitude, longitude, mag, name, country, type
@@ -20,7 +20,7 @@ data = pd.concat([data_liv, data_han[~data_han['location'].isin(data_liv['locati
 
 # add note for stations that are not good quality:
 list_of_errors = {
-    '2024-04-02': r'\makecell[t]{LIV.IX.DJY\\abnormal resonance}',
+    '2024-04-02': r'\makecell[t]{LIV.IX.DJY\\weird resonance}',
     '2024-12-05': r'\makecell[t]{clipping of\\seismometers}',
     '2025-02-08': r'\makecell[t]{clipping of\\seismometers}',
     '2024-05-28': r'\makecell[t]{HAN.VA.DHX\\high noise level}',
@@ -36,6 +36,43 @@ list_of_errors = {
     '2022-09-19': r'\makecell[t]{all LIV BRS\\unusable data}',
 }
 # LIV.EY.DJX for some events, i.e. 2021-03-04, 2020-06-23, 2020-10-19
+
+# add note for LIGO Observation mode
+list_of_LIGOModes = {
+    '2024-04-02': r'\makecell[t]{MMB, TUES}',
+    '2024-12-05': r'\makecell[t]{EQB}',
+    '2025-02-08': r'\makecell[t]{EQB}',
+    '2024-05-28': r'\makecell[t]{MMH to EQH\\TUES}',
+    '2024-09-23': r'\makecell[t]{EQH}',
+    '2025-01-20': r'\makecell[t]{EQB?}',
+    '2024-07-31': r'\makecell[t]{MML CH}',
+    '2023-08-20': r'\makecell[t]{EQL ULH}',
+    '2024-12-17': r'\makecell[t]{EQB TUES}',
+    '2021-03-04': r'\makecell[t]{NOb}',
+    '2020-06-23': r'\makecell[t]{??? TUES}',
+    '2020-10-19': r'\makecell[t]{NObL COMH}',
+    '2026-01-16': r'\makecell[t]{NOb}',
+    '2022-09-19': r'\makecell[t]{NObL MMH}',
+    '2025-07-29': r'\makecell[t]{EQB TUES}',
+    '2020-07-22': r'\makecell[t]{NOb}',
+    '2023-02-06E': r'\makecell[t]{COMB}',
+    '2025-03-28': r'\makecell[t]{EQL ULH}',
+    '2025-12-08': r'\makecell[t]{NOb}',
+    '2023-02-06P': r'\makecell[t]{COMB}',
+    '2025-07-16': r'\makecell[t]{EQB}',
+    '2021-08-14': r'\makecell[t]{NOb}',
+    '2024-06-28': r'\makecell[t]{EQB}',
+    '2019-07-06': r'\makecell[t]{EQB}',
+    '2023-09-08': r'\makecell[t]{EQB}',
+    '2024-09-15': r'\makecell[t]{EQB}',
+    '2024-07-02': r'\makecell[t]{MMH EQL\\TUES}',
+    '2025-03-04': r'\makecell[t]{MMB TUES}',
+    '2025-06-20': r'\makecell[t]{ULB}',
+    '2025-02-16': r'\makecell[t]{OFFL}',
+    '2024-06-20': r'\makecell[t]{???}',
+    '2024-12-08': r'\makecell[t]{???}',
+    '2021-07-29': r'\makecell[t]{NOb}',
+}
 
 # list of events for Andreas
 events_of_interest = ['2024-04-02', '2024-06-28','2024-12-17','2025-07-29','2024-09-15',]
@@ -87,8 +124,6 @@ for event_name in data['location']:
         has_liv = any('liv' in f for f in matching_folders)
         has_B = False
 
-
-
     if has_B:
         availability.append('Both')
     elif has_han:
@@ -100,8 +135,13 @@ for event_name in data['location']:
 
 
 table['availability'] = availability
+
+# add LIGO mode column (empty if no issue)
+table['LIGOMode'] = data['location'].map(list_of_LIGOModes).fillna('')
+
 # add error column (empty if no issue)
 table['errors'] = data['location'].map(list_of_errors).fillna('')
+
 
 # Drop some of the events
 table.drop(table[table['type'].str.contains('to', na=False)].index, inplace=True)
