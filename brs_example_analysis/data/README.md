@@ -1,0 +1,1 @@
+Here the data provided in the zenodo repository of this project should be downloaded. This will then be used for the preprocessing. The outputs of the preprocessing will end up in the /output directory.
