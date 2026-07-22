@@ -56,8 +56,10 @@ If you work on the [SixDegreesOfFreedom](https://github.com/andbrocode/SixDegree
 
 ```bash
 conda activate sixdegrees
-pip install -e /path/to/SixDegreesOfFreedom
+pip install sixdegrees
 ```
+# alternative: pip install -e /path/to/SixDegreesOfFreedom
+
 
 Remove any `prefix:` line before committing (conda adds your local path).
 
