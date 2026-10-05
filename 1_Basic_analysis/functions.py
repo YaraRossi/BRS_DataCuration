@@ -251,7 +251,6 @@ def get_UW_data(folder, location):
     Notes
     -----
     Returns None for missing data to easily detect if data exists or not.
-    This function currently skips remove_response - TODO: Add response removal when metadata is available.
     """
     root_data = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/zenodo_upload/miniseed_LIGO'
 
