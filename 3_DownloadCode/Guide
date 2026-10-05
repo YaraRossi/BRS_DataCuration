@@ -1,2 +1,0 @@
-BRS_Data_Pull_Old is old downloader, converted file names into sei notation
-BRS_Data_Pull is new downloader, keeps file names in LIGO format (also runs much faster and is easier to use and understand/change)
