@@ -10,10 +10,15 @@ import matplotlib.pyplot as plt
 root_savefig = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/2_Figures/1_Raw_Filter'
 root_data = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/CRS_Collab/1_Data/zenodo_upload/miniseed_LIGO'
 
+def plot_all_traces(ax, stream, color, label):
+    """Plot every trace in a stream individually (no merging), so gaps stay visible."""
+    for j, tr in enumerate(stream):
+        ax.plot(tr.times('matplotlib'), tr.data, color=color, label=label if j == 0 else None)
+
 for folder in os.listdir(root_data):
     if folder in ['.DS_Store']:
         continue
-    if folder not in ['2025-12-08']:
+    if folder not in ['2022-12-27_han_highnoise_L']:
         continue
 
     LIV, HAN = True, True
@@ -78,16 +83,16 @@ for folder in os.listdir(root_data):
             ax = axs[i,0]
             if 'J' in name[i]:
                 color = 'red'
-                ax.plot(seed[0].times('matplotlib'), seed[0].data, color=color, label=name[i][4:])
+                plot_all_traces(ax, seed, color, name[i][4:])
             elif 'VA' in name[i]:
                 color = 'k'
-                ax.plot(seed[0].times('matplotlib'), seed.select(channel='*HX')[0].data, color=color, label=f'{name[i][4:]}X')
+                plot_all_traces(ax, seed.select(channel='*HX'), color, f'{name[i][4:]}X')
             elif 'UW' in name[i]:
                 color = 'blue'
-                ax.plot(seed[0].times('matplotlib'), seed.select(channel='*E')[0].data, color=color, label=f'{name[i]}E')
+                plot_all_traces(ax, seed.select(channel='*E'), color, f'{name[i]}E')
             else:
                 color = 'k'
-                ax.plot(seed[0].times('matplotlib'), seed.select(channel=f'*H{name[i][5]}')[0].data, color=color, label=f'{name[i][4:]}{name[i][5]}')
+                plot_all_traces(ax, seed.select(channel=f'*H{name[i][5]}'), color, f'{name[i][4:]}{name[i][5]}')
             ax.legend(loc='lower right')
             ax.margins(0)
 
@@ -98,16 +103,16 @@ for folder in os.listdir(root_data):
             seed_f_s = seed_f.slice(zoom_start, zoom_end)
             if 'J' in name[i]:
                 color = 'red'
-                ax.plot(seed_f_s[0].times('matplotlib'), seed_f_s[0].data, color=color, label=name[i][4:])
+                plot_all_traces(ax, seed_f_s, color, name[i][4:])
             elif 'VA' in name[i]:
                 color = 'k'
-                ax.plot(seed_f_s[0].times('matplotlib'), seed_f_s.select(channel=f'*HX')[0].data, color=color, label=f'{name[i][4:]}X')
+                plot_all_traces(ax, seed_f_s.select(channel='*HX'), color, f'{name[i][4:]}X')
             elif 'UW' in name[i]:
                 color = 'blue'
-                ax.plot(seed_f_s[0].times('matplotlib'), seed_f_s.select(channel='*E')[0].data, color=color, label=f'{name[i]}E')
+                plot_all_traces(ax, seed_f_s.select(channel='*E'), color, f'{name[i]}E')
             else:
                 color = 'k'
-                ax.plot(seed_f_s[0].times('matplotlib'), seed_f_s.select(channel=f'*H{name[i][5]}')[0].data, color=color, label=f'{name[i][4:]}{name[i][5]}')
+                plot_all_traces(ax, seed_f_s.select(channel=f'*H{name[i][5]}'), color, f'{name[i][4:]}{name[i][5]}')
             #ax.legend(loc='lower right')
             ax.margins(0)
 
@@ -126,4 +131,4 @@ for folder in os.listdir(root_data):
 
         fig.savefig(f'{root_savefig}/{folder}_{location}.png', dpi=300, bbox_inches='tight')
 
-        #plt.show()
+        plt.show()

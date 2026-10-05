@@ -1,0 +1,33 @@
+8.8 &  Kamchatka, Russia & 52.495 & 160.24 & 2025-07-29T23:24:52 & 5555 & 308 & 8529 & 323 &  eq & Both &  \\
+8.2 &  Alaska Peninsula, USA & 55.364 & -157.888 & 2021-07-29T06:15:49 & 2838 & 304 & 5848 & 318 &  eq & HAN &  \\
+8.1 &  Kermadec Islands, New Zealand & -29.723 & -177.279 & 2021-03-04T19:28:33 & 10246 & 227 & 11324 & 242 &  eq & Both & \makecell[t]{LIV.EY.DJX\\unusable data} \\
+7.8 &  Perryville Alaska, USA & 55.072 & -158.596 & 2020-07-22T06:12:44 & 2881 & 303 & 5894 & 318 &  eq & Both &  \\
+7.8 &  Pazarcik Kahramanmaras, Turkey & 37.226 & 37.014 & 2023-02-06T01:17:34 & 10442 & 18 & 10747 & 39 &  eq & Both &  \\
+7.7 &  Mandalay, Burma (Myanmar) & 22.011 & 95.936 & 2025-03-28T06:20:52 & 11632 & 326 & 14142 & 352 &  eq & LIV &  \\
+7.6 &  Aomori Prefecture, Japan & 40.997 & 142.18 & 2025-12-08T14:15:10 & 7409 & 305 & 10398 & 322 &  eq & Both &  \\
+7.6 &  Aguililla, Mexico & 18.455 & -102.956 & 2022-09-19T18:05:08 & 3453 & 148 & 1820 & 225 &  eq & Both & \makecell[t]{all LIV BRS\\unusable data} \\
+7.6 &  Sand Point Alaska, USA & 54.602 & -159.626 & 2020-10-19T20:54:38 & 2946 & 302 & 5963 & 317 &  eq & Both & \makecell[t]{LIV.EY.DJX\\unusable data} \\
+7.6 &  Cayman Trough,  & 17.651 & -82.395 & 2025-02-08T23:15:00 & 4661 & 120 & 1663 & 147 &  eq & Both & \makecell[t]{clipping of\\seismometers} \\
+7.5 &  Elbistan Kahramanmaras, Turkey & 38.011 & 37.196 & 2023-02-06T10:24:48 & 10362 & 18 & 10694 & 38 &  eq & Both &  \\
+7.4 &  Santa María Xadani, Mexico & 15.886 & -96.008 & 2020-06-23T15:29:04 & 4024 & 139 & 1710 & 199 &  eq & Both & \makecell[t]{LIV.EY.DJX\\unusable data} \\
+7.4 &  Hualien, Taiwan & 23.836 & 121.598 & 2024-04-02T23:58:12 & 10106 & 306 & 13070 & 326 &  eq & Both & \makecell[t]{LIV.IX.DJY\\weird resonance} \\
+7.3 &  Sand Point Alaska, USA & 54.566 & -160.467 & 2025-07-16T20:37:41 & 3000 & 302 & 6017 & 317 &  eq & Both &  \\
+7.3 &  Port-Vila, Vanuatu & -17.691 & 168.084 & 2024-12-17T01:30:00 & 10141 & 245 & 12037 & 259 &  eq & Both & \makecell[t]{HAN.VA.DHX\\high noise level} \\
+7.2 &  Nippes, Haiti & 18.433 & -73.482 & 2021-08-14T12:29:08 & 5212 & 110 & 2203 & 123 &  eq & HAN &  \\
+7.2 &  Atiquipa, Peru & -15.828 & -74.454 & 2024-06-28T05:36:36 & 8236 & 134 & 5422 & 158 &  eq & Both &  \\
+7.1 &  Ridgecrest, USA & 35.77 & -117.599 & 2019-07-06T03:19:53 & 1196 & 172 & 2559 & 290 &  eq & Both &  \\
+7.0 &  Cape Mendocino, USA & 40.374 & -125.022 & 2024-12-05T18:44:21 & 813 & 215 & 3269 & 298 &  eq & Both & \makecell[t]{clipping of\\seismometers} \\
+6.8 &  Al Haouz, Morocco & 31.058 & -8.385 & 2023-09-08T22:11:01 & 8989 & 54 & 7676 & 65 &  eq & Both &  \\
+6.5 &  Port McNeill, Canada & 51.609 & -130.612 & 2024-09-15T22:22:48 & 998 & 309 & 4006 & 317 &  eq & Both &  \\
+6.0 &  Oregon, USA & 43.5426 & -128.0087 & 2026-01-16T03:25:52 & 750 & 247 & 3573 & 304 &  eq & Both & \makecell[t]{all LIV BRS\\unusable data} \\
+3.5 &  Bend OR, USA & 47.6 & -121.754 & 2025-01-20T21:35:00 & 219 & 306 & 3245 & 314 &  eq & HAN & \makecell[t]{HAN.VA.DHX\\high noise level} \\
+2.9 &  Hanford WA, USA & 46.6087 & -119.7968 & 2024-09-23T03:17:00 & 34 & 299 & 3064 & 313 &  eq & HAN & \makecell[t]{HAN.VA.DHX\\high noise level} \\
+2.5 &  Desert Aire, USA & 46.6212 & -119.8237 & 2023-08-20T22:49:00 & 36 & 300 & 3066 & 313 &  eq & HAN & \makecell[t]{HAN.VA.DHX\\high noise level} \\
+2.4 &  Hanford WA, USA & 46.62 & -119.843 & 2024-07-31T23:13:00 & 38 & 298 & 3068 & 313 &  eq & HAN & \makecell[t]{HAN.VA.DHX\\high noise level} \\
+2.3 &  Hanford, USA & 46.265 & -119.378 & 2025-03-04T23:57:00 & 21 & 173 & 3019 & 313 &  ex & HAN &  \\
+1.8 &  Richland WA, USA & 46.269 & -119.383 & 2024-05-28T20:55:25 & 20 & 174 & 3019 & 313 &  ex & HAN & \makecell[t]{HAN.VA.DHX\\high noise level} \\
+1.1 &  Hanford WA, USA & 46.412 & -119.573 & 2024-07-02T18:58:45 & 13 & 249 & 3039 & 313 &  eq & HAN &  \\
+- &  unknown & - & - & 2025-06-20T00:00:00 & - & - & - & - &  lo & Both &  \\
+- &  unknown & - & - & 2025-02-16T00:00:00 & - & - & - & - &  hi & Both &  \\
+- &  unknown & - & - & 2022-08-11T00:00:00 & - & - & - & - &  lo & HAN &  \\
+- &  unknown & - & - & 2024-12-08T00:00:00 & - & - & - & - &  hi & HAN &  \\

@@ -15,7 +15,7 @@ root_data = '/Users/yararossi/Documents/Work/Towards_Quantification/3_Projects/C
 for folder in os.listdir(root_data):
     if folder in ['.DS_Store']:
         continue
-    if folder not in ['2026-01-16','2023-09-08_L','2022-09-19_liv','2022-09-19_han_L']:
+    if folder not in ['2022-12-27_han_highnoise_L']:
         continue
 
     LIV, HAN = True, True
